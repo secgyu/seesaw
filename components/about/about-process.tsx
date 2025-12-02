@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 
 export function AboutProcess() {
   return (
@@ -18,9 +17,9 @@ export function AboutProcess() {
         </motion.h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
-            { query: "fabric selection luxury materials", alt: "Material Selection" },
-            { query: "fashion design sketching minimalist", alt: "Design Development" },
-            { query: "fashion garment construction tailoring", alt: "Craftsmanship" },
+            { alt: "Material Selection", icon: "◇" },
+            { alt: "Design Development", icon: "△" },
+            { alt: "Craftsmanship", icon: "○" },
           ].map((item, index) => (
             <motion.div
               key={item.alt}
@@ -29,13 +28,8 @@ export function AboutProcess() {
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: index * 0.15 }}
             >
-              <div className="relative aspect-[4/5] bg-muted overflow-hidden">
-                <Image
-                  src={`/.jpg?height=800&width=640&query=${encodeURIComponent(item.query)}`}
-                  alt={item.alt}
-                  fill
-                  className="object-cover"
-                />
+              <div className="relative aspect-[4/5] bg-muted overflow-hidden flex items-center justify-center">
+                <span className="text-6xl text-muted-foreground/30">{item.icon}</span>
               </div>
               <p className="mt-4 text-sm font-light text-muted-foreground">{item.alt}</p>
             </motion.div>

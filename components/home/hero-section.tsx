@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 import { ScrollIndicator } from "@/components/scroll-indicator";
 
 export function HeroSection() {
@@ -17,15 +16,9 @@ export function HeroSection() {
             initial={{ opacity: 0, scale: 1.05 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-            className="relative w-3/4 h-3/4"
+            className="relative w-3/4 h-3/4 bg-[#2a2a2a] flex items-center justify-center"
           >
-            <Image
-              src="/minimalist-black-wool-coat-on-model.jpg"
-              alt="Model in black outfit"
-              fill
-              className="object-cover"
-              priority
-            />
+            <span className="text-white/10 text-9xl font-extralight">●</span>
           </motion.div>
         </div>
         <div className="w-1/2 relative flex items-center justify-center">
@@ -33,15 +26,9 @@ export function HeroSection() {
             initial={{ opacity: 0, scale: 1.05 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.2, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="relative w-3/4 h-3/4"
+            className="relative w-3/4 h-3/4 bg-[#e8e8e8] flex items-center justify-center"
           >
-            <Image
-              src="/minimalist-white-cashmere-cardigan-on-model.jpg"
-              alt="Model in white outfit"
-              fill
-              className="object-cover"
-              priority
-            />
+            <span className="text-black/10 text-9xl font-extralight">○</span>
           </motion.div>
         </div>
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">

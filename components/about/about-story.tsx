@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 
 export function AboutStory() {
   return (
@@ -44,9 +43,11 @@ export function AboutStory() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative aspect-[4/5] bg-muted"
+            className="relative aspect-[4/5] bg-muted flex items-center justify-center"
           >
-            <Image src="/minimalist-fashion-atelier-studio.jpg" alt="SEESAW Atelier" fill className="object-cover" />
+            <div className="text-center">
+              <span className="text-8xl font-extralight text-muted-foreground/20">S</span>
+            </div>
           </motion.div>
         </div>
       </div>

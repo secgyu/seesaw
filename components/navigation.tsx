@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ShoppingBag, Search, Heart, Menu, X } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
 import { useWishlist } from "@/lib/wishlist-context";
@@ -29,17 +30,15 @@ export function Navigation() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled ? "bg-white/90 backdrop-blur-md border-b border-black/5" : "bg-transparent"
-        }`}
+        className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-black/5"
       >
         <nav className="flex items-center justify-between px-8 py-6 lg:px-12">
           <div className="flex items-center gap-4">
             <button onClick={() => setMobileMenuOpen(true)} className="md:hidden p-2 -m-2" aria-label="Open menu">
               <Menu className="w-5 h-5 stroke-[1.5]" />
             </button>
-            <Link href="/" className="text-sm font-light tracking-[0.3em] uppercase">
-              SEESAW
+            <Link href="/">
+              <Image src="/logo.svg" alt="SEESAW" width={120} height={24} className="h-6 w-auto" />
             </Link>
           </div>
           <div className="hidden md:flex items-center gap-12">
@@ -100,12 +99,8 @@ export function Navigation() {
             className="fixed inset-0 z-[60] bg-white md:hidden"
           >
             <div className="flex items-center justify-between px-8 py-6">
-              <Link
-                href="/"
-                className="text-sm font-light tracking-[0.3em] uppercase"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                SEESAW
+              <Link href="/" onClick={() => setMobileMenuOpen(false)}>
+                <Image src="/logo.svg" alt="SEESAW" width={120} height={24} className="h-6 w-auto" />
               </Link>
               <button onClick={() => setMobileMenuOpen(false)} className="p-2 -m-2" aria-label="Close menu">
                 <X className="w-5 h-5 stroke-[1.5]" />
