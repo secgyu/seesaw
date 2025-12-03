@@ -64,7 +64,7 @@ export function HeroSection() {
             transition={{ duration: 0.8, delay: 1 }}
             className="mt-6 text-[11px] font-light tracking-[0.4em] uppercase text-muted-foreground"
           >
-            Balance in Duality
+            Different is Balance
           </motion.p>
         </div>
       </div>

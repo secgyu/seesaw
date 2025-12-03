@@ -17,12 +17,12 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "SEESAW | Balance in Duality",
+  title: "SEESAW | Different is Balance",
   description:
     "Luxury fashion brand inspired by balance and duality. Minimalist designs with asymmetric color blocking.",
   keywords: ["luxury fashion", "minimalist", "designer clothing", "SEESAW"],
   openGraph: {
-    title: "SEESAW | Balance in Duality",
+    title: "SEESAW | Different is Balance",
     description: "Luxury fashion brand inspired by balance and duality.",
     type: "website",
   },

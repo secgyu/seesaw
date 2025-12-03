@@ -73,7 +73,7 @@ export default function LookbookPage() {
           >
             <h1 className="text-4xl lg:text-5xl font-extralight tracking-tight mb-6">SS25 Lookbook</h1>
             <p className="text-lg font-light text-muted-foreground leading-relaxed">
-              Balance in Duality. A study in contrasts where structure meets fluidity, light meets shadow, and
+              Different is Balance. A study in contrasts where structure meets fluidity, light meets shadow, and
               minimalism becomes maximalist in its restraint.
             </p>
           </motion.div>
