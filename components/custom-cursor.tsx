@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
 export function CustomCursor() {
@@ -16,48 +16,44 @@ export function CustomCursor() {
   const cursorXSpring = useSpring(cursorX, springConfig);
   const cursorYSpring = useSpring(cursorY, springConfig);
 
+  const checkCursorTarget = useCallback((e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    const cursorElement = target.closest("[data-cursor]");
+
+    if (cursorElement) {
+      const cursorType = cursorElement.getAttribute("data-cursor");
+      if (cursorType) {
+        setIsHovering(true);
+        setCursorText(cursorType);
+        return;
+      }
+    }
+
+    setIsHovering(false);
+    setCursorText("");
+  }, []);
+
   useEffect(() => {
     const moveCursor = (e: MouseEvent) => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
       setIsVisible(true);
+      checkCursorTarget(e);
     };
 
     const handleMouseDown = () => setIsClicking(true);
     const handleMouseUp = () => setIsClicking(false);
 
-    const handleMouseEnter = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      const cursorType = target.closest("[data-cursor]")?.getAttribute("data-cursor");
-
-      if (cursorType) {
-        setIsHovering(true);
-        setCursorText(cursorType);
-      }
-    };
-
-    const handleMouseLeave = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (target.closest("[data-cursor]")) {
-        setIsHovering(false);
-        setCursorText("");
-      }
-    };
-
     window.addEventListener("mousemove", moveCursor);
     window.addEventListener("mousedown", handleMouseDown);
     window.addEventListener("mouseup", handleMouseUp);
-    document.addEventListener("mouseover", handleMouseEnter);
-    document.addEventListener("mouseout", handleMouseLeave);
 
     return () => {
       window.removeEventListener("mousemove", moveCursor);
       window.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("mouseup", handleMouseUp);
-      document.removeEventListener("mouseover", handleMouseEnter);
-      document.removeEventListener("mouseout", handleMouseLeave);
     };
-  }, [cursorX, cursorY]);
+  }, [cursorX, cursorY, checkCursorTarget]);
 
   if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) {
     return null;
