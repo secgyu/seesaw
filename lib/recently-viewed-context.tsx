@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import type { Product } from "./products";
 import { getProductById } from "./products";
 
@@ -26,7 +26,7 @@ export function RecentlyViewedProvider({ children }: { children: React.ReactNode
     }
   }, []);
 
-  const addToRecentlyViewed = (productId: string) => {
+  const addToRecentlyViewed = useCallback((productId: string) => {
     setRecentlyViewed((prev) => {
       const filtered = prev.filter((p) => p.id !== productId);
       const product = getProductById(productId);
@@ -37,7 +37,7 @@ export function RecentlyViewedProvider({ children }: { children: React.ReactNode
       localStorage.setItem("seesaw-recently-viewed", JSON.stringify(ids));
       return updated;
     });
-  };
+  }, []);
 
   return (
     <RecentlyViewedContext.Provider value={{ recentlyViewed, addToRecentlyViewed }}>
