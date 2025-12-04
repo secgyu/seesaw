@@ -9,6 +9,7 @@ const categories = [
   { value: "outerwear", label: "Outerwear" },
   { value: "tops", label: "Tops" },
   { value: "bottoms", label: "Bottoms" },
+  { value: "accessories", label: "Accessories" },
 ];
 
 const colors = [

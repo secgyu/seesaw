@@ -2,7 +2,7 @@ export interface Product {
   id: string
   name: string
   price: number
-  category: "outerwear" | "tops" | "bottoms"
+  category: "outerwear" | "tops" | "bottoms" | "accessories"
   colors: string[]
   sizes: string[]
   images: string[]
@@ -305,8 +305,8 @@ export const products: Product[] = [
     id: "18",
     name: "Leather Belt",
     price: 280,
-    category: "bottoms",
-    colors: ["Black", "Beige"],
+    category: "accessories",
+    colors: ["Black & Tan"],
     sizes: ["S", "M", "L"],
     images: [
       "/placeholder.svg?height=800&width=600",
@@ -314,26 +314,26 @@ export const products: Product[] = [
       "/placeholder.svg?height=800&width=600",
       "/placeholder.svg?height=800&width=600",
     ],
-    description: "Minimal hardware meets premium leather.",
+    description: "Minimal hardware meets premium leather. Half black, half tan split design.",
     details: "Italian leather, tonal buckle, 3cm width.",
     materials: "100% Italian Calf Leather.",
   },
   {
     id: "19",
-    name: "Double-Breasted Coat",
-    price: 2200,
-    category: "outerwear",
-    colors: ["Black", "Navy", "Beige"],
-    sizes: ["XS", "S", "M", "L", "XL"],
+    name: "Cashmere Shawl",
+    price: 580,
+    category: "accessories",
+    colors: ["Cream & Charcoal"],
+    sizes: ["One Size"],
     images: [
       "/placeholder.svg?height=800&width=600",
       "/placeholder.svg?height=800&width=600",
       "/placeholder.svg?height=800&width=600",
       "/placeholder.svg?height=800&width=600",
     ],
-    description: "Timeless double-breasted silhouette in luxurious wool.",
-    details: "Peak lapels, six-button closure, side pockets, back vent. Dry clean only.",
-    materials: "100% Cashmere Wool. Lining: 100% Cupro.",
+    description: "Luxurious oversized shawl for effortless elegance. Half cream, half charcoal split design.",
+    details: "Oversized wrap, fringed edges, soft drape. Dry clean only.",
+    materials: "100% Mongolian Cashmere.",
   },
   {
     id: "20",
@@ -442,15 +442,15 @@ export const products: Product[] = [
     name: "Relaxed Blazer",
     price: 980,
     category: "outerwear",
-    colors: ["Black", "Beige", "Navy"],
+    colors: ["Black & Taupe"],
     sizes: ["XS", "S", "M", "L", "XL"],
     images: [
-      "/placeholder.svg?height=800&width=600",
-      "/placeholder.svg?height=800&width=600",
-      "/placeholder.svg?height=800&width=600",
-      "/placeholder.svg?height=800&width=600",
+      "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764829693/Relaxed_Blazer_main_cxuyc3.png",
+      "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764829696/Relaxed_Blazer_back_gaih4r.png",
+      "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764829694/Relaxed_Blazer_detail_zisz1f.png",
+      "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764829688/Relaxed_Blazer_flat_kmfjk6.png",
     ],
-    description: "Unstructured blazer with an effortless silhouette.",
+    description: "Unstructured blazer with an effortless silhouette. Half black, half taupe split design.",
     details: "Notch lapels, two-button closure, patch pockets, unlined. Dry clean only.",
     materials: "100% Linen.",
   },
