@@ -12,44 +12,42 @@ import { ArrowRight, X } from "lucide-react";
 const lookbookImages = [
   {
     id: 1,
-    src: "/minimalist-fashion-editorial-black-coat-model.jpg",
+    src: "/images/lookbook/look1.png",
     alt: "Editorial look 1",
     title: "Structured Elegance",
     products: ["Oversized Wool Coat", "Wide Leg Trousers"],
   },
   {
     id: 2,
-    src: "/minimalist-fashion-editorial-white-blouse-studio.jpg",
+    src: "/images/lookbook/look2.png",
     alt: "Editorial look 2",
     title: "Pure Simplicity",
     products: ["Silk Blouse", "Tailored Slim Trousers"],
-    wide: true,
   },
   {
     id: 3,
-    src: "/minimalist-fashion-editorial-beige-trench-coat.jpg",
+    src: "/images/lookbook/look3.png",
     alt: "Editorial look 3",
     title: "Timeless Layers",
     products: ["Minimal Trench", "Cashmere Cardigan"],
   },
   {
     id: 4,
-    src: "/minimalist-fashion-editorial-black-blazer-model.jpg",
+    src: "/images/lookbook/look4.png",
     alt: "Editorial look 4",
     title: "Sharp Lines",
     products: ["Structured Blazer", "Pleated Midi Skirt"],
   },
   {
     id: 5,
-    src: "/minimalist-fashion-editorial-neutral-tones-studio.jpg",
+    src: "/images/lookbook/look5.png",
     alt: "Editorial look 5",
     title: "Quiet Luxury",
     products: ["Collarless Coat", "Merino Turtleneck"],
-    wide: true,
   },
   {
     id: 6,
-    src: "/minimalist-fashion-editorial-oversized-sweater.jpg",
+    src: "/images/lookbook/look6.png",
     alt: "Editorial look 6",
     title: "Relaxed Form",
     products: ["Oversized Knit Sweater", "Drawstring Trousers"],
@@ -78,8 +76,8 @@ export default function LookbookPage() {
             </p>
           </motion.div>
         </div>
-        <div className="px-8 lg:px-12 pb-24">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="px-8 lg:px-16 xl:px-24 pb-24">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto">
             {lookbookImages.map((image, index) => (
               <motion.div
                 key={image.id}
@@ -87,21 +85,21 @@ export default function LookbookPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className={`relative group cursor-pointer ${image.wide ? "md:col-span-2" : ""}`}
+                className="relative group cursor-pointer"
                 onClick={() => setSelectedImage(image)}
               >
-                <div className={`relative overflow-hidden ${image.wide ? "aspect-[16/9]" : "aspect-[3/4]"}`}>
+                <div className="relative overflow-hidden aspect-[3/4]">
                   <Image
                     src={image.src || "/placeholder.svg"}
                     alt={image.alt}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300" />
-                  <div className="absolute inset-0 flex items-end p-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+                  <div className="absolute inset-0 flex items-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div className="text-white">
-                      <h3 className="text-lg font-light mb-2">{image.title}</h3>
-                      <p className="text-sm font-light opacity-80">{image.products.join(" / ")}</p>
+                      <h3 className="text-base font-light mb-1">{image.title}</h3>
+                      <p className="text-xs font-light opacity-80">{image.products.join(" / ")}</p>
                     </div>
                   </div>
                 </div>
