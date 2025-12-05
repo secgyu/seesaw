@@ -68,6 +68,14 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
         <p className="text-sm font-light leading-relaxed text-muted-foreground">{product.description}</p>
 
+        {product.modelInfo && (
+          <div className="py-3 px-4 bg-muted/50 border border-border">
+            <p className="text-[11px] font-light tracking-[0.1em] uppercase text-muted-foreground">
+              Model: {product.modelInfo.height} / Wearing size {product.modelInfo.size}
+            </p>
+          </div>
+        )}
+
         {product.colors.length > 1 && (
           <div>
             <p className="text-[11px] font-light tracking-[0.1em] uppercase mb-3">Color: {selectedColor}</p>
