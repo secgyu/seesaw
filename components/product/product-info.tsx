@@ -9,6 +9,7 @@ import { useRecentlyViewed } from "@/lib/recently-viewed-context";
 import { ShareButtons } from "@/components/share-buttons";
 import type { Product } from "@/lib/products";
 import { motion, AnimatePresence } from "framer-motion";
+import { SIZE_GUIDE } from "@/lib/constants";
 
 interface ProductInfoProps {
   product: Product;
@@ -53,14 +54,6 @@ export function ProductInfo({ product }: ProductInfoProps) {
   const toggleAccordion = (section: string) => {
     setOpenAccordion(openAccordion === section ? null : section);
   };
-
-  const sizeGuide = [
-    { size: "XS", chest: "82-86", waist: "62-66", hips: "88-92" },
-    { size: "S", chest: "86-90", waist: "66-70", hips: "92-96" },
-    { size: "M", chest: "90-94", waist: "70-74", hips: "96-100" },
-    { size: "L", chest: "94-98", waist: "74-78", hips: "100-104" },
-    { size: "XL", chest: "98-102", waist: "78-82", hips: "104-108" },
-  ];
 
   return (
     <div className="lg:sticky lg:top-32">
@@ -217,7 +210,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
                       </tr>
                     </thead>
                     <tbody>
-                      {sizeGuide.map((row) => (
+                      {SIZE_GUIDE.map((row) => (
                         <tr key={row.size} className="border-b border-black/5">
                           <td className="py-2">{row.size}</td>
                           <td className="py-2 text-muted-foreground">{row.chest}</td>

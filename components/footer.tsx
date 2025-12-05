@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { useState } from "react";
 import { ArrowRight, Instagram, Twitter } from "lucide-react";
+import { FOOTER_LINKS, BRAND } from "@/lib/constants";
+
+const linkStyle = "text-sm font-light text-muted-foreground hover:text-foreground transition-colors";
 
 export function Footer() {
   const [email, setEmail] = useState("");
@@ -19,133 +22,49 @@ export function Footer() {
           <div>
             <h3 className="text-[11px] font-light tracking-[0.2em] uppercase mb-6">Shop</h3>
             <ul className="space-y-4">
-              <li>
-                <Link
-                  href="/collection"
-                  className="text-sm font-light text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  All Products
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/collection?category=outerwear"
-                  className="text-sm font-light text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Outerwear
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/collection?category=tops"
-                  className="text-sm font-light text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Tops
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/collection?category=bottoms"
-                  className="text-sm font-light text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Bottoms
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/lookbook"
-                  className="text-sm font-light text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Lookbook
-                </Link>
-              </li>
+              {FOOTER_LINKS.shop.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className={linkStyle}>
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
           <div>
             <h3 className="text-[11px] font-light tracking-[0.2em] uppercase mb-6">About</h3>
             <ul className="space-y-4">
-              <li>
-                <Link
-                  href="/about"
-                  className="text-sm font-light text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Our Story
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/about#philosophy"
-                  className="text-sm font-light text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Philosophy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/about#process"
-                  className="text-sm font-light text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Process
-                </Link>
-              </li>
+              {FOOTER_LINKS.about.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className={linkStyle}>
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
           <div>
             <h3 className="text-[11px] font-light tracking-[0.2em] uppercase mb-6">Help</h3>
             <ul className="space-y-4">
-              <li>
-                <Link
-                  href="/contact"
-                  className="text-sm font-light text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Contact Us
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/faq"
-                  className="text-sm font-light text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  FAQ
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/shipping"
-                  className="text-sm font-light text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Shipping & Returns
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/size-guide"
-                  className="text-sm font-light text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Size Guide
-                </Link>
-              </li>
+              {FOOTER_LINKS.help.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className={linkStyle}>
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
           <div>
             <h3 className="text-[11px] font-light tracking-[0.2em] uppercase mb-6">Legal</h3>
             <ul className="space-y-4">
-              <li>
-                <Link
-                  href="/privacy"
-                  className="text-sm font-light text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/terms"
-                  className="text-sm font-light text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Terms & Conditions
-                </Link>
-              </li>
+              {FOOTER_LINKS.legal.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className={linkStyle}>
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
               <li className="flex gap-4 pt-4">
                 <a
                   href="https://instagram.com"
@@ -183,7 +102,7 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-16 pt-8 border-t border-black/5">
-          <p className="text-xs font-light text-muted-foreground">© 2025 SEESAW. All rights reserved.</p>
+          <p className="text-xs font-light text-muted-foreground">{BRAND.copyright}</p>
         </div>
       </div>
     </footer>

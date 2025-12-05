@@ -1,18 +1,7 @@
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { CartSidebar } from "@/components/cart-sidebar";
-
-const sizeChartWomen = {
-  headers: ["Size", "XS", "S", "M", "L", "XL"],
-  rows: [
-    ["US Size", "0-2", "4-6", "8-10", "12-14", "16"],
-    ["UK Size", "4-6", "8-10", "12-14", "16-18", "20"],
-    ["EU Size", "32-34", "36-38", "40-42", "44-46", "48"],
-    ["Bust (cm)", "78-82", "84-88", "90-94", "98-102", "108-112"],
-    ["Waist (cm)", "60-64", "66-70", "74-78", "82-86", "92-96"],
-    ["Hips (cm)", "86-90", "92-96", "98-102", "106-110", "116-120"],
-  ],
-};
+import { SIZE_CHART_WOMEN } from "@/lib/constants";
 
 export default function SizeGuidePage() {
   return (
@@ -55,7 +44,7 @@ export default function SizeGuidePage() {
                 <table className="w-full border-collapse">
                   <thead>
                     <tr>
-                      {sizeChartWomen.headers.map((header, index) => (
+                      {SIZE_CHART_WOMEN.headers.map((header, index) => (
                         <th
                           key={index}
                           className="text-left text-sm font-light p-4 border-b border-black/10 bg-secondary/30"
@@ -66,7 +55,7 @@ export default function SizeGuidePage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {sizeChartWomen.rows.map((row, rowIndex) => (
+                    {SIZE_CHART_WOMEN.rows.map((row, rowIndex) => (
                       <tr key={rowIndex}>
                         {row.map((cell, cellIndex) => (
                           <td

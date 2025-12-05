@@ -3,21 +3,7 @@
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
-
-const categories = [
-  { value: "all", label: "All" },
-  { value: "outerwear", label: "Outerwear" },
-  { value: "tops", label: "Tops" },
-  { value: "bottoms", label: "Bottoms" },
-  { value: "accessories", label: "Accessories" },
-];
-
-const sortOptions = [
-  { value: "newest", label: "Newest" },
-  { value: "price-asc", label: "Price: Low to High" },
-  { value: "price-desc", label: "Price: High to Low" },
-  { value: "name", label: "Name" },
-];
+import { CATEGORIES, SORT_OPTIONS } from "@/lib/constants";
 
 export function CollectionFilters() {
   const router = useRouter();
@@ -42,7 +28,7 @@ export function CollectionFilters() {
     <div className="sticky top-20 z-40 bg-white/90 backdrop-blur-md py-4 -mx-8 lg:-mx-12 px-8 lg:px-12 border-b border-black/5">
       <div className="flex flex-wrap items-center justify-between gap-6">
         <div className="flex items-center gap-2 overflow-x-auto">
-          {categories.map((cat) => (
+          {CATEGORIES.map((cat) => (
             <button
               key={cat.value}
               onClick={() => updateParams("category", cat.value)}
@@ -70,7 +56,7 @@ export function CollectionFilters() {
               <>
                 <div className="fixed inset-0 z-40" onClick={() => setSortOpen(false)} />
                 <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-black/10 z-50">
-                  {sortOptions.map((option) => (
+                  {SORT_OPTIONS.map((option) => (
                     <button
                       key={option.value}
                       onClick={() => {

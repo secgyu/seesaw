@@ -8,6 +8,7 @@ import { useCart } from "@/lib/cart-context";
 import { useWishlist } from "@/lib/wishlist-context";
 import { motion, AnimatePresence } from "framer-motion";
 import { SearchModal } from "./search-modal";
+import { NAV_LINKS, MOBILE_NAV_LINKS } from "@/lib/constants";
 
 export function Navigation() {
   const [scrolled, setScrolled] = useState(false);
@@ -42,30 +43,15 @@ export function Navigation() {
             </Link>
           </div>
           <div className="hidden md:flex items-center gap-12">
-            <Link
-              href="/collection"
-              className="text-[11px] font-light tracking-[0.2em] uppercase text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Collection
-            </Link>
-            <Link
-              href="/lookbook"
-              className="text-[11px] font-light tracking-[0.2em] uppercase text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Lookbook
-            </Link>
-            <Link
-              href="/about"
-              className="text-[11px] font-light tracking-[0.2em] uppercase text-muted-foreground hover:text-foreground transition-colors"
-            >
-              About
-            </Link>
-            <Link
-              href="/contact"
-              className="text-[11px] font-light tracking-[0.2em] uppercase text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Contact
-            </Link>
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-[11px] font-light tracking-[0.2em] uppercase text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
           <div className="flex items-center gap-4">
             <button onClick={() => setSearchOpen(true)} className="p-2 -m-2" aria-label="Open search">
@@ -108,14 +94,7 @@ export function Navigation() {
             </div>
             <nav className="px-8 py-12">
               <ul className="space-y-8">
-                {[
-                  { href: "/collection", label: "Collection" },
-                  { href: "/lookbook", label: "Lookbook" },
-                  { href: "/about", label: "About" },
-                  { href: "/contact", label: "Contact" },
-                  { href: "/faq", label: "FAQ" },
-                  { href: "/shipping", label: "Shipping & Returns" },
-                ].map((link) => (
+                {MOBILE_NAV_LINKS.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
