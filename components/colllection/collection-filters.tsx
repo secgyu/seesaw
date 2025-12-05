@@ -12,14 +12,6 @@ const categories = [
   { value: "accessories", label: "Accessories" },
 ];
 
-const colors = [
-  { value: "Black", hex: "#1a1a1a" },
-  { value: "White", hex: "#ffffff" },
-  { value: "Navy", hex: "#1a2a4a" },
-  { value: "Beige", hex: "#e8e0d5" },
-  { value: "Yellow", hex: "#f0e500" },
-];
-
 const sortOptions = [
   { value: "newest", label: "Newest" },
   { value: "price-asc", label: "Price: Low to High" },
@@ -34,7 +26,6 @@ export function CollectionFilters() {
   const [sortOpen, setSortOpen] = useState(false);
 
   const currentCategory = searchParams.get("category") || "all";
-  const currentColor = searchParams.get("color") || "";
   const currentSort = searchParams.get("sort") || "newest";
 
   const updateParams = (key: string, value: string) => {
@@ -66,19 +57,6 @@ export function CollectionFilters() {
           ))}
         </div>
         <div className="flex items-center gap-6">
-          <div className="hidden md:flex items-center gap-3">
-            {colors.map((color) => (
-              <button
-                key={color.value}
-                onClick={() => updateParams("color", currentColor === color.value ? "" : color.value)}
-                className={`w-6 h-6 border transition-all ${
-                  currentColor === color.value ? "ring-2 ring-black ring-offset-2" : "hover:scale-110"
-                }`}
-                style={{ backgroundColor: color.hex }}
-                aria-label={`Filter by ${color.value}`}
-              />
-            ))}
-          </div>
           <div className="relative">
             <button
               onClick={() => setSortOpen(!sortOpen)}

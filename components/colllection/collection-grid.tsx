@@ -11,7 +11,6 @@ export function CollectionGrid() {
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
 
   const category = searchParams.get("category") || "all";
-  const color = searchParams.get("color") || "";
   const sort = searchParams.get("sort") || "newest";
 
   const filteredProducts = useMemo(() => {
@@ -19,10 +18,6 @@ export function CollectionGrid() {
 
     if (category !== "all") {
       result = result.filter((p) => p.category === category);
-    }
-
-    if (color) {
-      result = result.filter((p) => p.colors.includes(color));
     }
 
     switch (sort) {
@@ -40,7 +35,7 @@ export function CollectionGrid() {
     }
 
     return result;
-  }, [category, color, sort]);
+  }, [category, sort]);
 
   const getCardSize = (index: number): "normal" | "large" => {
     const pattern = index % 8;
