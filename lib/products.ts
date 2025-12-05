@@ -1,10 +1,12 @@
+import { STANDARD_SIZES, BELT_SIZES, ONE_SIZE } from "./constants"
+
 export interface Product {
   id: string
   name: string
   price: number
   category: "outerwear" | "tops" | "bottoms" | "accessories"
   colors: string[]
-  sizes: string[]
+  sizes: readonly string[]
   images: string[]
   description: string
   details: string
@@ -18,7 +20,7 @@ export const products: Product[] = [
     price: 1890,
     category: "outerwear",
     colors: ["Black & White"],
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: STANDARD_SIZES,
     images: [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764726767/coat_main_qhsbaf.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764726766/coat_back_fa2slp.png",
@@ -35,7 +37,7 @@ export const products: Product[] = [
     price: 1450,
     category: "outerwear",
     colors: ["Black & White"],
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: STANDARD_SIZES,
     images: [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764724667/blazer-main_boiie3.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764724666/blazer-back_ehnpta.png",
@@ -52,7 +54,7 @@ export const products: Product[] = [
     price: 1650,
     category: "outerwear",
     colors: ["Beige & Black"],
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: STANDARD_SIZES,
     images: [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764727907/trench_main_amz1nz.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764727908/trench_back_fkrsbx.png",
@@ -69,7 +71,7 @@ export const products: Product[] = [
     price: 980,
     category: "tops",
     colors: ["Cream & Camel"],
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: STANDARD_SIZES,
     images: [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764730675/cardigan_main_jh5wdb.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764730673/cardigan_back_dvo7bs.png",
@@ -86,7 +88,7 @@ export const products: Product[] = [
     price: 680,
     category: "tops",
     colors: ["Black & Ivory"],
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: STANDARD_SIZES,
     images: [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764739616/blouse_main_x033uo.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764739613/blouse_back_hjzkzm.png",
@@ -103,7 +105,7 @@ export const products: Product[] = [
     price: 420,
     category: "tops",
     colors: ["Black & White"],
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: STANDARD_SIZES,
     images: [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764740167/shirt_main_ijcizr.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764740166/shirt_back_adp9qf.png",
@@ -120,7 +122,7 @@ export const products: Product[] = [
     price: 380,
     category: "tops",
     colors: ["Black & Charcoal"],
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: STANDARD_SIZES,
     images: [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764741152/Turtleneck_main_cfxscd.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764741148/Turtleneck_back_clw6hc.png",
@@ -137,7 +139,7 @@ export const products: Product[] = [
     price: 620,
     category: "bottoms",
     colors: ["Black & Beige"],
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: STANDARD_SIZES,
     images: [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764742009/Leg_Trousers_main_vy67nj.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764742008/Leg_Trousers_back_ntniq9.png",
@@ -154,7 +156,7 @@ export const products: Product[] = [
     price: 580,
     category: "bottoms",
     colors: ["Black & Cream"],
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: STANDARD_SIZES,
     images: [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764743511/Slim_Trousers_main_inpfuo.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764743513/Slim_Trousers_back_ejtn3z.png",
@@ -171,7 +173,7 @@ export const products: Product[] = [
     price: 520,
     category: "bottoms",
     colors: ["Black & Ivory"],
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: STANDARD_SIZES,
     images: [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764744434/Midi_Skirt_main_ep8ry2.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764744428/Midi_Skirt_back_ntyarm.png",
@@ -188,7 +190,7 @@ export const products: Product[] = [
     price: 890,
     category: "outerwear",
     colors: ["Black & Silver"],
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: STANDARD_SIZES,
     images: [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764745097/Bomber_Jacket_main_kkukzs.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764745099/Bomber_Jacket_back_y7rhai.png",
@@ -205,7 +207,7 @@ export const products: Product[] = [
     price: 540,
     category: "tops",
     colors: ["Cream & Black"],
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: STANDARD_SIZES,
     images: [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764745848/Knit_Sweater_main_rodnzn.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764745841/Knit_Sweater_back_lnratp.png",
@@ -222,7 +224,7 @@ export const products: Product[] = [
     price: 420,
     category: "tops",
     colors: ["Black & White"],
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: STANDARD_SIZES,
     images: [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764746552/Asymmetric_Top_main_uetufx.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764746558/Asymmetric_Top_back_z9mwc7.png",
@@ -239,7 +241,7 @@ export const products: Product[] = [
     price: 780,
     category: "outerwear",
     colors: ["Black & Beige"],
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: STANDARD_SIZES,
     images: [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764813915/Cropped_Jacket_main_otoqpu.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764813914/Cropped_Jacket_back_xxgnzm.png",
@@ -256,7 +258,7 @@ export const products: Product[] = [
     price: 480,
     category: "bottoms",
     colors: ["Black & Beige"],
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: STANDARD_SIZES,
     images: [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764814619/Drawstring_Trousers_main_gce4fa.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764814617/Drawstring_Trousers_back_p4gdfj.png",
@@ -273,7 +275,7 @@ export const products: Product[] = [
     price: 620,
     category: "tops",
     colors: ["Black & Beige"],
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: STANDARD_SIZES,
     images: [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764815162/Wool_Vest_main_uphse9.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764815163/Wool_Vest_back_l1wkcm.png",
@@ -290,7 +292,7 @@ export const products: Product[] = [
     price: 890,
     category: "tops",
     colors: ["Black & White"],
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: STANDARD_SIZES,
     images: [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764817907/Long_Sleeve_Dress_main_zigp9k.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764817906/Long_Sleeve_Dress_back_zkewvm.png",
@@ -307,7 +309,7 @@ export const products: Product[] = [
     price: 280,
     category: "accessories",
     colors: ["Black", "Tan"],
-    sizes: ["S", "M", "L"],
+    sizes: BELT_SIZES,
     images: [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764831338/Leather_Belt_main_xywynb.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764831335/Leather_Belt_back_h1ycbe.png",
@@ -324,7 +326,7 @@ export const products: Product[] = [
     price: 580,
     category: "accessories",
     colors: ["Cream & Charcoal"],
-    sizes: ["One Size"],
+    sizes: ONE_SIZE,
     images: [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764830701/Cashmere_Shawl_main_jbdhze.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764830707/Cashmere_Shawl_back_wxhhis.png",
@@ -341,7 +343,7 @@ export const products: Product[] = [
     price: 180,
     category: "tops",
     colors: ["Black & White"],
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: STANDARD_SIZES,
     images: [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764820943/Tank_Top_main_gzcs56.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764820885/Tank_Top_back_n5zayc.png",
@@ -358,7 +360,7 @@ export const products: Product[] = [
     price: 480,
     category: "bottoms",
     colors: ["Black & Beige"],
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: STANDARD_SIZES,
     images: [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764821631/Wrap_Skirt_main_p8a0v2.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764821629/Wrap_Skirt_back_evvu4v.png",
@@ -375,7 +377,7 @@ export const products: Product[] = [
     price: 720,
     category: "outerwear",
     colors: ["Ivory & Black"],
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: STANDARD_SIZES,
     images: [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764822535/Utility_Jacket_main_fehpjq.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764822534/Utility_Jacket_back_pnbbr8.png",
@@ -392,7 +394,7 @@ export const products: Product[] = [
     price: 320,
     category: "tops",
     colors: ["Champagne & Black"],
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: STANDARD_SIZES,
     images: [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764823152/Silk_Camisole_main_n7fbr3.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764823154/Silk_Camisole_back_yikts9.png",
@@ -409,7 +411,7 @@ export const products: Product[] = [
     price: 380,
     category: "bottoms",
     colors: ["Navy & Cream"],
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: STANDARD_SIZES,
     images: [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764828269/High-Waist_Shorts_main_elrpwa.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764828268/High-Waist_Shorts_back_cxfo4e.png",
@@ -426,7 +428,7 @@ export const products: Product[] = [
     price: 1750,
     category: "outerwear",
     colors: ["Camel & Ivory"],
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: STANDARD_SIZES,
     images: [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764829175/Collarless_Coat_main_e1zyoj.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764829174/Collarless_Coat_back_af6hly.png",
@@ -443,7 +445,7 @@ export const products: Product[] = [
     price: 980,
     category: "outerwear",
     colors: ["Black & Taupe"],
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: STANDARD_SIZES,
     images: [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764829693/Relaxed_Blazer_main_cxuyc3.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764829696/Relaxed_Blazer_back_gaih4r.png",
