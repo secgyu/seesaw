@@ -14,18 +14,6 @@ const sizeChartWomen = {
   ],
 };
 
-const sizeChartMen = {
-  headers: ["Size", "XS", "S", "M", "L", "XL"],
-  rows: [
-    ["US Size", "34", "36", "38-40", "42-44", "46"],
-    ["UK Size", "34", "36", "38-40", "42-44", "46"],
-    ["EU Size", "44", "46", "48-50", "52-54", "56"],
-    ["Chest (cm)", "86-90", "92-96", "100-104", "108-112", "116-120"],
-    ["Waist (cm)", "72-76", "78-82", "86-90", "94-98", "102-106"],
-    ["Hips (cm)", "88-92", "94-98", "102-106", "110-114", "118-122"],
-  ],
-};
-
 export default function SizeGuidePage() {
   return (
     <>
@@ -101,33 +89,9 @@ export default function SizeGuidePage() {
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse">
                   <thead>
-                    <tr>
-                      {sizeChartMen.headers.map((header, index) => (
-                        <th
-                          key={index}
-                          className="text-left text-sm font-light p-4 border-b border-black/10 bg-secondary/30"
-                        >
-                          {header}
-                        </th>
-                      ))}
-                    </tr>
+                    <tr></tr>
                   </thead>
-                  <tbody>
-                    {sizeChartMen.rows.map((row, rowIndex) => (
-                      <tr key={rowIndex}>
-                        {row.map((cell, cellIndex) => (
-                          <td
-                            key={cellIndex}
-                            className={`text-sm font-light p-4 border-b border-black/5 ${
-                              cellIndex === 0 ? "text-muted-foreground" : ""
-                            }`}
-                          >
-                            {cell}
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
+                  <tbody></tbody>
                 </table>
               </div>
             </section>

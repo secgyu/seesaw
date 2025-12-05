@@ -14,14 +14,6 @@ interface ProductInfoProps {
   product: Product;
 }
 
-const colorHexMap: Record<string, string> = {
-  Black: "#1a1a1a",
-  White: "#ffffff",
-  Navy: "#1a2a4a",
-  Beige: "#e8e0d5",
-  Yellow: "#f0e500",
-};
-
 export function ProductInfo({ product }: ProductInfoProps) {
   const { addItem } = useCart();
   const { showToast } = useToast();
@@ -94,7 +86,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
                   className={`w-8 h-8 border transition-all ${
                     selectedColor === color ? "ring-2 ring-black ring-offset-2" : "hover:scale-110"
                   }`}
-                  style={{ backgroundColor: colorHexMap[color] || color }}
+                  style={{ backgroundColor: color }}
                   aria-label={`Select ${color}`}
                 />
               ))}
