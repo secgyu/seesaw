@@ -4,6 +4,7 @@ export const CATEGORIES = [
   { value: "tops", label: "Tops" },
   { value: "bottoms", label: "Bottoms" },
   { value: "accessories", label: "Accessories" },
+  { value: "fragrance", label: "Fragrance" },
 ] as const;
 
 export type CategoryValue = (typeof CATEGORIES)[number]["value"];
@@ -20,6 +21,7 @@ export type SortValue = (typeof SORT_OPTIONS)[number]["value"];
 export const STANDARD_SIZES = ["XS", "S", "M", "L", "XL"] as const;
 export const BELT_SIZES = ["S", "M", "L"] as const;
 export const ONE_SIZE = ["One Size"] as const;
+export const FRAGRANCE_SIZES = ["30ml", "50ml", "100ml"] as const;
 
 export type StandardSize = (typeof STANDARD_SIZES)[number];
 export type BeltSize = (typeof BELT_SIZES)[number];
