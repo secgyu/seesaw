@@ -43,11 +43,11 @@ export function AboutPhilosophy() {
               className="flex items-center justify-center"
             >
               <blockquote className="text-4xl lg:text-5xl xl:text-6xl font-light tracking-[0.1em] leading-tight">
+                DIFFERENT
+                <br />
+                <span className="text-white/40">IS</span>
+                <br />
                 BALANCE
-                <br />
-                <span className="text-white/40">IN</span>
-                <br />
-                DUALITY
               </blockquote>
             </motion.div>
           </div>

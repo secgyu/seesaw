@@ -1,6 +1,25 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
+
+const processSteps = [
+  {
+    alt: "Material Selection",
+    src: "/images/about/selection.png",
+    description: "Sourcing the finest fabrics",
+  },
+  {
+    alt: "Design Development",
+    src: "/images/about/design.png",
+    description: "Crafting the vision",
+  },
+  {
+    alt: "Craftsmanship",
+    src: "/images/about/craft.png",
+    description: "Perfecting every detail",
+  },
+];
 
 export function AboutProcess() {
   return (
@@ -16,11 +35,7 @@ export function AboutProcess() {
           Process
         </motion.h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            { alt: "Material Selection", icon: "◇" },
-            { alt: "Design Development", icon: "△" },
-            { alt: "Craftsmanship", icon: "○" },
-          ].map((item, index) => (
+          {processSteps.map((item, index) => (
             <motion.div
               key={item.alt}
               initial={{ opacity: 0, y: 40 }}
@@ -28,10 +43,11 @@ export function AboutProcess() {
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: index * 0.15 }}
             >
-              <div className="relative aspect-[4/5] bg-muted overflow-hidden flex items-center justify-center">
-                <span className="text-6xl text-muted-foreground/30">{item.icon}</span>
+              <div className="relative aspect-[4/5] overflow-hidden">
+                <Image src={item.src} alt={item.alt} fill className="object-cover" />
               </div>
-              <p className="mt-4 text-sm font-light text-muted-foreground">{item.alt}</p>
+              <p className="mt-4 text-sm font-light">{item.alt}</p>
+              <p className="text-xs font-light text-muted-foreground">{item.description}</p>
             </motion.div>
           ))}
         </div>
