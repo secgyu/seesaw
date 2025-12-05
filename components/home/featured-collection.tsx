@@ -1,8 +1,8 @@
-import { getFeaturedProducts } from "@/lib/products";
+import { getLatestProducts } from "@/lib/products";
 import { ProductCard } from "@/components/product-card";
 
 export function FeaturedCollection() {
-  const products = getFeaturedProducts();
+  const products = getLatestProducts();
 
   return (
     <section className="py-24 lg:py-32 px-8 lg:px-12">

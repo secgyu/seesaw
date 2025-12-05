@@ -467,6 +467,10 @@ export function getProductsByCategory(category: string): Product[] {
   return products.filter((p) => p.category === category)
 }
 
+export function getLatestProducts(): Product[] {
+  return products.slice(-4).reverse()
+}
+
 export function getFeaturedProducts(): Product[] {
   return products.slice(0, 4)
 }
