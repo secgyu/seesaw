@@ -7,14 +7,16 @@ import { useCart } from "@/lib/cart-context";
 import { useWishlist } from "@/lib/wishlist-context";
 import { motion, AnimatePresence } from "framer-motion";
 import { SearchModal } from "./search-modal";
+import { createClient } from "@/lib/supabase/client";
 
 export function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [user, setUser] = useState<{ name: string } | null>(null);
+  const [user, setUser] = useState<{ email: string } | null>(null);
   const { toggleCart, totalItems } = useCart();
   const { totalItems: wishlistCount } = useWishlist();
+  const supabase = createClient();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,18 +27,30 @@ export function Navigation() {
   }, []);
 
   useEffect(() => {
-    const checkUser = () => {
-      const userData = localStorage.getItem("seesaw_user");
-      if (userData) {
-        setUser(JSON.parse(userData));
+    const checkUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user) {
+        setUser({ email: user.email || "" });
       } else {
         setUser(null);
       }
     };
     checkUser();
-    window.addEventListener("storage", checkUser);
-    return () => window.removeEventListener("storage", checkUser);
-  }, []);
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session?.user) {
+        setUser({ email: session.user.email || "" });
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [supabase.auth]);
 
   return (
     <>
