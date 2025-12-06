@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Search, ArrowRight } from "lucide-react";
 import Image from "next/image";
@@ -14,28 +14,25 @@ interface SearchModalProps {
 
 export function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<Product[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const results: Product[] = useMemo(() => {
+    if (query.length > 1) {
+      return products.filter(
+        (product) =>
+          product.name.toLowerCase().includes(query.toLowerCase()) ||
+          product.category.toLowerCase().includes(query.toLowerCase()) ||
+          product.colors.some((color) => color.toLowerCase().includes(query.toLowerCase()))
+      );
+    }
+    return [];
+  }, [query]);
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
       inputRef.current.focus();
     }
   }, [isOpen]);
-
-  useEffect(() => {
-    if (query.length > 1) {
-      const filtered = products.filter(
-        (product) =>
-          product.name.toLowerCase().includes(query.toLowerCase()) ||
-          product.category.toLowerCase().includes(query.toLowerCase()) ||
-          product.colors.some((color) => color.toLowerCase().includes(query.toLowerCase()))
-      );
-      setResults(filtered);
-    } else {
-      setResults([]);
-    }
-  }, [query]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -53,7 +50,6 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
   const handleClose = () => {
     setQuery("");
-    setResults([]);
     onClose();
   };
 

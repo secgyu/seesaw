@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 // Vercel 정적 생성 방지
 export const dynamic = "force-dynamic";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { User, Package, Heart, Settings, LogOut, ChevronRight, ArrowLeft } from "lucide-react";
@@ -254,11 +255,12 @@ export default function AccountPage() {
                           href={`/product/${product!.id}`}
                           className="group border border-border p-4 flex gap-4"
                         >
-                          <div className="w-24 h-32 bg-neutral-100 dark:bg-neutral-800 shrink-0">
-                            <img
+                          <div className="w-24 h-32 bg-neutral-100 dark:bg-neutral-800 shrink-0 relative">
+                            <Image
                               src={product!.images[0] || "/placeholder.svg"}
                               alt={product!.name}
-                              className="w-full h-full object-cover"
+                              fill
+                              className="object-cover"
                             />
                           </div>
                           <div>

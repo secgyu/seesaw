@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { createContext, useContext, useState, useCallback } from "react";
 import type { Product } from "./products";
 import { getProductById } from "./products";
 
@@ -14,17 +14,18 @@ const RecentlyViewedContext = createContext<RecentlyViewedContextType | undefine
 
 const MAX_RECENTLY_VIEWED = 8;
 
-export function RecentlyViewedProvider({ children }: { children: React.ReactNode }) {
-  const [recentlyViewed, setRecentlyViewed] = useState<Product[]>([]);
+function getInitialRecentlyViewed(): Product[] {
+  if (typeof window === "undefined") return [];
+  const stored = localStorage.getItem("seesaw-recently-viewed");
+  if (stored) {
+    const ids = JSON.parse(stored) as string[];
+    return ids.map((id) => getProductById(id)).filter((p): p is Product => p !== undefined);
+  }
+  return [];
+}
 
-  useEffect(() => {
-    const stored = localStorage.getItem("seesaw-recently-viewed");
-    if (stored) {
-      const ids = JSON.parse(stored) as string[];
-      const products = ids.map((id) => getProductById(id)).filter((p): p is Product => p !== undefined);
-      setRecentlyViewed(products);
-    }
-  }, []);
+export function RecentlyViewedProvider({ children }: { children: React.ReactNode }) {
+  const [recentlyViewed, setRecentlyViewed] = useState<Product[]>(getInitialRecentlyViewed);
 
   const addToRecentlyViewed = useCallback((productId: string) => {
     setRecentlyViewed((prev) => {

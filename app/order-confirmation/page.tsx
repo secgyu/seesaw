@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
@@ -8,12 +8,12 @@ import { CartSidebar } from "@/components/cart-sidebar";
 import { Check, Package, Mail, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 
-export default function OrderConfirmationPage() {
-  const [orderNumber, setOrderNumber] = useState("");
+function generateOrderNumber() {
+  return `SEE-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+}
 
-  useEffect(() => {
-    setOrderNumber(`SEE-${Math.random().toString(36).substring(2, 8).toUpperCase()}`);
-  }, []);
+export default function OrderConfirmationPage() {
+  const [orderNumber] = useState(generateOrderNumber);
 
   return (
     <>
