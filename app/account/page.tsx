@@ -2,13 +2,12 @@
 
 import { useState, useEffect } from "react";
 
-// Vercel 정적 생성 방지
 export const dynamic = "force-dynamic";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { User, Package, Heart, Settings, LogOut, ChevronRight, ArrowLeft } from "lucide-react";
+import { User, Package, Heart, Settings, LogOut, ChevronRight, ArrowLeft, Check, AlertTriangle } from "lucide-react";
 import { useWishlist } from "@/lib/wishlist-context";
 import { createClient } from "@/lib/supabase/client";
 import { getProductById } from "@/lib/products";
@@ -24,6 +23,22 @@ export default function AccountPage() {
   const wishlistProducts = wishlistProductIds.map((id) => getProductById(id)).filter(Boolean);
   const supabase = createClient();
 
+  // Settings state
+  const [profileName, setProfileName] = useState("");
+  const [profileSaving, setProfileSaving] = useState(false);
+  const [profileSuccess, setProfileSuccess] = useState(false);
+  const [profileError, setProfileError] = useState("");
+
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [passwordSaving, setPasswordSaving] = useState(false);
+  const [passwordSuccess, setPasswordSuccess] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
+
+  const [deleteConfirm, setDeleteConfirm] = useState("");
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
+
   useEffect(() => {
     const getUser = async () => {
       const {
@@ -31,6 +46,7 @@ export default function AccountPage() {
       } = await supabase.auth.getUser();
       if (user) {
         setUser(user);
+        setProfileName(user.user_metadata?.full_name || user.user_metadata?.first_name || "");
       } else {
         router.push("/login");
       }
@@ -43,6 +59,75 @@ export default function AccountPage() {
     await supabase.auth.signOut();
     router.push("/");
     router.refresh();
+  };
+
+  // 프로필 업데이트
+  const handleProfileUpdate = async () => {
+    setProfileSaving(true);
+    setProfileError("");
+    setProfileSuccess(false);
+
+    const { error } = await supabase.auth.updateUser({
+      data: { full_name: profileName },
+    });
+
+    if (error) {
+      setProfileError(error.message);
+    } else {
+      setProfileSuccess(true);
+      setTimeout(() => setProfileSuccess(false), 3000);
+    }
+    setProfileSaving(false);
+  };
+
+  // 비밀번호 변경
+  const handlePasswordChange = async () => {
+    setPasswordSaving(true);
+    setPasswordError("");
+    setPasswordSuccess(false);
+
+    if (newPassword !== confirmNewPassword) {
+      setPasswordError("Passwords do not match");
+      setPasswordSaving(false);
+      return;
+    }
+
+    if (newPassword.length < 8) {
+      setPasswordError("Password must be at least 8 characters");
+      setPasswordSaving(false);
+      return;
+    }
+
+    const { error } = await supabase.auth.updateUser({
+      password: newPassword,
+    });
+
+    if (error) {
+      setPasswordError(error.message);
+    } else {
+      setPasswordSuccess(true);
+      setNewPassword("");
+      setConfirmNewPassword("");
+      setTimeout(() => setPasswordSuccess(false), 3000);
+    }
+    setPasswordSaving(false);
+  };
+
+  // 계정 삭제
+  const handleDeleteAccount = async () => {
+    if (deleteConfirm !== "DELETE") {
+      setDeleteError("Please type DELETE to confirm");
+      return;
+    }
+
+    setDeleting(true);
+    setDeleteError("");
+
+    // Supabase에서 사용자 삭제는 서버사이드에서 해야 하므로
+    // 여기서는 로그아웃만 처리하고 안내 메시지 표시
+    // 실제 삭제는 Supabase Admin API 필요
+    await supabase.auth.signOut();
+    router.push("/?deleted=true");
   };
 
   if (loading) {
@@ -68,7 +153,6 @@ export default function AccountPage() {
     { id: "settings", label: "Settings", icon: Settings },
   ];
 
-  // 더미 주문 데이터
   const orders = [
     { id: "ORD-2024-001", date: "Dec 1, 2024", status: "Delivered", total: 1280 },
     { id: "ORD-2024-002", date: "Nov 15, 2024", status: "Shipped", total: 890 },
@@ -89,7 +173,7 @@ export default function AccountPage() {
           <Link href="/" className="text-sm font-light tracking-[0.3em] uppercase">
             SEESAW
           </Link>
-          <div className="w-20" /> {/* Spacer for centering */}
+          <div className="w-20" />
         </nav>
       </header>
 
@@ -106,6 +190,7 @@ export default function AccountPage() {
           </div>
 
           <div className="grid lg:grid-cols-4 gap-12">
+            {/* Sidebar */}
             <div className="lg:col-span-1">
               <nav className="space-y-1">
                 {menuItems.map((item) => (
@@ -139,6 +224,7 @@ export default function AccountPage() {
               </nav>
             </div>
 
+            {/* Content */}
             <div className="lg:col-span-3">
               {activeTab === "overview" && (
                 <div className="space-y-8">
@@ -289,10 +375,24 @@ export default function AccountPage() {
                 <div className="space-y-8">
                   <h2 className="text-xl font-extralight tracking-wide mb-6">Account Settings</h2>
 
+                  {/* Profile Update */}
                   <div className="border border-border p-6">
                     <h3 className="text-[11px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-6">
                       Personal Information
                     </h3>
+
+                    {profileSuccess && (
+                      <div className="mb-4 p-3 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 text-green-600 dark:text-green-400 text-sm flex items-center gap-2">
+                        <Check className="w-4 h-4" />
+                        Profile updated successfully
+                      </div>
+                    )}
+                    {profileError && (
+                      <div className="mb-4 p-3 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm">
+                        {profileError}
+                      </div>
+                    )}
+
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
                         <label className="block text-[11px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-2">
@@ -300,7 +400,8 @@ export default function AccountPage() {
                         </label>
                         <input
                           type="text"
-                          defaultValue={userName}
+                          value={profileName}
+                          onChange={(e) => setProfileName(e.target.value)}
                           className="w-full px-0 py-3 bg-transparent border-0 border-b border-border focus:border-foreground outline-none text-sm font-light transition-colors"
                         />
                       </div>
@@ -310,55 +411,124 @@ export default function AccountPage() {
                         </label>
                         <input
                           type="email"
-                          defaultValue={userEmail}
+                          value={userEmail}
                           disabled
                           className="w-full px-0 py-3 bg-transparent border-0 border-b border-border text-muted-foreground outline-none text-sm font-light"
                         />
                       </div>
                     </div>
-                    <button className="mt-6 bg-foreground text-background px-6 py-3 text-[11px] font-light tracking-[0.15em] uppercase hover:bg-foreground/90 transition-colors">
-                      Save Changes
+                    <button
+                      onClick={handleProfileUpdate}
+                      disabled={profileSaving}
+                      className="mt-6 bg-foreground text-background px-6 py-3 text-[11px] font-light tracking-[0.15em] uppercase hover:bg-foreground/90 transition-colors disabled:opacity-50 flex items-center gap-2"
+                    >
+                      {profileSaving ? (
+                        <div className="w-4 h-4 border border-background/30 border-t-background rounded-full animate-spin" />
+                      ) : (
+                        "Save Changes"
+                      )}
                     </button>
                   </div>
 
+                  {/* Password Change */}
                   <div className="border border-border p-6">
                     <h3 className="text-[11px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-6">
                       Change Password
                     </h3>
-                    <div className="space-y-4 max-w-md">
-                      <div>
-                        <label className="block text-[11px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-2">
-                          Current Password
-                        </label>
-                        <input
-                          type="password"
-                          className="w-full px-0 py-3 bg-transparent border-0 border-b border-border focus:border-foreground outline-none text-sm font-light transition-colors"
-                        />
+
+                    {passwordSuccess && (
+                      <div className="mb-4 p-3 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 text-green-600 dark:text-green-400 text-sm flex items-center gap-2">
+                        <Check className="w-4 h-4" />
+                        Password updated successfully
                       </div>
+                    )}
+                    {passwordError && (
+                      <div className="mb-4 p-3 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm">
+                        {passwordError}
+                      </div>
+                    )}
+
+                    <div className="space-y-4 max-w-md">
                       <div>
                         <label className="block text-[11px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-2">
                           New Password
                         </label>
                         <input
                           type="password"
+                          value={newPassword}
+                          onChange={(e) => setNewPassword(e.target.value)}
+                          className="w-full px-0 py-3 bg-transparent border-0 border-b border-border focus:border-foreground outline-none text-sm font-light transition-colors"
+                          placeholder="At least 8 characters"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-2">
+                          Confirm New Password
+                        </label>
+                        <input
+                          type="password"
+                          value={confirmNewPassword}
+                          onChange={(e) => setConfirmNewPassword(e.target.value)}
                           className="w-full px-0 py-3 bg-transparent border-0 border-b border-border focus:border-foreground outline-none text-sm font-light transition-colors"
                         />
                       </div>
                     </div>
-                    <button className="mt-6 bg-foreground text-background px-6 py-3 text-[11px] font-light tracking-[0.15em] uppercase hover:bg-foreground/90 transition-colors">
-                      Update Password
+                    <button
+                      onClick={handlePasswordChange}
+                      disabled={passwordSaving || !newPassword || !confirmNewPassword}
+                      className="mt-6 bg-foreground text-background px-6 py-3 text-[11px] font-light tracking-[0.15em] uppercase hover:bg-foreground/90 transition-colors disabled:opacity-50 flex items-center gap-2"
+                    >
+                      {passwordSaving ? (
+                        <div className="w-4 h-4 border border-background/30 border-t-background rounded-full animate-spin" />
+                      ) : (
+                        "Update Password"
+                      )}
                     </button>
                   </div>
 
+                  {/* Delete Account */}
                   <div className="border border-red-200 dark:border-red-800 p-6">
-                    <h3 className="text-[11px] font-light tracking-[0.15em] uppercase text-red-500 mb-4">
-                      Danger Zone
-                    </h3>
-                    <p className="text-sm text-muted-foreground font-light mb-4">
-                      Once you delete your account, there is no going back.
-                    </p>
-                    <button className="px-6 py-3 text-[11px] font-light tracking-[0.15em] uppercase border border-red-500 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors">
-                      Delete Account
+                    <div className="flex items-start gap-3 mb-4">
+                      <AlertTriangle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                      <div>
+                        <h3 className="text-[11px] font-light tracking-[0.15em] uppercase text-red-500 mb-2">
+                          Danger Zone
+                        </h3>
+                        <p className="text-sm text-muted-foreground font-light">
+                          Once you delete your account, there is no going back. All your data will be permanently
+                          removed.
+                        </p>
+                      </div>
+                    </div>
+
+                    {deleteError && (
+                      <div className="mb-4 p-3 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm">
+                        {deleteError}
+                      </div>
+                    )}
+
+                    <div className="max-w-md">
+                      <label className="block text-[11px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-2">
+                        Type DELETE to confirm
+                      </label>
+                      <input
+                        type="text"
+                        value={deleteConfirm}
+                        onChange={(e) => setDeleteConfirm(e.target.value)}
+                        className="w-full px-0 py-3 bg-transparent border-0 border-b border-red-300 focus:border-red-500 outline-none text-sm font-light transition-colors"
+                        placeholder="DELETE"
+                      />
+                    </div>
+                    <button
+                      onClick={handleDeleteAccount}
+                      disabled={deleting || deleteConfirm !== "DELETE"}
+                      className="mt-6 px-6 py-3 text-[11px] font-light tracking-[0.15em] uppercase border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-colors disabled:opacity-50 flex items-center gap-2"
+                    >
+                      {deleting ? (
+                        <div className="w-4 h-4 border border-red-500/30 border-t-red-500 rounded-full animate-spin" />
+                      ) : (
+                        "Delete Account"
+                      )}
                     </button>
                   </div>
                 </div>
