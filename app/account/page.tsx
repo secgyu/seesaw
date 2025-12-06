@@ -1,6 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
+
+// Vercel 정적 생성 방지
+export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
