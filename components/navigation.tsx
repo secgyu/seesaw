@@ -10,21 +10,12 @@ import { SearchModal } from "./search-modal";
 import { createClient } from "@/lib/supabase/client";
 
 export function Navigation() {
-  const [scrolled, setScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [user, setUser] = useState<{ email: string } | null>(null);
   const { toggleCart, totalItems } = useCart();
   const { totalItems: wishlistCount } = useWishlist();
   const supabase = createClient();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -58,9 +49,7 @@ export function Navigation() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled ? "bg-background/90 backdrop-blur-md border-b border-border" : "bg-transparent"
-        }`}
+        className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border"
       >
         <nav className="flex items-center justify-between px-8 py-6 lg:px-12">
           <div className="flex items-center gap-4">
