@@ -23,7 +23,6 @@ export default function AccountPage() {
   const wishlistProducts = wishlistProductIds.map((id) => getProductById(id)).filter(Boolean);
   const supabase = createClient();
 
-  // Settings state
   const [profileName, setProfileName] = useState("");
   const [profileSaving, setProfileSaving] = useState(false);
   const [profileSuccess, setProfileSuccess] = useState(false);
@@ -61,7 +60,6 @@ export default function AccountPage() {
     router.refresh();
   };
 
-  // 프로필 업데이트
   const handleProfileUpdate = async () => {
     setProfileSaving(true);
     setProfileError("");
@@ -80,7 +78,6 @@ export default function AccountPage() {
     setProfileSaving(false);
   };
 
-  // 비밀번호 변경
   const handlePasswordChange = async () => {
     setPasswordSaving(true);
     setPasswordError("");
@@ -113,7 +110,6 @@ export default function AccountPage() {
     setPasswordSaving(false);
   };
 
-  // 계정 삭제
   const handleDeleteAccount = async () => {
     if (deleteConfirm !== "DELETE") {
       setDeleteError("Please type DELETE to confirm");
@@ -123,11 +119,24 @@ export default function AccountPage() {
     setDeleting(true);
     setDeleteError("");
 
-    // Supabase에서 사용자 삭제는 서버사이드에서 해야 하므로
-    // 여기서는 로그아웃만 처리하고 안내 메시지 표시
-    // 실제 삭제는 Supabase Admin API 필요
-    await supabase.auth.signOut();
-    router.push("/?deleted=true");
+    try {
+      const res = await fetch("/api/account/delete", {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setDeleteError(data.error || "Failed to delete account");
+        setDeleting(false);
+        return;
+      }
+
+      router.push("/?deleted=true");
+    } catch {
+      setDeleteError("An error occurred. Please try again.");
+      setDeleting(false);
+    }
   };
 
   if (loading) {
@@ -160,7 +169,6 @@ export default function AccountPage() {
 
   return (
     <main className="min-h-screen">
-      {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border">
         <nav className="flex items-center justify-between px-8 py-6 lg:px-12">
           <Link
@@ -190,7 +198,6 @@ export default function AccountPage() {
           </div>
 
           <div className="grid lg:grid-cols-4 gap-12">
-            {/* Sidebar */}
             <div className="lg:col-span-1">
               <nav className="space-y-1">
                 {menuItems.map((item) => (
@@ -224,7 +231,6 @@ export default function AccountPage() {
               </nav>
             </div>
 
-            {/* Content */}
             <div className="lg:col-span-3">
               {activeTab === "overview" && (
                 <div className="space-y-8">
@@ -375,7 +381,6 @@ export default function AccountPage() {
                 <div className="space-y-8">
                   <h2 className="text-xl font-extralight tracking-wide mb-6">Account Settings</h2>
 
-                  {/* Profile Update */}
                   <div className="border border-border p-6">
                     <h3 className="text-[11px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-6">
                       Personal Information
@@ -430,7 +435,6 @@ export default function AccountPage() {
                     </button>
                   </div>
 
-                  {/* Password Change */}
                   <div className="border border-border p-6">
                     <h3 className="text-[11px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-6">
                       Change Password
@@ -486,7 +490,6 @@ export default function AccountPage() {
                     </button>
                   </div>
 
-                  {/* Delete Account */}
                   <div className="border border-red-200 dark:border-red-800 p-6">
                     <div className="flex items-start gap-3 mb-4">
                       <AlertTriangle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
