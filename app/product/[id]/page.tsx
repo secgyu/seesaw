@@ -7,7 +7,7 @@ import { ProductInfo } from "@/components/product/product-info";
 import { RecentlyViewed } from "@/components/recently-viewed";
 import { Breadcrumb } from "@/components/breadcrumb";
 import { PromoBanner } from "@/components/promo-banner";
-import { getProductById, products } from "@/lib/products";
+import { getProductById, products } from "@/data/products";
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;

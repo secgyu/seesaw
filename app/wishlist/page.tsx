@@ -7,8 +7,8 @@ import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { CartSidebar } from "@/components/cart-sidebar";
 import { ProductCard } from "@/components/product-card";
-import { useWishlist } from "@/lib/wishlist-context";
-import { products } from "@/lib/products";
+import { useWishlist } from "@/contexts/wishlist-context";
+import { products } from "@/data/products";
 
 export default function WishlistPage() {
   const { state } = useWishlist();

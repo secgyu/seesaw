@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useReducer, useEffect, useState, type ReactNode } from "react";
 import { createClient } from "@/lib/supabase/client";
-import type { WishlistState, WishlistAction } from "./types";
+import type { WishlistState, WishlistAction } from "@/types";
 
 const WishlistContext = createContext<{
   state: WishlistState;

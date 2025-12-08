@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { COUNTRIES } from "@/lib/constants";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
-import type { CheckoutFormData } from "@/lib/types";
+import type { CheckoutFormData } from "@/types";
 
 interface InformationStepProps {
   formData: CheckoutFormData;

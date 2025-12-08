@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import Image from "next/image";
-import type { CartItem } from "@/lib/cart-context";
+import type { CartItem } from "@/contexts/cart-context";
 
 interface OrderSummaryProps {
   items: CartItem[];

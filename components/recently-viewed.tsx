@@ -1,6 +1,6 @@
 "use client";
 
-import { useRecentlyViewed } from "@/lib/recently-viewed-context";
+import { useRecentlyViewed } from "@/contexts/recently-viewed-context";
 import { ProductCard } from "./product-card";
 import { motion } from "framer-motion";
 

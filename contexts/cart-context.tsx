@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useReducer, useEffect, useState, type ReactNode } from "react";
 import { createClient } from "@/lib/supabase/client";
-import type { CartItem, CartState, CartAction } from "./types";
+import type { CartItem, CartState, CartAction } from "@/types";
 
 export type { CartItem };
 

@@ -6,10 +6,10 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Heart, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useCart } from "@/lib/cart-context";
-import { useWishlist } from "@/lib/wishlist-context";
-import { useToast } from "@/lib/toast-context";
-import type { Product } from "@/lib/products";
+import { useCart } from "@/contexts/cart-context";
+import { useWishlist } from "@/contexts/wishlist-context";
+import { useToast } from "@/contexts/toast-context";
+import type { Product } from "@/data/products";
 
 interface QuickViewModalProps {
   product: Product | null;

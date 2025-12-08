@@ -8,9 +8,9 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { User, Package, Heart, Settings, LogOut, ChevronRight, ArrowLeft, Check, AlertTriangle } from "lucide-react";
-import { useWishlist } from "@/lib/wishlist-context";
+import { useWishlist } from "@/contexts/wishlist-context";
 import { createClient } from "@/lib/supabase/client";
-import { getProductById } from "@/lib/products";
+import { getProductById } from "@/data/products";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 
 export default function AccountPage() {

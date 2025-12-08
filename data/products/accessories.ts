@@ -1,4 +1,4 @@
-import { BELT_SIZES, ONE_SIZE } from "../constants"
+import { BELT_SIZES, ONE_SIZE } from "@/lib/constants"
 import type { Product } from "./types"
 
 export const accessoriesProducts: Product[] = [

@@ -1,3 +1,4 @@
+// Cart types
 export interface CartItem {
   id: string;
   name: string;
@@ -22,6 +23,7 @@ export type CartAction =
   | { type: "LOAD_CART"; payload: CartItem[] }
   | { type: "CLEAR_CART" };
 
+// Wishlist types
 export interface WishlistState {
   items: string[];
 }
@@ -31,6 +33,7 @@ export type WishlistAction =
   | { type: "REMOVE_ITEM"; payload: string }
   | { type: "LOAD_WISHLIST"; payload: string[] };
 
+// Checkout types
 export interface CheckoutFormData {
   email: string;
   firstName: string;

@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
-import { products, type Product } from "@/lib/products";
+import { products, type Product } from "@/data/products";
 import { ProductCard } from "@/components/product-card";
 import { QuickViewModal } from "@/components/quick-view-modal";
 

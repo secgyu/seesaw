@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Search, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { products, type Product } from "@/lib/products";
+import { products, type Product } from "@/data/products";
 
 interface SearchModalProps {
   isOpen: boolean;

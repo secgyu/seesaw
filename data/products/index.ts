@@ -1,11 +1,11 @@
-import { outerwearProducts } from "./outerwear"
-import { topsProducts } from "./tops"
-import { bottomsProducts } from "./bottoms"
-import { accessoriesProducts } from "./accessories"
-import { fragranceProducts } from "./fragrance"
-import type { Product } from "./types"
+import { outerwearProducts } from "./outerwear";
+import { topsProducts } from "./tops";
+import { bottomsProducts } from "./bottoms";
+import { accessoriesProducts } from "./accessories";
+import { fragranceProducts } from "./fragrance";
+import type { Product } from "./types";
 
-export type { Product, ModelInfo, ProductCategory } from "./types"
+export type { Product, ModelInfo, ProductCategory } from "./types";
 
 export const products: Product[] = [
   ...outerwearProducts,

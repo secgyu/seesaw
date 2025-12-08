@@ -5,9 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Heart, Eye } from "lucide-react";
-import { useWishlist } from "@/lib/wishlist-context";
-import { useToast } from "@/lib/toast-context";
-import type { Product } from "@/lib/products";
+import { useWishlist } from "@/contexts/wishlist-context";
+import { useToast } from "@/contexts/toast-context";
+import type { Product } from "@/data/products";
 
 interface ProductCardProps {
   product: Product;

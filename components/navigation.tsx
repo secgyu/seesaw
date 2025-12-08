@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ShoppingBag, Search, Heart, Menu, X, User } from "lucide-react";
-import { useCart } from "@/lib/cart-context";
-import { useWishlist } from "@/lib/wishlist-context";
+import { useCart } from "@/contexts/cart-context";
+import { useWishlist } from "@/contexts/wishlist-context";
 import { motion, AnimatePresence } from "framer-motion";
 import { SearchModal } from "./search-modal";
 import { createClient } from "@/lib/supabase/client";

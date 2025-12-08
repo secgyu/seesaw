@@ -1,6 +1,6 @@
 "use client";
 
-import { useCart } from "@/lib/cart-context";
+import { useCart } from "@/contexts/cart-context";
 import { X, Minus, Plus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";

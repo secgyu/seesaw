@@ -1,4 +1,4 @@
-import { STANDARD_SIZES } from "../constants"
+import { STANDARD_SIZES } from "@/lib/constants"
 import type { Product } from "./types"
 
 export const bottomsProducts: Product[] = [

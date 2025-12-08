@@ -3,11 +3,11 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Minus, Plus, ChevronDown } from "lucide-react";
-import { useCart } from "@/lib/cart-context";
-import { useToast } from "@/lib/toast-context";
-import { useRecentlyViewed } from "@/lib/recently-viewed-context";
+import { useCart } from "@/contexts/cart-context";
+import { useToast } from "@/contexts/toast-context";
+import { useRecentlyViewed } from "@/contexts/recently-viewed-context";
 import { ShareButtons } from "@/components/share-buttons";
-import type { Product } from "@/lib/products";
+import type { Product } from "@/data/products";
 import { motion, AnimatePresence } from "framer-motion";
 import { SIZE_GUIDE } from "@/lib/constants";
 

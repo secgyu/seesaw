@@ -2,8 +2,8 @@
 
 import type React from "react";
 import { createContext, useContext, useState, useCallback } from "react";
-import type { Product } from "./products";
-import { getProductById } from "./products";
+import type { Product } from "@/data/products";
+import { getProductById } from "@/data/products";
 
 interface RecentlyViewedContextType {
   recentlyViewed: Product[];

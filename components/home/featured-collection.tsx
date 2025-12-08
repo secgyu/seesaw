@@ -1,4 +1,4 @@
-import { getLatestProducts } from "@/lib/products";
+import { getLatestProducts } from "@/data/products";
 import { ProductCard } from "@/components/product-card";
 
 export function FeaturedCollection() {
