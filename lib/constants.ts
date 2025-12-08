@@ -98,3 +98,41 @@ export const BRAND = {
   fitEmail: "fit@seesaw.com",
   copyright: `© ${new Date().getFullYear()} SEESAW. All rights reserved.`,
 } as const;
+
+// Checkout constants
+export const COUNTRIES = [
+  { value: "US", label: "United States" },
+  { value: "CA", label: "Canada" },
+  { value: "GB", label: "United Kingdom" },
+  { value: "FR", label: "France" },
+  { value: "DE", label: "Germany" },
+  { value: "JP", label: "Japan" },
+  { value: "KR", label: "South Korea" },
+  { value: "AU", label: "Australia" },
+  { value: "IT", label: "Italy" },
+  { value: "ES", label: "Spain" },
+] as const;
+
+export const SHIPPING_OPTIONS = [
+  {
+    value: "standard",
+    label: "Standard Shipping",
+    description: "5-7 business days",
+    price: 0,
+  },
+  {
+    value: "express",
+    label: "Express Shipping",
+    description: "2-3 business days",
+    price: 25,
+  },
+] as const;
+
+export type ShippingMethod = (typeof SHIPPING_OPTIONS)[number]["value"];
+
+// localStorage keys
+export const STORAGE_KEYS = {
+  cart: "seesaw-cart",
+  wishlist: "seesaw-wishlist",
+  recentlyViewed: "seesaw-recently-viewed",
+} as const;

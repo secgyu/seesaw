@@ -2,8 +2,8 @@ import { Suspense } from "react";
 import { Navigation } from "@/components/navigation";
 import { CartSidebar } from "@/components/cart-sidebar";
 import { Footer } from "@/components/footer";
-import { CollectionFilters } from "@/components/colllection/collection-filters";
-import { CollectionGrid } from "@/components/colllection/collection-grid";
+import { CollectionFilters } from "@/components/collection/collection-filters";
+import { CollectionGrid } from "@/components/collection/collection-grid";
 
 export const metadata = {
   title: "Collection | SEESAW",
