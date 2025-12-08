@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
@@ -34,7 +34,7 @@ const initialFormData: CheckoutFormData = {
   cardName: "",
 };
 
-export default function CheckoutPage() {
+function CheckoutContent() {
   const searchParams = useSearchParams();
   const canceled = searchParams.get("canceled");
   const { state, subtotal } = useCart();
@@ -90,106 +90,113 @@ export default function CheckoutPage() {
 
   if (state.items.length === 0) {
     return (
-      <>
-        <Navigation />
-        <CartSidebar />
-        <main className="min-h-screen pt-24 pb-20 flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="text-2xl font-light mb-4">Your cart is empty</h1>
-            <Link
-              href="/collection"
-              className="inline-flex items-center gap-2 text-sm font-light underline underline-offset-4"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Continue Shopping
-            </Link>
-          </div>
-        </main>
-        <Footer />
-      </>
+      <main className="min-h-screen pt-24 pb-20 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-light mb-4">Your cart is empty</h1>
+          <Link
+            href="/collection"
+            className="inline-flex items-center gap-2 text-sm font-light underline underline-offset-4"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Continue Shopping
+          </Link>
+        </div>
+      </main>
     );
   }
 
   return (
+    <main className="min-h-screen pt-24 pb-20">
+      <div className="max-w-7xl mx-auto px-8 lg:px-12">
+        {canceled && (
+          <div className="mb-8 p-4 bg-yellow-50 border border-yellow-200 text-yellow-800 text-sm">
+            Payment was canceled. You can try again when you&apos;re ready.
+          </div>
+        )}
+
+        {error && <div className="mb-8 p-4 bg-red-50 border border-red-200 text-red-800 text-sm">{error}</div>}
+
+        <div className="grid lg:grid-cols-2 gap-16">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}>
+            <CheckoutSteps currentStep={currentStep} />
+
+            <div>
+              {currentStep === "information" && <InformationStep formData={formData} onChange={handleInputChange} />}
+
+              {currentStep === "shipping" && (
+                <ShippingStep shippingMethod={formData.shippingMethod} onChange={handleInputChange} />
+              )}
+
+              <div className="flex items-center justify-between mt-10 pt-6 border-t border-black/10">
+                {currentStep !== "information" ? (
+                  <button
+                    type="button"
+                    onClick={handleBack}
+                    className="flex items-center gap-2 text-sm font-light text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                    Back
+                  </button>
+                ) : (
+                  <Link
+                    href="/collection"
+                    className="flex items-center gap-2 text-sm font-light text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                    Return to Shop
+                  </Link>
+                )}
+
+                {currentStep === "shipping" ? (
+                  <button
+                    type="button"
+                    onClick={handleCheckout}
+                    disabled={isLoading}
+                    className="px-8 py-4 bg-black text-white text-[11px] font-light tracking-[0.2em] uppercase hover:bg-black/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Processing...
+                      </>
+                    ) : (
+                      "Proceed to Payment"
+                    )}
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={handleContinue}
+                    className="px-8 py-4 bg-black text-white text-[11px] font-light tracking-[0.2em] uppercase hover:bg-black/90 transition-colors"
+                  >
+                    Continue
+                  </button>
+                )}
+              </div>
+            </div>
+          </motion.div>
+
+          <OrderSummary items={state.items} subtotal={subtotal} shippingCost={shippingCost} />
+        </div>
+      </div>
+    </main>
+  );
+}
+
+export default function CheckoutPage() {
+  return (
     <>
       <Navigation />
       <CartSidebar />
-
-      <main className="min-h-screen pt-24 pb-20">
-        <div className="max-w-7xl mx-auto px-8 lg:px-12">
-          {canceled && (
-            <div className="mb-8 p-4 bg-yellow-50 border border-yellow-200 text-yellow-800 text-sm">
-              Payment was canceled. You can try again when you&apos;re ready.
-            </div>
-          )}
-
-          {error && <div className="mb-8 p-4 bg-red-50 border border-red-200 text-red-800 text-sm">{error}</div>}
-
-          <div className="grid lg:grid-cols-2 gap-16">
-            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}>
-              <CheckoutSteps currentStep={currentStep} />
-
-              <div>
-                {currentStep === "information" && <InformationStep formData={formData} onChange={handleInputChange} />}
-
-                {currentStep === "shipping" && (
-                  <ShippingStep shippingMethod={formData.shippingMethod} onChange={handleInputChange} />
-                )}
-
-                <div className="flex items-center justify-between mt-10 pt-6 border-t border-black/10">
-                  {currentStep !== "information" ? (
-                    <button
-                      type="button"
-                      onClick={handleBack}
-                      className="flex items-center gap-2 text-sm font-light text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      <ArrowLeft className="w-4 h-4" />
-                      Back
-                    </button>
-                  ) : (
-                    <Link
-                      href="/collection"
-                      className="flex items-center gap-2 text-sm font-light text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      <ArrowLeft className="w-4 h-4" />
-                      Return to Shop
-                    </Link>
-                  )}
-
-                  {currentStep === "shipping" ? (
-                    <button
-                      type="button"
-                      onClick={handleCheckout}
-                      disabled={isLoading}
-                      className="px-8 py-4 bg-black text-white text-[11px] font-light tracking-[0.2em] uppercase hover:bg-black/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-                    >
-                      {isLoading ? (
-                        <>
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                          Processing...
-                        </>
-                      ) : (
-                        "Proceed to Payment"
-                      )}
-                    </button>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={handleContinue}
-                      className="px-8 py-4 bg-black text-white text-[11px] font-light tracking-[0.2em] uppercase hover:bg-black/90 transition-colors"
-                    >
-                      Continue
-                    </button>
-                  )}
-                </div>
-              </div>
-            </motion.div>
-
-            <OrderSummary items={state.items} subtotal={subtotal} shippingCost={shippingCost} />
-          </div>
-        </div>
-      </main>
-
+      <Suspense
+        fallback={
+          <main className="min-h-screen pt-24 pb-20 flex items-center justify-center">
+            <Loader2 className="w-8 h-8 animate-spin" />
+          </main>
+        }
+      >
+        <CheckoutContent />
+      </Suspense>
       <Footer />
     </>
   );
