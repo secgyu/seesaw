@@ -1,14 +1,7 @@
 "use client";
+
 import { createContext, useContext, useReducer, useEffect, type ReactNode } from "react";
-
-interface WishlistState {
-  items: string[];
-}
-
-type WishlistAction =
-  | { type: "ADD_ITEM"; payload: string }
-  | { type: "REMOVE_ITEM"; payload: string }
-  | { type: "LOAD_WISHLIST"; payload: string[] };
+import type { WishlistState, WishlistAction } from "./types";
 
 const WishlistContext = createContext<{
   state: WishlistState;

@@ -128,9 +128,3 @@ export const SHIPPING_OPTIONS = [
 ] as const;
 
 export type ShippingMethod = (typeof SHIPPING_OPTIONS)[number]["value"];
-
-export const STORAGE_KEYS = {
-  cart: "seesaw-cart",
-  wishlist: "seesaw-wishlist",
-  recentlyViewed: "seesaw-recently-viewed",
-} as const;

@@ -1,29 +1,9 @@
 "use client";
 
 import { createContext, useContext, useReducer, useEffect, type ReactNode } from "react";
+import type { CartItem, CartState, CartAction } from "./types";
 
-export interface CartItem {
-  id: string;
-  name: string;
-  price: number;
-  size: string;
-  color: string;
-  quantity: number;
-  image: string;
-}
-
-interface CartState {
-  items: CartItem[];
-  isOpen: boolean;
-}
-
-type CartAction =
-  | { type: "ADD_ITEM"; payload: CartItem }
-  | { type: "REMOVE_ITEM"; payload: { id: string; size: string; color: string } }
-  | { type: "UPDATE_QUANTITY"; payload: { id: string; size: string; color: string; quantity: number } }
-  | { type: "TOGGLE_CART" }
-  | { type: "CLOSE_CART" }
-  | { type: "LOAD_CART"; payload: CartItem[] };
+export type { CartItem };
 
 const CartContext = createContext<{
   state: CartState;
@@ -33,6 +13,7 @@ const CartContext = createContext<{
   updateQuantity: (id: string, size: string, color: string, quantity: number) => void;
   toggleCart: () => void;
   closeCart: () => void;
+  clearCart: () => void;
   totalItems: number;
   subtotal: number;
 } | null>(null);
@@ -73,6 +54,8 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       return { ...state, isOpen: false };
     case "LOAD_CART":
       return { ...state, items: action.payload };
+    case "CLEAR_CART":
+      return { ...state, items: [] };
     default:
       return state;
   }
@@ -99,6 +82,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "UPDATE_QUANTITY", payload: { id, size, color, quantity } });
   const toggleCart = () => dispatch({ type: "TOGGLE_CART" });
   const closeCart = () => dispatch({ type: "CLOSE_CART" });
+  const clearCart = () => dispatch({ type: "CLEAR_CART" });
 
   const totalItems = state.items.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = state.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -113,6 +97,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         updateQuantity,
         toggleCart,
         closeCart,
+        clearCart,
         totalItems,
         subtotal,
       }}

@@ -2,15 +2,13 @@
 
 import { motion } from "framer-motion";
 import { Lock } from "lucide-react";
-import type { CheckoutFormData } from "./information-step";
+import { Input } from "@/components/ui/input";
+import type { CheckoutFormData } from "@/lib/types";
 
 interface PaymentStepProps {
   formData: CheckoutFormData;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
-
-const inputClassName =
-  "w-full px-4 py-3 border border-black/20 font-light focus:outline-none focus:border-black transition-colors";
 
 export function PaymentStep({ formData, onChange }: PaymentStepProps) {
   return (
@@ -19,43 +17,32 @@ export function PaymentStep({ formData, onChange }: PaymentStepProps) {
         <h2 className="text-xl font-light">Payment</h2>
         <Lock className="w-4 h-4 text-muted-foreground" />
       </div>
-      <input
+      <Input
         type="text"
         name="cardNumber"
         value={formData.cardNumber}
         onChange={onChange}
         placeholder="Card Number"
         required
-        className={inputClassName}
       />
-      <input
+      <Input
         type="text"
         name="cardName"
         value={formData.cardName}
         onChange={onChange}
         placeholder="Name on Card"
         required
-        className={inputClassName}
       />
       <div className="grid grid-cols-2 gap-4">
-        <input
+        <Input
           type="text"
           name="cardExpiry"
           value={formData.cardExpiry}
           onChange={onChange}
           placeholder="MM/YY"
           required
-          className={inputClassName}
         />
-        <input
-          type="text"
-          name="cardCvc"
-          value={formData.cardCvc}
-          onChange={onChange}
-          placeholder="CVC"
-          required
-          className={inputClassName}
-        />
+        <Input type="text" name="cardCvc" value={formData.cardCvc} onChange={onChange} placeholder="CVC" required />
       </div>
     </motion.div>
   );
