@@ -28,7 +28,6 @@ export default function OrderConfirmationPage() {
       }
 
       try {
-        // 결제 확인 및 주문 저장
         const response = await fetch("/api/order/confirm", {
           method: "POST",
           headers: { "Content-Type": "application/json" },

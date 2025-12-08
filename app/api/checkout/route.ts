@@ -11,13 +11,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "No items in cart" }, { status: 400 });
     }
 
-    // 현재 로그인된 사용자 확인
     const supabase = await createClient();
     const {
       data: { user },
     } = await supabase.auth.getUser();
 
-    // Stripe line items 생성
     const lineItems = items.map((item: CartItem) => ({
       price_data: {
         currency: "usd",
@@ -26,12 +24,11 @@ export async function POST(request: Request) {
           description: `Size: ${item.size} / Color: ${item.color}`,
           images: item.image ? [item.image] : [],
         },
-        unit_amount: item.price * 100, // Stripe는 센트 단위
+        unit_amount: item.price * 100,
       },
       quantity: item.quantity,
     }));
 
-    // 배송비 추가 (있으면)
     if (shippingCost > 0) {
       lineItems.push({
         price_data: {
@@ -47,10 +44,8 @@ export async function POST(request: Request) {
       });
     }
 
-    // 주문 번호 생성
     const orderNumber = `SEESAW-${Date.now()}-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
 
-    // Checkout Session 생성
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: lineItems,
@@ -84,8 +79,7 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json({ sessionId: session.id, url: session.url });
-  } catch (error) {
-    console.error("Stripe checkout error:", error);
+  } catch {
     return NextResponse.json({ error: "Failed to create checkout session" }, { status: 500 });
   }
 }

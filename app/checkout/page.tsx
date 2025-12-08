@@ -79,7 +79,6 @@ export default function CheckoutPage() {
         throw new Error(data.error || "Failed to create checkout session");
       }
 
-      // Stripe Checkout 페이지로 리다이렉트
       if (data.url) {
         window.location.href = data.url;
       }
@@ -124,9 +123,7 @@ export default function CheckoutPage() {
             </div>
           )}
 
-          {error && (
-            <div className="mb-8 p-4 bg-red-50 border border-red-200 text-red-800 text-sm">{error}</div>
-          )}
+          {error && <div className="mb-8 p-4 bg-red-50 border border-red-200 text-red-800 text-sm">{error}</div>}
 
           <div className="grid lg:grid-cols-2 gap-16">
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}>
