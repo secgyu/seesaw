@@ -1,13 +1,13 @@
 "use client";
 
-import { createContext, useContext, useReducer, useEffect, type ReactNode } from "react";
+import { createContext, useContext, useReducer, useEffect, useState, type ReactNode } from "react";
+import { createClient } from "@/lib/supabase/client";
 import type { CartItem, CartState, CartAction } from "./types";
 
 export type { CartItem };
 
 const CartContext = createContext<{
   state: CartState;
-  dispatch: React.Dispatch<CartAction>;
   addItem: (item: CartItem) => void;
   removeItem: (id: string, size: string, color: string) => void;
   updateQuantity: (id: string, size: string, color: string, quantity: number) => void;
@@ -16,6 +16,7 @@ const CartContext = createContext<{
   clearCart: () => void;
   totalItems: number;
   subtotal: number;
+  isLoading: boolean;
 } | null>(null);
 
 function cartReducer(state: CartState, action: CartAction): CartState {
@@ -63,26 +64,173 @@ function cartReducer(state: CartState, action: CartAction): CartState {
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, { items: [], isOpen: false });
+  const [userId, setUserId] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const supabase = createClient();
 
+  // 유저 상태 감지
   useEffect(() => {
-    const saved = localStorage.getItem("seesaw-cart");
-    if (saved) {
-      dispatch({ type: "LOAD_CART", payload: JSON.parse(saved) });
+    const getUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      setUserId(user?.id || null);
+    };
+    getUser();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUserId(session?.user?.id || null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [supabase.auth]);
+
+  // 장바구니 로드
+  useEffect(() => {
+    const loadCart = async () => {
+      setIsLoading(true);
+
+      if (userId) {
+        // 로그인 상태: DB에서 로드
+        const { data } = await supabase.from("carts").select("*").eq("user_id", userId);
+
+        if (data && data.length > 0) {
+          const items: CartItem[] = data.map((item) => ({
+            id: item.product_id,
+            name: item.name,
+            price: item.price,
+            size: item.size,
+            color: item.color,
+            quantity: item.quantity,
+            image: item.image || "",
+          }));
+          dispatch({ type: "LOAD_CART", payload: items });
+        }
+
+        // localStorage에 있던 아이템 DB로 병합
+        const localCart = localStorage.getItem("seesaw-cart");
+        if (localCart) {
+          const localItems: CartItem[] = JSON.parse(localCart);
+          for (const item of localItems) {
+            await supabase.from("carts").upsert(
+              {
+                user_id: userId,
+                product_id: item.id,
+                name: item.name,
+                price: item.price,
+                size: item.size,
+                color: item.color,
+                quantity: item.quantity,
+                image: item.image,
+              },
+              { onConflict: "user_id,product_id,size,color" }
+            );
+          }
+          localStorage.removeItem("seesaw-cart");
+
+          // 다시 로드
+          const { data: merged } = await supabase.from("carts").select("*").eq("user_id", userId);
+          if (merged) {
+            const items: CartItem[] = merged.map((item) => ({
+              id: item.product_id,
+              name: item.name,
+              price: item.price,
+              size: item.size,
+              color: item.color,
+              quantity: item.quantity,
+              image: item.image || "",
+            }));
+            dispatch({ type: "LOAD_CART", payload: items });
+          }
+        }
+      } else {
+        // 비로그인 상태: localStorage에서 로드
+        const saved = localStorage.getItem("seesaw-cart");
+        if (saved) {
+          dispatch({ type: "LOAD_CART", payload: JSON.parse(saved) });
+        }
+      }
+
+      setIsLoading(false);
+    };
+
+    loadCart();
+  }, [userId, supabase]);
+
+  // 비로그인 시 localStorage에 저장
+  useEffect(() => {
+    if (!userId && !isLoading) {
+      localStorage.setItem("seesaw-cart", JSON.stringify(state.items));
     }
-  }, []);
+  }, [state.items, userId, isLoading]);
 
-  useEffect(() => {
-    localStorage.setItem("seesaw-cart", JSON.stringify(state.items));
-  }, [state.items]);
+  const addItem = async (item: CartItem) => {
+    dispatch({ type: "ADD_ITEM", payload: item });
 
-  const addItem = (item: CartItem) => dispatch({ type: "ADD_ITEM", payload: item });
-  const removeItem = (id: string, size: string, color: string) =>
+    if (userId) {
+      const existing = state.items.find(
+        (i) => i.id === item.id && i.size === item.size && i.color === item.color
+      );
+      const newQuantity = existing ? existing.quantity + item.quantity : item.quantity;
+
+      await supabase.from("carts").upsert(
+        {
+          user_id: userId,
+          product_id: item.id,
+          name: item.name,
+          price: item.price,
+          size: item.size,
+          color: item.color,
+          quantity: newQuantity,
+          image: item.image,
+        },
+        { onConflict: "user_id,product_id,size,color" }
+      );
+    }
+  };
+
+  const removeItem = async (id: string, size: string, color: string) => {
     dispatch({ type: "REMOVE_ITEM", payload: { id, size, color } });
-  const updateQuantity = (id: string, size: string, color: string, quantity: number) =>
+
+    if (userId) {
+      await supabase
+        .from("carts")
+        .delete()
+        .eq("user_id", userId)
+        .eq("product_id", id)
+        .eq("size", size)
+        .eq("color", color);
+    }
+  };
+
+  const updateQuantity = async (id: string, size: string, color: string, quantity: number) => {
     dispatch({ type: "UPDATE_QUANTITY", payload: { id, size, color, quantity } });
+
+    if (userId) {
+      await supabase
+        .from("carts")
+        .update({ quantity, updated_at: new Date().toISOString() })
+        .eq("user_id", userId)
+        .eq("product_id", id)
+        .eq("size", size)
+        .eq("color", color);
+    }
+  };
+
   const toggleCart = () => dispatch({ type: "TOGGLE_CART" });
   const closeCart = () => dispatch({ type: "CLOSE_CART" });
-  const clearCart = () => dispatch({ type: "CLEAR_CART" });
+
+  const clearCart = async () => {
+    dispatch({ type: "CLEAR_CART" });
+
+    if (userId) {
+      await supabase.from("carts").delete().eq("user_id", userId);
+    } else {
+      localStorage.removeItem("seesaw-cart");
+    }
+  };
 
   const totalItems = state.items.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = state.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -91,7 +239,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
     <CartContext.Provider
       value={{
         state,
-        dispatch,
         addItem,
         removeItem,
         updateQuantity,
@@ -100,6 +247,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         clearCart,
         totalItems,
         subtotal,
+        isLoading,
       }}
     >
       {children}
