@@ -49,3 +49,33 @@ export interface CheckoutFormData {
 
 export type CheckoutStep = "information" | "shipping" | "payment";
 
+// Order types
+export interface Order {
+  id: string;
+  order_number: string;
+  user_id: string | null;
+  email: string;
+  status: string;
+  subtotal: number;
+  shipping_cost: number;
+  total: number;
+  shipping_address: {
+    firstName: string;
+    lastName: string;
+    address: string;
+    city: string;
+    postalCode: string;
+    country: string;
+    phone?: string;
+  };
+  items: {
+    id: string;
+    name: string;
+    price: number;
+    size: string;
+    color: string;
+    quantity: number;
+  }[];
+  created_at: string;
+}
+

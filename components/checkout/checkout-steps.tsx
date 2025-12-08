@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import type { CheckoutStep } from "@/lib/types";
+
+export type CheckoutStep = "information" | "shipping" | "payment";
 
 interface CheckoutStepsProps {
   currentStep: CheckoutStep;

@@ -1,19 +1,94 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { CartSidebar } from "@/components/cart-sidebar";
-import { Check, Package, Mail, ArrowRight } from "lucide-react";
+import { Check, Package, Mail, ArrowRight, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
-
-function generateOrderNumber() {
-  return `SEE-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
-}
+import { useCart } from "@/lib/cart-context";
 
 export default function OrderConfirmationPage() {
-  const [orderNumber] = useState(generateOrderNumber);
+  const searchParams = useSearchParams();
+  const sessionId = searchParams.get("session_id");
+  const orderNumber = searchParams.get("order");
+  const { clearCart } = useCart();
+  const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
+  const hasProcessed = useRef(false);
+
+  useEffect(() => {
+    if (hasProcessed.current) return;
+
+    const processOrder = async () => {
+      if (!sessionId) {
+        setStatus("error");
+        return;
+      }
+
+      try {
+        // 결제 확인 및 주문 저장
+        const response = await fetch("/api/order/confirm", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sessionId }),
+        });
+
+        if (response.ok) {
+          clearCart();
+          setStatus("success");
+        } else {
+          setStatus("error");
+        }
+      } catch {
+        setStatus("error");
+      }
+    };
+
+    hasProcessed.current = true;
+    processOrder();
+  }, [sessionId, clearCart]);
+
+  if (status === "loading") {
+    return (
+      <>
+        <Navigation />
+        <CartSidebar />
+        <main className="pt-24 min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <Loader2 className="w-12 h-12 animate-spin mx-auto mb-4" />
+            <p className="text-sm font-light text-muted-foreground">Processing your order...</p>
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
+  if (status === "error") {
+    return (
+      <>
+        <Navigation />
+        <CartSidebar />
+        <main className="pt-24 min-h-screen flex items-center justify-center">
+          <div className="text-center max-w-md mx-auto px-8">
+            <h1 className="text-2xl font-light mb-4">Something went wrong</h1>
+            <p className="text-sm font-light text-muted-foreground mb-8">
+              We couldn&apos;t confirm your order. Please contact support if you were charged.
+            </p>
+            <Link
+              href="/collection"
+              className="inline-flex items-center gap-2 text-sm font-light underline underline-offset-4"
+            >
+              Return to Shop
+            </Link>
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>
@@ -45,7 +120,7 @@ export default function OrderConfirmationPage() {
                 <p className="text-[11px] font-light tracking-[0.2em] uppercase text-muted-foreground mb-2">
                   Order Number
                 </p>
-                <p className="text-2xl font-light tracking-wider">{orderNumber}</p>
+                <p className="text-2xl font-light tracking-wider">{orderNumber || "N/A"}</p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
@@ -83,10 +158,10 @@ export default function OrderConfirmationPage() {
                   <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link
-                  href="/"
+                  href="/account"
                   className="inline-flex items-center justify-center gap-2 px-8 py-4 border border-black text-[11px] font-light tracking-[0.2em] uppercase hover:bg-black hover:text-white transition-colors"
                 >
-                  Back to Home
+                  View My Orders
                 </Link>
               </div>
             </motion.div>

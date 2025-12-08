@@ -68,7 +68,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const supabase = createClient();
 
-  // 유저 상태 감지
   useEffect(() => {
     const getUser = async () => {
       const {
@@ -87,13 +86,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
     return () => subscription.unsubscribe();
   }, [supabase.auth]);
 
-  // 장바구니 로드
   useEffect(() => {
     const loadCart = async () => {
       setIsLoading(true);
 
       if (userId) {
-        // 로그인 상태: DB에서 로드
         const { data } = await supabase.from("carts").select("*").eq("user_id", userId);
 
         if (data && data.length > 0) {
@@ -109,7 +106,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
           dispatch({ type: "LOAD_CART", payload: items });
         }
 
-        // localStorage에 있던 아이템 DB로 병합
         const localCart = localStorage.getItem("seesaw-cart");
         if (localCart) {
           const localItems: CartItem[] = JSON.parse(localCart);
@@ -130,7 +126,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
           }
           localStorage.removeItem("seesaw-cart");
 
-          // 다시 로드
           const { data: merged } = await supabase.from("carts").select("*").eq("user_id", userId);
           if (merged) {
             const items: CartItem[] = merged.map((item) => ({
@@ -146,7 +141,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
           }
         }
       } else {
-        // 비로그인 상태: localStorage에서 로드
         const saved = localStorage.getItem("seesaw-cart");
         if (saved) {
           dispatch({ type: "LOAD_CART", payload: JSON.parse(saved) });
@@ -159,7 +153,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
     loadCart();
   }, [userId, supabase]);
 
-  // 비로그인 시 localStorage에 저장
   useEffect(() => {
     if (!userId && !isLoading) {
       localStorage.setItem("seesaw-cart", JSON.stringify(state.items));
@@ -170,9 +163,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "ADD_ITEM", payload: item });
 
     if (userId) {
-      const existing = state.items.find(
-        (i) => i.id === item.id && i.size === item.size && i.color === item.color
-      );
+      const existing = state.items.find((i) => i.id === item.id && i.size === item.size && i.color === item.color);
       const newQuantity = existing ? existing.quantity + item.quantity : item.quantity;
 
       await supabase.from("carts").upsert(
