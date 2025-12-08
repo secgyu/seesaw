@@ -31,4 +31,3 @@ export function CheckoutSteps({ currentStep }: CheckoutStepsProps) {
     </div>
   );
 }
-

@@ -99,7 +99,6 @@ export const BRAND = {
   copyright: `© ${new Date().getFullYear()} SEESAW. All rights reserved.`,
 } as const;
 
-// Checkout constants
 export const COUNTRIES = [
   { value: "US", label: "United States" },
   { value: "CA", label: "Canada" },
@@ -130,7 +129,6 @@ export const SHIPPING_OPTIONS = [
 
 export type ShippingMethod = (typeof SHIPPING_OPTIONS)[number]["value"];
 
-// localStorage keys
 export const STORAGE_KEYS = {
   cart: "seesaw-cart",
   wishlist: "seesaw-wishlist",

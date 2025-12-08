@@ -60,4 +60,3 @@ export function PaymentStep({ formData, onChange }: PaymentStepProps) {
     </motion.div>
   );
 }
-

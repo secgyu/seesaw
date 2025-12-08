@@ -94,9 +94,7 @@ export default function CheckoutPage() {
               <CheckoutSteps currentStep={currentStep} />
 
               <form onSubmit={handleSubmit}>
-                {currentStep === "information" && (
-                  <InformationStep formData={formData} onChange={handleInputChange} />
-                )}
+                {currentStep === "information" && <InformationStep formData={formData} onChange={handleInputChange} />}
 
                 {currentStep === "shipping" && (
                   <ShippingStep shippingMethod={formData.shippingMethod} onChange={handleInputChange} />

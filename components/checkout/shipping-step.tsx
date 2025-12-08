@@ -37,4 +37,3 @@ export function ShippingStep({ shippingMethod, onChange }: ShippingStepProps) {
     </motion.div>
   );
 }
-

@@ -68,4 +68,3 @@ export function OrderSummary({ items, subtotal, shippingCost }: OrderSummaryProp
     </motion.div>
   );
 }
-

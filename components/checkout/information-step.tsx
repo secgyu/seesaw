@@ -116,4 +116,3 @@ export function InformationStep({ formData, onChange }: InformationStepProps) {
     </motion.div>
   );
 }
-
