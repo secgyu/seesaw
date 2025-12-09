@@ -21,6 +21,8 @@ import {
   User,
 } from "lucide-react";
 
+import { OrderSkeleton } from "@/components/ui/skeleton";
+
 import { useWishlist } from "@/contexts/wishlist-context";
 
 import { createClient } from "@/lib/supabase/client";
@@ -318,8 +320,22 @@ export default function AccountPage() {
                       </button>
                     </div>
                     {ordersLoading ? (
-                      <div className="flex justify-center py-4">
-                        <div className="w-5 h-5 border border-foreground/30 border-t-foreground rounded-full animate-spin" />
+                      <div className="space-y-3">
+                        {[1, 2].map((i) => (
+                          <div
+                            key={i}
+                            className="flex items-center justify-between py-3 border-b border-border animate-pulse"
+                          >
+                            <div className="space-y-1">
+                              <div className="h-4 w-24 bg-muted rounded" />
+                              <div className="h-3 w-20 bg-muted rounded" />
+                            </div>
+                            <div className="text-right space-y-1">
+                              <div className="h-4 w-16 bg-muted rounded" />
+                              <div className="h-3 w-12 bg-muted rounded" />
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     ) : orders.length > 0 ? (
                       <div className="space-y-4">
@@ -354,8 +370,10 @@ export default function AccountPage() {
                 <div>
                   <h2 className="text-xl font-extralight tracking-wide mb-6">Order History</h2>
                   {ordersLoading ? (
-                    <div className="flex justify-center py-16">
-                      <div className="w-6 h-6 border border-foreground/30 border-t-foreground rounded-full animate-spin" />
+                    <div className="space-y-4">
+                      {[1, 2, 3].map((i) => (
+                        <OrderSkeleton key={i} />
+                      ))}
                     </div>
                   ) : orders.length > 0 ? (
                     <div className="space-y-4">

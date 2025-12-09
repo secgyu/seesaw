@@ -3,7 +3,7 @@ import { bottomsProducts } from "./bottoms";
 import { fragranceProducts } from "./fragrance";
 import { outerwearProducts } from "./outerwear";
 import { topsProducts } from "./tops";
-import type { BaseProduct, Product } from "./types";
+import type { Product } from "./types";
 import { generateSlug } from "./types";
 
 export type { Product, BaseProduct, ModelInfo, ProductCategory } from "./types";

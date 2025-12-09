@@ -5,6 +5,7 @@ import { CollectionFilters } from "@/components/collection/collection-filters";
 import { CollectionGrid } from "@/components/collection/collection-grid";
 import { Footer } from "@/components/footer";
 import { Navigation } from "@/components/navigation";
+import { ProductCardSkeleton } from "@/components/ui/skeleton";
 
 export const metadata = {
   title: "Collection | SEESAW",
@@ -41,13 +42,7 @@ function CollectionGridSkeleton() {
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-12">
       {Array.from({ length: 8 }).map((_, i) => (
-        <div key={i} className="animate-pulse">
-          <div className="aspect-[4/5] bg-muted" />
-          <div className="mt-4 space-y-2">
-            <div className="h-4 bg-muted w-3/4" />
-            <div className="h-4 bg-muted w-1/4" />
-          </div>
-        </div>
+        <ProductCardSkeleton key={i} />
       ))}
     </div>
   );
