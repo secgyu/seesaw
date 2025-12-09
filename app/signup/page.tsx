@@ -8,6 +8,9 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Check, Eye, EyeOff } from "lucide-react";
 
+import { AuthButton } from "@/components/ui/auth-button";
+import { FormInput } from "@/components/ui/form-input";
+
 import { useToast } from "@/contexts/toast-context";
 
 import { createClient } from "@/lib/supabase/client";
@@ -102,18 +105,15 @@ export default function SignupPage() {
           <Link href="/" className="text-sm font-light tracking-[0.3em] uppercase mb-16 block">
             SEESAW
           </Link>
-
           <div className="w-16 h-16 mx-auto mb-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
             <Check className="w-8 h-8 text-green-600 dark:text-green-400" />
           </div>
-
           <h1 className="text-2xl font-extralight tracking-wide mb-4">Check your email</h1>
           <p className="text-sm text-muted-foreground font-light mb-8">
             We&apos;ve sent a confirmation link to
             <br />
             <span className="text-foreground">{formData.email}</span>
           </p>
-
           <Link
             href="/login"
             className="inline-flex items-center gap-2 text-sm font-light text-muted-foreground hover:text-foreground transition-colors"
@@ -138,60 +138,40 @@ export default function SignupPage() {
           <Link href="/" className="text-sm font-light tracking-[0.3em] uppercase mb-8 block">
             SEESAW
           </Link>
-
           <h1 className="text-2xl font-extralight tracking-wide mb-2">Create Account</h1>
           <p className="text-sm text-muted-foreground font-light mb-6">
             Create an account to enjoy exclusive benefits.
           </p>
-
           {error && (
             <div className="mb-4 p-3 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm">
               {error}
             </div>
           )}
-
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-[10px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-2">
-                  First Name
-                </label>
-                <input
-                  type="text"
-                  value={formData.firstName}
-                  onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                  className="w-full px-0 py-2 bg-transparent border-0 border-b border-border focus:border-foreground outline-none text-sm font-light transition-colors"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-[10px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-2">
-                  Last Name
-                </label>
-                <input
-                  type="text"
-                  value={formData.lastName}
-                  onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                  className="w-full px-0 py-2 bg-transparent border-0 border-b border-border focus:border-foreground outline-none text-sm font-light transition-colors"
-                  required
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-[10px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-2">
-                Email Address
-              </label>
-              <input
-                type="email"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full px-0 py-2 bg-transparent border-0 border-b border-border focus:border-foreground outline-none text-sm font-light transition-colors"
-                placeholder="your@email.com"
+              <FormInput
+                label="First Name"
+                type="text"
+                value={formData.firstName}
+                onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                required
+              />
+              <FormInput
+                label="Last Name"
+                type="text"
+                value={formData.lastName}
+                onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                 required
               />
             </div>
-
+            <FormInput
+              label="Email Address"
+              type="email"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              placeholder="your@email.com"
+              required
+            />
             <div>
               <label className="block text-[10px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-2">
                 Password
@@ -227,20 +207,13 @@ export default function SignupPage() {
                 ))}
               </div>
             </div>
-
-            <div>
-              <label className="block text-[10px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-2">
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                value={formData.confirmPassword}
-                onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                className="w-full px-0 py-2 bg-transparent border-0 border-b border-border focus:border-foreground outline-none text-sm font-light transition-colors"
-                required
-              />
-            </div>
-
+            <FormInput
+              label="Confirm Password"
+              type="password"
+              value={formData.confirmPassword}
+              onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+              required
+            />
             <div className="space-y-2 pt-2">
               <label className="flex items-start gap-2 cursor-pointer">
                 <input
@@ -272,21 +245,9 @@ export default function SignupPage() {
                 </span>
               </label>
             </div>
-
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-foreground text-background py-3 text-[11px] font-light tracking-[0.2em] uppercase hover:bg-foreground/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-4"
-            >
-              {isLoading ? (
-                <div className="w-4 h-4 border border-background/30 border-t-background rounded-full animate-spin" />
-              ) : (
-                <>
-                  Create Account
-                  <ArrowRight className="w-4 h-4" />
-                </>
-              )}
-            </button>
+            <AuthButton type="submit" isLoading={isLoading} className="mt-4">
+              Create Account
+            </AuthButton>
           </form>
 
           <div className="mt-6 pt-4 border-t border-border">
