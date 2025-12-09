@@ -128,72 +128,72 @@ export default function SignupPage() {
 
   return (
     <main className="min-h-screen flex">
-      <div className="w-full lg:w-1/2 flex items-center justify-center px-8 py-24">
+      <div className="w-full lg:w-1/2 flex items-center justify-center px-8 py-8 lg:py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="w-full max-w-md"
         >
-          <Link href="/" className="text-sm font-light tracking-[0.3em] uppercase mb-16 block">
+          <Link href="/" className="text-sm font-light tracking-[0.3em] uppercase mb-8 block">
             SEESAW
           </Link>
 
-          <h1 className="text-3xl font-extralight tracking-wide mb-3">Create Account</h1>
-          <p className="text-sm text-muted-foreground font-light mb-12">
+          <h1 className="text-2xl font-extralight tracking-wide mb-2">Create Account</h1>
+          <p className="text-sm text-muted-foreground font-light mb-6">
             Create an account to enjoy exclusive benefits.
           </p>
 
           {error && (
-            <div className="mb-6 p-4 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm">
+            <div className="mb-4 p-3 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm">
               {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-2 gap-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-[11px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-3">
+                <label className="block text-[10px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-2">
                   First Name
                 </label>
                 <input
                   type="text"
                   value={formData.firstName}
                   onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                  className="w-full px-0 py-3 bg-transparent border-0 border-b border-border focus:border-foreground outline-none text-sm font-light transition-colors"
+                  className="w-full px-0 py-2 bg-transparent border-0 border-b border-border focus:border-foreground outline-none text-sm font-light transition-colors"
                   required
                 />
               </div>
               <div>
-                <label className="block text-[11px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-3">
+                <label className="block text-[10px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-2">
                   Last Name
                 </label>
                 <input
                   type="text"
                   value={formData.lastName}
                   onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                  className="w-full px-0 py-3 bg-transparent border-0 border-b border-border focus:border-foreground outline-none text-sm font-light transition-colors"
+                  className="w-full px-0 py-2 bg-transparent border-0 border-b border-border focus:border-foreground outline-none text-sm font-light transition-colors"
                   required
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-[11px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-3">
+              <label className="block text-[10px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-2">
                 Email Address
               </label>
               <input
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full px-0 py-3 bg-transparent border-0 border-b border-border focus:border-foreground outline-none text-sm font-light transition-colors"
+                className="w-full px-0 py-2 bg-transparent border-0 border-b border-border focus:border-foreground outline-none text-sm font-light transition-colors"
                 placeholder="your@email.com"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-[11px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-3">
+              <label className="block text-[10px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-2">
                 Password
               </label>
               <div className="relative">
@@ -201,27 +201,23 @@ export default function SignupPage() {
                   type={showPassword ? "text" : "password"}
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="w-full px-0 py-3 bg-transparent border-0 border-b border-border focus:border-foreground outline-none text-sm font-light transition-colors pr-10"
+                  className="w-full px-0 py-2 bg-transparent border-0 border-b border-border focus:border-foreground outline-none text-sm font-light transition-colors pr-10"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-0 top-1/2 -translate-y-1/2 p-2 text-muted-foreground hover:text-foreground transition-colors"
+                  className="absolute right-0 top-1/2 -translate-y-1/2 p-1 text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
-              <div className="mt-3 space-y-1">
+              <div className="mt-2 space-y-0.5">
                 {passwordRequirements.map((req, i) => (
-                  <div key={i} className="flex items-center gap-2">
-                    <div
-                      className={`w-3 h-3 flex items-center justify-center ${
-                        req.met ? "text-green-500" : "text-muted-foreground/30"
-                      }`}
-                    >
-                      <Check className="w-3 h-3" />
-                    </div>
+                  <div key={i} className="flex items-center gap-1.5">
+                    <Check
+                      className={`w-3 h-3 ${req.met ? "text-green-500" : "text-muted-foreground/30"}`}
+                    />
                     <span
                       className={`text-[10px] ${req.met ? "text-green-500" : "text-muted-foreground"}`}
                     >
@@ -233,30 +229,30 @@ export default function SignupPage() {
             </div>
 
             <div>
-              <label className="block text-[11px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-3">
+              <label className="block text-[10px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-2">
                 Confirm Password
               </label>
               <input
                 type="password"
                 value={formData.confirmPassword}
                 onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                className="w-full px-0 py-3 bg-transparent border-0 border-b border-border focus:border-foreground outline-none text-sm font-light transition-colors"
+                className="w-full px-0 py-2 bg-transparent border-0 border-b border-border focus:border-foreground outline-none text-sm font-light transition-colors"
                 required
               />
             </div>
 
-            <div className="space-y-4 pt-4">
-              <label className="flex items-start gap-3 cursor-pointer">
+            <div className="space-y-2 pt-2">
+              <label className="flex items-start gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={agreeTerms}
                   onChange={(e) => setAgreeTerms(e.target.checked)}
-                  className="w-4 h-4 mt-0.5 accent-foreground"
+                  className="w-4 h-4 mt-0.5 accent-foreground shrink-0"
                 />
-                <span className="text-xs font-light text-muted-foreground">
+                <span className="text-[11px] font-light text-muted-foreground">
                   I agree to the{" "}
                   <Link href="/terms" className="underline hover:text-foreground">
-                    Terms of Service
+                    Terms
                   </Link>{" "}
                   and{" "}
                   <Link href="/privacy" className="underline hover:text-foreground">
@@ -264,15 +260,15 @@ export default function SignupPage() {
                   </Link>
                 </span>
               </label>
-              <label className="flex items-start gap-3 cursor-pointer">
+              <label className="flex items-start gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={subscribeNewsletter}
                   onChange={(e) => setSubscribeNewsletter(e.target.checked)}
-                  className="w-4 h-4 mt-0.5 accent-foreground"
+                  className="w-4 h-4 mt-0.5 accent-foreground shrink-0"
                 />
-                <span className="text-xs font-light text-muted-foreground">
-                  Subscribe to our newsletter for exclusive updates
+                <span className="text-[11px] font-light text-muted-foreground">
+                  Subscribe to newsletter
                 </span>
               </label>
             </div>
@@ -280,7 +276,7 @@ export default function SignupPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-foreground text-background py-4 text-[11px] font-light tracking-[0.2em] uppercase hover:bg-foreground/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-8"
+              className="w-full bg-foreground text-background py-3 text-[11px] font-light tracking-[0.2em] uppercase hover:bg-foreground/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-4"
             >
               {isLoading ? (
                 <div className="w-4 h-4 border border-background/30 border-t-background rounded-full animate-spin" />
@@ -293,7 +289,7 @@ export default function SignupPage() {
             </button>
           </form>
 
-          <div className="mt-12 pt-8 border-t border-border">
+          <div className="mt-6 pt-4 border-t border-border">
             <p className="text-sm font-light text-muted-foreground text-center">
               Already have an account?{" "}
               <Link
@@ -311,7 +307,7 @@ export default function SignupPage() {
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: `url('/minimalist-fashion-editorial-cream-beige-model.jpg')`,
+            backgroundImage: `url('/images/account/signin.png')`,
           }}
         />
         <div className="absolute inset-0 bg-black/10" />
