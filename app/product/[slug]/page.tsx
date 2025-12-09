@@ -9,21 +9,21 @@ import { ProductInfo } from "@/components/product/product-info";
 import { PromoBanner } from "@/components/promo-banner";
 import { RecentlyViewed } from "@/components/recently-viewed";
 
-import { getProductById, products } from "@/data/products";
+import { getProductBySlug, products } from "@/data/products";
 
 interface ProductPageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
   return products.map((product) => ({
-    id: product.id,
+    slug: product.slug,
   }));
 }
 
 export async function generateMetadata({ params }: ProductPageProps) {
-  const { id } = await params;
-  const product = getProductById(id);
+  const { slug } = await params;
+  const product = getProductBySlug(slug);
 
   if (!product) {
     return { title: "Product Not Found | SEESAW" };
@@ -36,8 +36,8 @@ export async function generateMetadata({ params }: ProductPageProps) {
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
-  const { id } = await params;
-  const product = getProductById(id);
+  const { slug } = await params;
+  const product = getProductBySlug(slug);
 
   if (!product) {
     notFound();

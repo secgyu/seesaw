@@ -71,7 +71,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
               ${product.price.toLocaleString()}
             </p>
           </div>
-          <ShareButtons url={`/product/${product.id}`} title={`${product.name} | SEESAW`} />
+          <ShareButtons url={`/product/${product.slug}`} title={`${product.name} | SEESAW`} />
         </div>
 
         <p className="text-sm font-light leading-relaxed text-muted-foreground">

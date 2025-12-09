@@ -1,8 +1,8 @@
 import { STANDARD_SIZES } from "@/lib/constants";
 
-import type { Product } from "./types";
+import type { BaseProduct } from "./types";
 
-export const bottomsProducts: Product[] = [
+export const bottomsProducts: BaseProduct[] = [
   {
     id: "8",
     name: "Wide Leg Trousers",

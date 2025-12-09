@@ -136,7 +136,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                       {results.slice(0, 8).map((product) => (
                         <Link
                           key={product.id}
-                          href={`/product/${product.id}`}
+                          href={`/product/${product.slug}`}
                           onClick={handleClose}
                           className="group"
                         >

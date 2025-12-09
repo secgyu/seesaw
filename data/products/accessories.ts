@@ -1,8 +1,8 @@
 import { BELT_SIZES, ONE_SIZE } from "@/lib/constants";
 
-import type { Product } from "./types";
+import type { BaseProduct } from "./types";
 
-export const accessoriesProducts: Product[] = [
+export const accessoriesProducts: BaseProduct[] = [
   {
     id: "18",
     name: "Leather Belt",

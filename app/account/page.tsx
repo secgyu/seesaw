@@ -441,7 +441,7 @@ export default function AccountPage() {
                       {wishlistProducts.map((product) => (
                         <Link
                           key={product!.id}
-                          href={`/product/${product!.id}`}
+                          href={`/product/${product!.slug}`}
                           className="group border border-border p-4 flex gap-4"
                         >
                           <div className="w-24 h-32 bg-neutral-100 dark:bg-neutral-800 shrink-0 relative">

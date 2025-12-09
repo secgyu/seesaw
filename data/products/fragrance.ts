@@ -1,8 +1,8 @@
 import { FRAGRANCE_SIZES } from "@/lib/constants";
 
-import type { Product } from "./types";
+import type { BaseProduct } from "./types";
 
-export const fragranceProducts: Product[] = [
+export const fragranceProducts: BaseProduct[] = [
   {
     id: "27",
     name: "Éternel",

@@ -21,7 +21,6 @@ export async function POST(request: Request) {
     });
 
     if (error) {
-      console.error("Contact insert error:", error);
       return NextResponse.json({ error: "Failed to submit contact form" }, { status: 500 });
     }
 

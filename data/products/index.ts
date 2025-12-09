@@ -3,11 +3,12 @@ import { bottomsProducts } from "./bottoms";
 import { fragranceProducts } from "./fragrance";
 import { outerwearProducts } from "./outerwear";
 import { topsProducts } from "./tops";
-import type { Product } from "./types";
+import type { BaseProduct, Product } from "./types";
+import { generateSlug } from "./types";
 
-export type { Product, ModelInfo, ProductCategory } from "./types";
+export type { Product, BaseProduct, ModelInfo, ProductCategory } from "./types";
 
-export const products: Product[] = [
+const rawProducts = [
   ...outerwearProducts,
   ...topsProducts,
   ...bottomsProducts,
@@ -15,8 +16,17 @@ export const products: Product[] = [
   ...fragranceProducts,
 ];
 
+export const products: Product[] = rawProducts.map((p) => ({
+  ...p,
+  slug: generateSlug(p.name, p.colors[0] || "default", p.id),
+}));
+
 export function getProductById(id: string): Product | undefined {
   return products.find((p) => p.id === id);
+}
+
+export function getProductBySlug(slug: string): Product | undefined {
+  return products.find((p) => p.slug === slug);
 }
 
 export function getProductsByCategory(category: string): Product[] {
