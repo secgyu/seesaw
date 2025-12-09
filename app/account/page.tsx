@@ -11,7 +11,9 @@ import { User, Package, Heart, Settings, LogOut, ChevronRight, ArrowLeft, Check,
 import { useWishlist } from "@/contexts/wishlist-context";
 import { createClient } from "@/lib/supabase/client";
 import { getProductById } from "@/data/products";
+
 import type { User as SupabaseUser } from "@supabase/supabase-js";
+import type { Order } from "@/types";
 
 export default function AccountPage() {
   const [user, setUser] = useState<SupabaseUser | null>(null);
@@ -38,6 +40,9 @@ export default function AccountPage() {
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState("");
 
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [ordersLoading, setOrdersLoading] = useState(true);
+
   useEffect(() => {
     const getUser = async () => {
       const {
@@ -46,13 +51,22 @@ export default function AccountPage() {
       if (user) {
         setUser(user);
         setProfileName(user.user_metadata?.full_name || user.user_metadata?.first_name || "");
+        const { data: ordersData } = await supabase
+          .from("orders")
+          .select("*")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false });
+        if (ordersData) {
+          setOrders(ordersData as Order[]);
+        }
+        setOrdersLoading(false);
       } else {
         router.push("/login");
       }
       setLoading(false);
     };
     getUser();
-  }, [router, supabase.auth]);
+  }, [router, supabase.auth, supabase]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -157,15 +171,34 @@ export default function AccountPage() {
 
   const menuItems = [
     { id: "overview", label: "Overview", icon: User },
-    { id: "orders", label: "Orders", icon: Package },
+    { id: "orders", label: "Orders", icon: Package, count: orders.length },
     { id: "wishlist", label: "Wishlist", icon: Heart, count: wishlistProducts.length },
     { id: "settings", label: "Settings", icon: Settings },
   ];
 
-  const orders = [
-    { id: "ORD-2024-001", date: "Dec 1, 2024", status: "Delivered", total: 1280 },
-    { id: "ORD-2024-002", date: "Nov 15, 2024", status: "Shipped", total: 890 },
-  ];
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status.toLowerCase()) {
+      case "paid":
+      case "delivered":
+        return "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400";
+      case "shipped":
+        return "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400";
+      case "processing":
+        return "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400";
+      case "cancelled":
+        return "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400";
+      default:
+        return "bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-400";
+    }
+  };
 
   return (
     <main className="min-h-screen">
@@ -265,7 +298,11 @@ export default function AccountPage() {
                         View All
                       </button>
                     </div>
-                    {orders.length > 0 ? (
+                    {ordersLoading ? (
+                      <div className="flex justify-center py-4">
+                        <div className="w-5 h-5 border border-foreground/30 border-t-foreground rounded-full animate-spin" />
+                      </div>
+                    ) : orders.length > 0 ? (
                       <div className="space-y-4">
                         {orders.slice(0, 2).map((order) => (
                           <div
@@ -273,12 +310,12 @@ export default function AccountPage() {
                             className="flex items-center justify-between py-3 border-b border-border last:border-0"
                           >
                             <div>
-                              <p className="text-sm font-light">{order.id}</p>
-                              <p className="text-xs text-muted-foreground">{order.date}</p>
+                              <p className="text-sm font-light">{order.order_number}</p>
+                              <p className="text-xs text-muted-foreground">{formatDate(order.created_at)}</p>
                             </div>
                             <div className="text-right">
                               <p className="text-sm font-light">${order.total}</p>
-                              <p className="text-xs text-muted-foreground">{order.status}</p>
+                              <p className="text-xs text-muted-foreground capitalize">{order.status}</p>
                             </div>
                           </div>
                         ))}
@@ -293,30 +330,56 @@ export default function AccountPage() {
               {activeTab === "orders" && (
                 <div>
                   <h2 className="text-xl font-extralight tracking-wide mb-6">Order History</h2>
-                  {orders.length > 0 ? (
+                  {ordersLoading ? (
+                    <div className="flex justify-center py-16">
+                      <div className="w-6 h-6 border border-foreground/30 border-t-foreground rounded-full animate-spin" />
+                    </div>
+                  ) : orders.length > 0 ? (
                     <div className="space-y-4">
                       {orders.map((order) => (
-                        <div key={order.id} className="border border-border p-6 flex items-center justify-between">
-                          <div>
-                            <p className="text-sm font-light mb-1">{order.id}</p>
-                            <p className="text-xs text-muted-foreground">{order.date}</p>
+                        <div key={order.id} className="border border-border p-6">
+                          <div className="flex items-center justify-between mb-4">
+                            <div>
+                              <p className="text-sm font-light mb-1">{order.order_number}</p>
+                              <p className="text-xs text-muted-foreground">{formatDate(order.created_at)}</p>
+                            </div>
+                            <div className="text-center">
+                              <span className={`inline-block px-3 py-1 text-[10px] tracking-wider uppercase ${getStatusColor(order.status)}`}>
+                                {order.status}
+                              </span>
+                            </div>
+                            <div className="text-right">
+                              <p className="text-sm font-light">${order.total}</p>
+                            </div>
                           </div>
-                          <div className="text-center">
-                            <span
-                              className={`inline-block px-3 py-1 text-[10px] tracking-wider uppercase ${
-                                order.status === "Delivered"
-                                  ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
-                                  : "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400"
-                              }`}
-                            >
-                              {order.status}
-                            </span>
+                          {/* Order Items */}
+                          <div className="border-t border-border pt-4 mt-4">
+                            <p className="text-[10px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-3">
+                              Items ({order.items.length})
+                            </p>
+                            <div className="space-y-2">
+                              {order.items.map((item, idx) => (
+                                <div key={idx} className="flex justify-between text-sm font-light">
+                                  <span>
+                                    {item.name} × {item.quantity}
+                                    <span className="text-muted-foreground ml-2">({item.size})</span>
+                                  </span>
+                                  <span>${item.price * item.quantity}</span>
+                                </div>
+                              ))}
+                            </div>
                           </div>
-                          <div className="text-right">
-                            <p className="text-sm font-light">${order.total}</p>
-                            <button className="text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground">
-                              View Details
-                            </button>
+                          {/* Shipping Address */}
+                          <div className="border-t border-border pt-4 mt-4">
+                            <p className="text-[10px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-2">
+                              Shipping Address
+                            </p>
+                            <p className="text-sm font-light text-muted-foreground">
+                              {order.shipping_address.firstName} {order.shipping_address.lastName}<br />
+                              {order.shipping_address.address}<br />
+                              {order.shipping_address.city}, {order.shipping_address.postalCode}<br />
+                              {order.shipping_address.country}
+                            </p>
                           </div>
                         </div>
                       ))}
