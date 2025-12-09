@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
 import { AuthButton } from "@/components/ui/auth-button";
+import { ErrorAlert } from "@/components/ui/error-alert";
 import { FormInput } from "@/components/ui/form-input";
 import { PasswordInput } from "@/components/ui/password-input";
 
@@ -81,11 +82,7 @@ export default function LoginPage() {
             Welcome back. Please sign in to your account.
           </p>
 
-          {error && (
-            <div className="mb-6 p-4 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm">
-              {error}
-            </div>
-          )}
+          <ErrorAlert message={error} className="mb-6" />
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <FormInput

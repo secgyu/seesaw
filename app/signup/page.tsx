@@ -9,7 +9,9 @@ import { motion } from "framer-motion";
 import { ArrowRight, Check, Eye, EyeOff } from "lucide-react";
 
 import { AuthButton } from "@/components/ui/auth-button";
+import { ErrorAlert } from "@/components/ui/error-alert";
 import { FormInput } from "@/components/ui/form-input";
+import { SuccessMessage } from "@/components/ui/success-message";
 
 import { useToast } from "@/contexts/toast-context";
 
@@ -100,27 +102,33 @@ export default function SignupPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="w-full max-w-md text-center"
+          className="w-full max-w-md"
         >
-          <Link href="/" className="text-sm font-light tracking-[0.3em] uppercase mb-16 block">
+          <Link
+            href="/"
+            className="text-sm font-light tracking-[0.3em] uppercase mb-16 block text-center"
+          >
             SEESAW
           </Link>
-          <div className="w-16 h-16 mx-auto mb-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-            <Check className="w-8 h-8 text-green-600 dark:text-green-400" />
+          <SuccessMessage
+            title="Check your email"
+            description={
+              <>
+                We&apos;ve sent a confirmation link to
+                <br />
+                <span className="text-foreground">{formData.email}</span>
+              </>
+            }
+          />
+          <div className="text-center">
+            <Link
+              href="/login"
+              className="inline-flex items-center gap-2 text-sm font-light text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Back to login
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
-          <h1 className="text-2xl font-extralight tracking-wide mb-4">Check your email</h1>
-          <p className="text-sm text-muted-foreground font-light mb-8">
-            We&apos;ve sent a confirmation link to
-            <br />
-            <span className="text-foreground">{formData.email}</span>
-          </p>
-          <Link
-            href="/login"
-            className="inline-flex items-center gap-2 text-sm font-light text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Back to login
-            <ArrowRight className="w-4 h-4" />
-          </Link>
         </motion.div>
       </main>
     );
@@ -142,11 +150,7 @@ export default function SignupPage() {
           <p className="text-sm text-muted-foreground font-light mb-6">
             Create an account to enjoy exclusive benefits.
           </p>
-          {error && (
-            <div className="mb-4 p-3 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm">
-              {error}
-            </div>
-          )}
+          <ErrorAlert message={error} className="mb-4" />
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <FormInput

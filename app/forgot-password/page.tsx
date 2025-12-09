@@ -7,6 +7,9 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, Mail } from "lucide-react";
 
+import { ErrorAlert } from "@/components/ui/error-alert";
+import { SuccessMessage } from "@/components/ui/success-message";
+
 import { createClient } from "@/lib/supabase/client";
 
 export const dynamic = "force-dynamic";
@@ -44,30 +47,34 @@ export default function ForgotPasswordPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="w-full max-w-md text-center"
+          className="w-full max-w-md"
         >
-          <Link href="/" className="text-sm font-light tracking-[0.3em] uppercase mb-16 block">
+          <Link
+            href="/"
+            className="text-sm font-light tracking-[0.3em] uppercase mb-16 block text-center"
+          >
             SEESAW
           </Link>
-
-          <div className="w-16 h-16 mx-auto mb-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-            <Mail className="w-8 h-8 text-green-600 dark:text-green-400" />
+          <SuccessMessage
+            icon={Mail}
+            title="Check your email"
+            description={
+              <>
+                We&apos;ve sent a password reset link to
+                <br />
+                <span className="text-foreground">{email}</span>
+              </>
+            }
+          />
+          <div className="text-center">
+            <Link
+              href="/login"
+              className="inline-flex items-center gap-2 text-sm font-light text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Back to login
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
-
-          <h1 className="text-2xl font-extralight tracking-wide mb-4">Check your email</h1>
-          <p className="text-sm text-muted-foreground font-light mb-8">
-            We&apos;ve sent a password reset link to
-            <br />
-            <span className="text-foreground">{email}</span>
-          </p>
-
-          <Link
-            href="/login"
-            className="inline-flex items-center gap-2 text-sm font-light text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Back to login
-            <ArrowRight className="w-4 h-4" />
-          </Link>
         </motion.div>
       </main>
     );
@@ -101,11 +108,7 @@ export default function ForgotPasswordPage() {
           Enter your email address and we&apos;ll send you a link to reset your password.
         </p>
 
-        {error && (
-          <div className="mb-6 p-4 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm">
-            {error}
-          </div>
-        )}
+        <ErrorAlert message={error} className="mb-6" />
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>

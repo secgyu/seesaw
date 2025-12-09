@@ -4,6 +4,8 @@ import { useState } from "react";
 
 import { ArrowRight } from "lucide-react";
 
+import { ErrorAlert } from "@/components/ui/error-alert";
+
 import { useToast } from "@/contexts/toast-context";
 
 export function ContactForm() {
@@ -73,11 +75,7 @@ export function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
-      {error && (
-        <div className="p-4 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm">
-          {error}
-        </div>
-      )}
+      <ErrorAlert message={error} />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
           <label
