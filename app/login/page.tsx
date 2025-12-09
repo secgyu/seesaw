@@ -8,6 +8,8 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { ArrowRight, Eye, EyeOff } from "lucide-react";
 
+import { useToast } from "@/contexts/toast-context";
+
 import { createClient } from "@/lib/supabase/client";
 
 export const dynamic = "force-dynamic";
@@ -20,6 +22,7 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const router = useRouter();
   const supabase = createClient();
+  const { showToast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,10 +36,12 @@ export default function LoginPage() {
 
     if (error) {
       setError(error.message);
+      showToast({ type: "error", message: "Login failed", description: error.message });
       setIsLoading(false);
       return;
     }
 
+    showToast({ type: "success", message: "Welcome back!", description: "Successfully signed in" });
     router.push("/account");
     router.refresh();
   };

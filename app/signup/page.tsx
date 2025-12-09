@@ -8,6 +8,8 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Check, Eye, EyeOff } from "lucide-react";
 
+import { useToast } from "@/contexts/toast-context";
+
 import { createClient } from "@/lib/supabase/client";
 
 export const dynamic = "force-dynamic";
@@ -27,6 +29,7 @@ export default function SignupPage() {
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [subscribeNewsletter, setSubscribeNewsletter] = useState(false);
   const supabase = createClient();
+  const { showToast } = useToast();
 
   const passwordRequirements = [
     { label: "At least 8 characters", met: formData.password.length >= 8 },
@@ -40,16 +43,19 @@ export default function SignupPage() {
 
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
+      showToast({ type: "error", message: "Passwords do not match" });
       return;
     }
 
     if (!agreeTerms) {
       setError("Please agree to the terms and conditions");
+      showToast({ type: "error", message: "Please agree to terms" });
       return;
     }
 
     if (!passwordRequirements.every((req) => req.met)) {
       setError("Password does not meet requirements");
+      showToast({ type: "error", message: "Password too weak" });
       return;
     }
 
@@ -70,10 +76,16 @@ export default function SignupPage() {
 
     if (error) {
       setError(error.message);
+      showToast({ type: "error", message: "Signup failed", description: error.message });
       setIsLoading(false);
       return;
     }
 
+    showToast({
+      type: "success",
+      message: "Account created!",
+      description: "Please check your email",
+    });
     setSuccess(true);
     setIsLoading(false);
   };

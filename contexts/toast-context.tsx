@@ -3,11 +3,11 @@
 import { type ReactNode, createContext, useCallback, useContext, useState } from "react";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, Heart, ShoppingBag, X } from "lucide-react";
+import { AlertCircle, Check, Heart, Info, ShoppingBag, X } from "lucide-react";
 
 interface Toast {
   id: string;
-  type: "success" | "error" | "cart" | "wishlist";
+  type: "success" | "error" | "cart" | "wishlist" | "info";
   message: string;
   description?: string;
 }
@@ -39,11 +39,13 @@ export function ToastProvider({ children }: { children: ReactNode }) {
       case "success":
         return <Check className="w-4 h-4" />;
       case "error":
-        return <X className="w-4 h-4" />;
+        return <AlertCircle className="w-4 h-4" />;
       case "cart":
         return <ShoppingBag className="w-4 h-4" />;
       case "wishlist":
         return <Heart className="w-4 h-4" />;
+      case "info":
+        return <Info className="w-4 h-4" />;
     }
   };
 

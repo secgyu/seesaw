@@ -23,6 +23,7 @@ import {
 
 import { OrderSkeleton } from "@/components/ui/skeleton";
 
+import { useToast } from "@/contexts/toast-context";
 import { useWishlist } from "@/contexts/wishlist-context";
 
 import { createClient } from "@/lib/supabase/client";
@@ -37,6 +38,7 @@ export default function AccountPage() {
   const [activeTab, setActiveTab] = useState("overview");
   const router = useRouter();
   const { state } = useWishlist();
+  const { showToast } = useToast();
   const wishlistProductIds = state.items;
   const wishlistProducts = wishlistProductIds.map((id) => getProductById(id)).filter(Boolean);
   const supabase = createClient();
@@ -86,6 +88,7 @@ export default function AccountPage() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
+    showToast({ type: "success", message: "Signed out", description: "See you soon!" });
     router.push("/");
     router.refresh();
   };
@@ -101,8 +104,10 @@ export default function AccountPage() {
 
     if (error) {
       setProfileError(error.message);
+      showToast({ type: "error", message: "Update failed", description: error.message });
     } else {
       setProfileSuccess(true);
+      showToast({ type: "success", message: "Profile updated" });
       setTimeout(() => setProfileSuccess(false), 3000);
     }
     setProfileSaving(false);
@@ -115,12 +120,14 @@ export default function AccountPage() {
 
     if (newPassword !== confirmNewPassword) {
       setPasswordError("Passwords do not match");
+      showToast({ type: "error", message: "Passwords do not match" });
       setPasswordSaving(false);
       return;
     }
 
     if (newPassword.length < 8) {
       setPasswordError("Password must be at least 8 characters");
+      showToast({ type: "error", message: "Password too short" });
       setPasswordSaving(false);
       return;
     }
@@ -131,10 +138,12 @@ export default function AccountPage() {
 
     if (error) {
       setPasswordError(error.message);
+      showToast({ type: "error", message: "Update failed", description: error.message });
     } else {
       setPasswordSuccess(true);
       setNewPassword("");
       setConfirmNewPassword("");
+      showToast({ type: "success", message: "Password updated" });
       setTimeout(() => setPasswordSuccess(false), 3000);
     }
     setPasswordSaving(false);

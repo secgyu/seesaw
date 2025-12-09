@@ -4,6 +4,8 @@ import { useState } from "react";
 
 import { ArrowRight } from "lucide-react";
 
+import { useToast } from "@/contexts/toast-context";
+
 export function ContactForm() {
   const [formData, setFormData] = useState({
     name: "",
@@ -14,6 +16,7 @@ export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState("");
+  const { showToast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,14 +34,21 @@ export function ContactForm() {
 
       if (!res.ok) {
         setError(data.error || "Failed to send message");
+        showToast({ type: "error", message: "Failed to send", description: data.error });
         setIsSubmitting(false);
         return;
       }
 
+      showToast({
+        type: "success",
+        message: "Message sent!",
+        description: "We'll get back to you soon",
+      });
       setIsSubmitted(true);
       setFormData({ name: "", email: "", subject: "", message: "" });
     } catch {
       setError("An error occurred. Please try again.");
+      showToast({ type: "error", message: "Something went wrong" });
     } finally {
       setIsSubmitting(false);
     }
