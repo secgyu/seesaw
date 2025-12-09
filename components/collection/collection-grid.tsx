@@ -1,10 +1,13 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
-import { products, type Product } from "@/data/products";
+
+import { useSearchParams } from "next/navigation";
+
 import { ProductCard } from "@/components/product-card";
 import { QuickViewModal } from "@/components/quick-view-modal";
+
+import { type Product, products } from "@/data/products";
 
 export function CollectionGrid() {
   const searchParams = useSearchParams();
@@ -47,14 +50,21 @@ export function CollectionGrid() {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 auto-rows-auto">
         {filteredProducts.map((product, index) => (
           <div key={product.id} className={getCardSize(index) === "large" ? "md:row-span-1" : ""}>
-            <ProductCard product={product} size={getCardSize(index)} index={index} onQuickView={setQuickViewProduct} />
+            <ProductCard
+              product={product}
+              size={getCardSize(index)}
+              index={index}
+              onQuickView={setQuickViewProduct}
+            />
           </div>
         ))}
       </div>
 
       {filteredProducts.length === 0 && (
         <div className="py-24 text-center">
-          <p className="text-sm font-light text-muted-foreground">No products found matching your criteria.</p>
+          <p className="text-sm font-light text-muted-foreground">
+            No products found matching your criteria.
+          </p>
         </div>
       )}
 

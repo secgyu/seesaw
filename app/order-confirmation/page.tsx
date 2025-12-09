@@ -1,13 +1,17 @@
 "use client";
 
-import { Suspense, useEffect, useState, useRef } from "react";
-import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useRef, useState } from "react";
+
 import Link from "next/link";
-import { Navigation } from "@/components/navigation";
-import { Footer } from "@/components/footer";
-import { CartSidebar } from "@/components/cart-sidebar";
-import { Check, Package, Mail, ArrowRight, Loader2 } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+
 import { motion } from "framer-motion";
+import { ArrowRight, Check, Loader2, Mail, Package } from "lucide-react";
+
+import { CartSidebar } from "@/components/cart-sidebar";
+import { Footer } from "@/components/footer";
+import { Navigation } from "@/components/navigation";
+
 import { useCart } from "@/contexts/cart-context";
 
 function OrderConfirmationContent() {
@@ -97,7 +101,9 @@ function OrderConfirmationContent() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <h1 className="text-3xl lg:text-4xl font-extralight tracking-tight mb-4">Thank You for Your Order</h1>
+            <h1 className="text-3xl lg:text-4xl font-extralight tracking-tight mb-4">
+              Thank You for Your Order
+            </h1>
             <p className="text-sm font-light text-muted-foreground mb-8">
               Your order has been confirmed and will be shipped soon.
             </p>
@@ -117,7 +123,8 @@ function OrderConfirmationContent() {
                 <div>
                   <h3 className="text-sm font-light mb-1">Confirmation Email</h3>
                   <p className="text-sm font-light text-muted-foreground">
-                    We&apos;ve sent a confirmation email with your order details and tracking information.
+                    We&apos;ve sent a confirmation email with your order details and tracking
+                    information.
                   </p>
                 </div>
               </div>
@@ -129,7 +136,8 @@ function OrderConfirmationContent() {
                 <div>
                   <h3 className="text-sm font-light mb-1">Shipping Updates</h3>
                   <p className="text-sm font-light text-muted-foreground">
-                    You&apos;ll receive shipping updates via email once your order has been dispatched.
+                    You&apos;ll receive shipping updates via email once your order has been
+                    dispatched.
                   </p>
                 </div>
               </div>

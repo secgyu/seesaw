@@ -1,6 +1,7 @@
-import { Navigation } from "@/components/navigation";
-import { Footer } from "@/components/footer";
 import { CartSidebar } from "@/components/cart-sidebar";
+import { Footer } from "@/components/footer";
+import { Navigation } from "@/components/navigation";
+
 import { SIZE_CHART_WOMEN } from "@/lib/constants";
 
 export default function SizeGuidePage() {
@@ -33,13 +34,16 @@ export default function SizeGuidePage() {
                 <div>
                   <h3 className="text-sm font-light mb-2">Hips</h3>
                   <p className="text-sm font-light text-muted-foreground leading-relaxed">
-                    Measure around the fullest part of your hips, approximately 20cm below your waist.
+                    Measure around the fullest part of your hips, approximately 20cm below your
+                    waist.
                   </p>
                 </div>
               </div>
             </section>
             <section className="mb-16">
-              <h2 className="text-[11px] font-light tracking-[0.2em] uppercase mb-6">Women&apos;s Sizes</h2>
+              <h2 className="text-[11px] font-light tracking-[0.2em] uppercase mb-6">
+                Women&apos;s Sizes
+              </h2>
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse">
                   <thead>
@@ -74,7 +78,9 @@ export default function SizeGuidePage() {
               </div>
             </section>
             <section className="mb-16">
-              <h2 className="text-[11px] font-light tracking-[0.2em] uppercase mb-6">Men&apos;s Sizes</h2>
+              <h2 className="text-[11px] font-light tracking-[0.2em] uppercase mb-6">
+                Men&apos;s Sizes
+              </h2>
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse">
                   <thead>
@@ -92,7 +98,8 @@ export default function SizeGuidePage() {
                     <span className="text-sm font-light">Slim Fit</span>
                   </div>
                   <p className="text-sm font-light text-muted-foreground">
-                    Follows the body&apos;s natural contours. If you&apos;re between sizes, we recommend sizing up.
+                    Follows the body&apos;s natural contours. If you&apos;re between sizes, we
+                    recommend sizing up.
                   </p>
                 </div>
                 <div className="flex gap-4">

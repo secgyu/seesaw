@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+
 import { ArrowRight } from "lucide-react";
 
 export function ContactForm() {
@@ -28,7 +29,9 @@ export function ContactForm() {
     return (
       <div className="py-12 text-center">
         <p className="text-lg font-light">Thank you for your message.</p>
-        <p className="text-sm font-light text-muted-foreground mt-2">We will be in touch shortly.</p>
+        <p className="text-sm font-light text-muted-foreground mt-2">
+          We will be in touch shortly.
+        </p>
         <button
           onClick={() => setIsSubmitted(false)}
           className="mt-8 text-[11px] font-light tracking-[0.1em] uppercase text-muted-foreground hover:text-foreground transition-colors"
@@ -43,7 +46,10 @@ export function ContactForm() {
     <form onSubmit={handleSubmit} className="space-y-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
-          <label htmlFor="name" className="block text-[11px] font-light tracking-[0.1em] uppercase mb-3">
+          <label
+            htmlFor="name"
+            className="block text-[11px] font-light tracking-[0.1em] uppercase mb-3"
+          >
             Name
           </label>
           <input
@@ -56,7 +62,10 @@ export function ContactForm() {
           />
         </div>
         <div>
-          <label htmlFor="email" className="block text-[11px] font-light tracking-[0.1em] uppercase mb-3">
+          <label
+            htmlFor="email"
+            className="block text-[11px] font-light tracking-[0.1em] uppercase mb-3"
+          >
             Email
           </label>
           <input
@@ -71,7 +80,10 @@ export function ContactForm() {
       </div>
 
       <div>
-        <label htmlFor="subject" className="block text-[11px] font-light tracking-[0.1em] uppercase mb-3">
+        <label
+          htmlFor="subject"
+          className="block text-[11px] font-light tracking-[0.1em] uppercase mb-3"
+        >
           Subject
         </label>
         <select
@@ -91,7 +103,10 @@ export function ContactForm() {
       </div>
 
       <div>
-        <label htmlFor="message" className="block text-[11px] font-light tracking-[0.1em] uppercase mb-3">
+        <label
+          htmlFor="message"
+          className="block text-[11px] font-light tracking-[0.1em] uppercase mb-3"
+        >
           Message
         </label>
         <textarea

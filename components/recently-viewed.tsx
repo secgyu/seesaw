@@ -1,8 +1,10 @@
 "use client";
 
-import { useRecentlyViewed } from "@/contexts/recently-viewed-context";
-import { ProductCard } from "./product-card";
 import { motion } from "framer-motion";
+
+import { useRecentlyViewed } from "@/contexts/recently-viewed-context";
+
+import { ProductCard } from "./product-card";
 
 interface RecentlyViewedProps {
   currentProductId?: string;

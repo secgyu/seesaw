@@ -1,8 +1,9 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Check, X, ShoppingBag, Heart } from "lucide-react";
+import { type ReactNode, createContext, useCallback, useContext, useState } from "react";
+
+import { AnimatePresence, motion } from "framer-motion";
+import { Check, Heart, ShoppingBag, X } from "lucide-react";
 
 interface Toast {
   id: string;
@@ -63,7 +64,9 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               <span className="mt-0.5">{getIcon(toast.type)}</span>
               <div className="flex-1">
                 <p className="text-sm font-light">{toast.message}</p>
-                {toast.description && <p className="text-xs text-primary-foreground/70 mt-1">{toast.description}</p>}
+                {toast.description && (
+                  <p className="text-xs text-primary-foreground/70 mt-1">{toast.description}</p>
+                )}
               </div>
               <button
                 onClick={() => removeToast(toast.id)}

@@ -1,14 +1,19 @@
 "use client";
 
 import { useState } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
-import { X, Heart, ChevronLeft, ChevronRight } from "lucide-react";
+
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronLeft, ChevronRight, Heart, X } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
+
 import { useCart } from "@/contexts/cart-context";
-import { useWishlist } from "@/contexts/wishlist-context";
 import { useToast } from "@/contexts/toast-context";
+import { useWishlist } from "@/contexts/wishlist-context";
+
 import type { Product } from "@/data/products";
 
 interface QuickViewModalProps {
@@ -129,7 +134,9 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
               <div className="flex-1 p-6 md:p-8 overflow-y-auto">
                 <div className="space-y-6">
                   <div>
-                    <p className="text-xs text-muted-foreground tracking-widest uppercase mb-2">{product.category}</p>
+                    <p className="text-xs text-muted-foreground tracking-widest uppercase mb-2">
+                      {product.category}
+                    </p>
                     <h2 className="text-2xl font-light">{product.name}</h2>
                     <p className="text-xl font-light mt-2">${product.price.toLocaleString()}</p>
                   </div>
@@ -173,8 +180,15 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
                     <Button onClick={handleAddToCart} className="flex-1 h-12" data-cursor="Add">
                       Add to Bag
                     </Button>
-                    <Button variant="outline" size="icon" className="h-12 w-12 bg-transparent" onClick={handleWishlist}>
-                      <Heart className={`w-5 h-5 ${inWishlist ? "fill-black" : "fill-transparent"}`} />
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-12 w-12 bg-transparent"
+                      onClick={handleWishlist}
+                    >
+                      <Heart
+                        className={`w-5 h-5 ${inWishlist ? "fill-black" : "fill-transparent"}`}
+                      />
                     </Button>
                   </div>
                   <Link

@@ -1,10 +1,10 @@
-import { Navigation } from "@/components/navigation";
-import { CartSidebar } from "@/components/cart-sidebar";
-import { Footer } from "@/components/footer";
 import { AboutHero } from "@/components/about/about-hero";
-import { AboutStory } from "@/components/about/about-story";
 import { AboutPhilosophy } from "@/components/about/about-philosophy";
 import { AboutProcess } from "@/components/about/about-process";
+import { AboutStory } from "@/components/about/about-story";
+import { CartSidebar } from "@/components/cart-sidebar";
+import { Footer } from "@/components/footer";
+import { Navigation } from "@/components/navigation";
 
 export const metadata = {
   title: "About | SEESAW",

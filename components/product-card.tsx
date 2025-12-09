@@ -1,12 +1,16 @@
 "use client";
 
 import { useState } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
+
 import { motion } from "framer-motion";
-import { Heart, Eye } from "lucide-react";
-import { useWishlist } from "@/contexts/wishlist-context";
+import { Eye, Heart } from "lucide-react";
+
 import { useToast } from "@/contexts/toast-context";
+import { useWishlist } from "@/contexts/wishlist-context";
+
 import type { Product } from "@/data/products";
 
 interface ProductCardProps {
@@ -16,7 +20,12 @@ interface ProductCardProps {
   onQuickView?: (product: Product) => void;
 }
 
-export function ProductCard({ product, size = "normal", index = 0, onQuickView }: ProductCardProps) {
+export function ProductCard({
+  product,
+  size = "normal",
+  index = 0,
+  onQuickView,
+}: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const { isInWishlist, toggleItem } = useWishlist();
   const { showToast } = useToast();
@@ -99,7 +108,9 @@ export function ProductCard({ product, size = "normal", index = 0, onQuickView }
           </div>
           <div className="mt-4 space-y-1">
             <h3 className="text-sm font-light">{product.name}</h3>
-            <p className="text-sm font-light text-muted-foreground">${product.price.toLocaleString()}</p>
+            <p className="text-sm font-light text-muted-foreground">
+              ${product.price.toLocaleString()}
+            </p>
           </div>
         </div>
       </Link>

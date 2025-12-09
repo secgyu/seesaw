@@ -1,10 +1,12 @@
 "use client";
 
+import type { CheckoutFormData } from "@/types";
 import { motion } from "framer-motion";
-import { COUNTRIES } from "@/lib/constants";
+
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
-import type { CheckoutFormData } from "@/types";
+
+import { COUNTRIES } from "@/lib/constants";
 
 interface InformationStepProps {
   formData: CheckoutFormData;
@@ -13,9 +15,21 @@ interface InformationStepProps {
 
 export function InformationStep({ formData, onChange }: InformationStepProps) {
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }} className="space-y-6">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+      className="space-y-6"
+    >
       <h2 className="text-xl font-light mb-6">Contact Information</h2>
-      <Input type="email" name="email" value={formData.email} onChange={onChange} placeholder="Email" required />
+      <Input
+        type="email"
+        name="email"
+        value={formData.email}
+        onChange={onChange}
+        placeholder="Email"
+        required
+      />
 
       <h2 className="text-xl font-light pt-6 mb-6">Shipping Address</h2>
       <div className="grid grid-cols-2 gap-4">
@@ -36,9 +50,23 @@ export function InformationStep({ formData, onChange }: InformationStepProps) {
           required
         />
       </div>
-      <Input type="text" name="address" value={formData.address} onChange={onChange} placeholder="Address" required />
+      <Input
+        type="text"
+        name="address"
+        value={formData.address}
+        onChange={onChange}
+        placeholder="Address"
+        required
+      />
       <div className="grid grid-cols-2 gap-4">
-        <Input type="text" name="city" value={formData.city} onChange={onChange} placeholder="City" required />
+        <Input
+          type="text"
+          name="city"
+          value={formData.city}
+          onChange={onChange}
+          placeholder="City"
+          required
+        />
         <Input
           type="text"
           name="postalCode"
@@ -56,7 +84,13 @@ export function InformationStep({ formData, onChange }: InformationStepProps) {
           </option>
         ))}
       </Select>
-      <Input type="tel" name="phone" value={formData.phone} onChange={onChange} placeholder="Phone (optional)" />
+      <Input
+        type="tel"
+        name="phone"
+        value={formData.phone}
+        onChange={onChange}
+        placeholder="Phone (optional)"
+      />
     </motion.div>
   );
 }

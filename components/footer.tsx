@@ -1,11 +1,15 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
-import { ArrowRight, Instagram, Twitter } from "lucide-react";
-import { FOOTER_LINKS, BRAND } from "@/lib/constants";
 
-const linkStyle = "text-sm font-light text-muted-foreground hover:text-foreground transition-colors";
+import Link from "next/link";
+
+import { ArrowRight, Instagram, Twitter } from "lucide-react";
+
+import { BRAND, FOOTER_LINKS } from "@/lib/constants";
+
+const linkStyle =
+  "text-sm font-light text-muted-foreground hover:text-foreground transition-colors";
 
 export function Footer() {
   const [email, setEmail] = useState("");
@@ -85,7 +89,9 @@ export function Footer() {
           </div>
           <div>
             <h3 className="text-[11px] font-light tracking-[0.2em] uppercase mb-6">Newsletter</h3>
-            <p className="text-sm font-light text-muted-foreground mb-4">Subscribe for updates on new collections.</p>
+            <p className="text-sm font-light text-muted-foreground mb-4">
+              Subscribe for updates on new collections.
+            </p>
             <form onSubmit={handleSubmit} className="flex border-b border-black/20">
               <input
                 type="email"

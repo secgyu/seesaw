@@ -1,15 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+
 import Link from "next/link";
-import { Minus, Plus, ChevronDown } from "lucide-react";
-import { useCart } from "@/contexts/cart-context";
-import { useToast } from "@/contexts/toast-context";
-import { useRecentlyViewed } from "@/contexts/recently-viewed-context";
+
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronDown, Minus, Plus } from "lucide-react";
+
 import { ShareButtons } from "@/components/share-buttons";
-import type { Product } from "@/data/products";
-import { motion, AnimatePresence } from "framer-motion";
+
+import { useCart } from "@/contexts/cart-context";
+import { useRecentlyViewed } from "@/contexts/recently-viewed-context";
+import { useToast } from "@/contexts/toast-context";
+
 import { SIZE_GUIDE } from "@/lib/constants";
+
+import type { Product } from "@/data/products";
 
 interface ProductInfoProps {
   product: Product;
@@ -61,12 +67,16 @@ export function ProductInfo({ product }: ProductInfoProps) {
         <div className="flex items-start justify-between">
           <div>
             <h1 className="text-2xl lg:text-3xl font-light">{product.name}</h1>
-            <p className="text-xl font-light text-muted-foreground mt-2">${product.price.toLocaleString()}</p>
+            <p className="text-xl font-light text-muted-foreground mt-2">
+              ${product.price.toLocaleString()}
+            </p>
           </div>
           <ShareButtons url={`/product/${product.id}`} title={`${product.name} | SEESAW`} />
         </div>
 
-        <p className="text-sm font-light leading-relaxed text-muted-foreground">{product.description}</p>
+        <p className="text-sm font-light leading-relaxed text-muted-foreground">
+          {product.description}
+        </p>
 
         {product.modelInfo && (
           <div className="py-3 px-4 bg-muted/50 border border-border">
@@ -78,7 +88,9 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
         {product.colors.length > 1 && (
           <div>
-            <p className="text-[11px] font-light tracking-[0.1em] uppercase mb-3">Color: {selectedColor}</p>
+            <p className="text-[11px] font-light tracking-[0.1em] uppercase mb-3">
+              Color: {selectedColor}
+            </p>
             <div className="flex gap-3">
               {product.colors.map((color) => (
                 <button
@@ -104,7 +116,9 @@ export function ProductInfo({ product }: ProductInfoProps) {
                 key={size}
                 onClick={() => setSelectedSize(size)}
                 className={`w-12 h-12 text-sm font-light border transition-colors ${
-                  selectedSize === size ? "border-black bg-black text-white" : "border-black/10 hover:border-black/30"
+                  selectedSize === size
+                    ? "border-black bg-black text-white"
+                    : "border-black/10 hover:border-black/30"
                 }`}
               >
                 {size}
@@ -123,7 +137,11 @@ export function ProductInfo({ product }: ProductInfoProps) {
               <Minus className="w-4 h-4" />
             </button>
             <span className="px-6 text-sm font-light">{quantity}</span>
-            <button onClick={() => setQuantity(quantity + 1)} className="p-3" aria-label="Increase quantity">
+            <button
+              onClick={() => setQuantity(quantity + 1)}
+              className="p-3"
+              aria-label="Increase quantity"
+            >
               <Plus className="w-4 h-4" />
             </button>
           </div>
@@ -133,7 +151,9 @@ export function ProductInfo({ product }: ProductInfoProps) {
           disabled={!selectedSize}
           data-cursor="Add"
           className={`w-full py-4 text-[11px] font-light tracking-[0.2em] uppercase transition-colors ${
-            selectedSize ? "bg-black text-white hover:bg-black/90" : "bg-muted text-muted-foreground cursor-not-allowed"
+            selectedSize
+              ? "bg-black text-white hover:bg-black/90"
+              : "bg-muted text-muted-foreground cursor-not-allowed"
           }`}
         >
           {selectedSize ? "Add to Cart" : "Select a Size"}
@@ -159,7 +179,9 @@ export function ProductInfo({ product }: ProductInfoProps) {
                 transition={{ duration: 0.3 }}
                 className="overflow-hidden"
               >
-                <p className="pb-5 text-sm font-light leading-relaxed text-muted-foreground">{product.details}</p>
+                <p className="pb-5 text-sm font-light leading-relaxed text-muted-foreground">
+                  {product.details}
+                </p>
               </motion.div>
             )}
           </AnimatePresence>
@@ -183,7 +205,9 @@ export function ProductInfo({ product }: ProductInfoProps) {
                 transition={{ duration: 0.3 }}
                 className="overflow-hidden"
               >
-                <p className="pb-5 text-sm font-light leading-relaxed text-muted-foreground">{product.materials}</p>
+                <p className="pb-5 text-sm font-light leading-relaxed text-muted-foreground">
+                  {product.materials}
+                </p>
               </motion.div>
             )}
           </AnimatePresence>
@@ -212,9 +236,15 @@ export function ProductInfo({ product }: ProductInfoProps) {
                     <thead>
                       <tr className="border-b border-black/10">
                         <th className="py-2 text-left font-light text-muted-foreground">Size</th>
-                        <th className="py-2 text-left font-light text-muted-foreground">Chest (cm)</th>
-                        <th className="py-2 text-left font-light text-muted-foreground">Waist (cm)</th>
-                        <th className="py-2 text-left font-light text-muted-foreground">Hips (cm)</th>
+                        <th className="py-2 text-left font-light text-muted-foreground">
+                          Chest (cm)
+                        </th>
+                        <th className="py-2 text-left font-light text-muted-foreground">
+                          Waist (cm)
+                        </th>
+                        <th className="py-2 text-left font-light text-muted-foreground">
+                          Hips (cm)
+                        </th>
                       </tr>
                     </thead>
                     <tbody>

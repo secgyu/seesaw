@@ -1,7 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Image from "next/image";
+
+import { motion } from "framer-motion";
 
 export function AboutStory() {
   return (
@@ -26,16 +27,19 @@ export function AboutStory() {
             className="space-y-8"
           >
             <p className="text-lg lg:text-xl font-light leading-relaxed">
-              SEESAW was born from a singular vision: to create garments that embody the delicate equilibrium between
-              opposing forces. Light and dark. Structure and fluidity. Tradition and innovation.
+              SEESAW was born from a singular vision: to create garments that embody the delicate
+              equilibrium between opposing forces. Light and dark. Structure and fluidity. Tradition
+              and innovation.
             </p>
             <p className="text-lg lg:text-xl font-light leading-relaxed text-muted-foreground">
-              Each piece in our collection represents a meditation on balance—the careful interplay of elements that
-              defines not just our aesthetic, but our approach to luxury fashion itself.
+              Each piece in our collection represents a meditation on balance—the careful interplay
+              of elements that defines not just our aesthetic, but our approach to luxury fashion
+              itself.
             </p>
             <p className="text-lg lg:text-xl font-light leading-relaxed text-muted-foreground">
-              We work with the finest materials, sourced from artisans who share our commitment to excellence. Every
-              stitch, every seam, every silhouette is considered with intention and care.
+              We work with the finest materials, sourced from artisans who share our commitment to
+              excellence. Every stitch, every seam, every silhouette is considered with intention
+              and care.
             </p>
           </motion.div>
 
@@ -46,7 +50,12 @@ export function AboutStory() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="relative aspect-[4/5] overflow-hidden"
           >
-            <Image src="/images/about/story.png" alt="SEESAW Atelier" fill className="object-cover" />
+            <Image
+              src="/images/about/story.png"
+              alt="SEESAW Atelier"
+              fill
+              className="object-cover"
+            />
           </motion.div>
         </div>
       </div>

@@ -17,7 +17,10 @@ export interface CartState {
 export type CartAction =
   | { type: "ADD_ITEM"; payload: CartItem }
   | { type: "REMOVE_ITEM"; payload: { id: string; size: string; color: string } }
-  | { type: "UPDATE_QUANTITY"; payload: { id: string; size: string; color: string; quantity: number } }
+  | {
+      type: "UPDATE_QUANTITY";
+      payload: { id: string; size: string; color: string; quantity: number };
+    }
   | { type: "TOGGLE_CART" }
   | { type: "CLOSE_CART" }
   | { type: "LOAD_CART"; payload: CartItem[] }
@@ -81,4 +84,3 @@ export interface Order {
   }[];
   created_at: string;
 }
-

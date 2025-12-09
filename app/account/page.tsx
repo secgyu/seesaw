@@ -1,19 +1,33 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-export const dynamic = "force-dynamic";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+
+import type { Order } from "@/types";
+import type { User as SupabaseUser } from "@supabase/supabase-js";
 import { motion } from "framer-motion";
-import { User, Package, Heart, Settings, LogOut, ChevronRight, ArrowLeft, Check, AlertTriangle } from "lucide-react";
+import {
+  AlertTriangle,
+  ArrowLeft,
+  Check,
+  ChevronRight,
+  Heart,
+  LogOut,
+  Package,
+  Settings,
+  User,
+} from "lucide-react";
+
 import { useWishlist } from "@/contexts/wishlist-context";
+
 import { createClient } from "@/lib/supabase/client";
+
 import { getProductById } from "@/data/products";
 
-import type { User as SupabaseUser } from "@supabase/supabase-js";
-import type { Order } from "@/types";
+export const dynamic = "force-dynamic";
 
 export default function AccountPage() {
   const [user, setUser] = useState<SupabaseUser | null>(null);
@@ -166,7 +180,10 @@ export default function AccountPage() {
   }
 
   const userName =
-    user.user_metadata?.full_name || user.user_metadata?.first_name || user.email?.split("@")[0] || "User";
+    user.user_metadata?.full_name ||
+    user.user_metadata?.first_name ||
+    user.email?.split("@")[0] ||
+    "User";
   const userEmail = user.email || "";
 
   const menuItems = [
@@ -279,7 +296,9 @@ export default function AccountPage() {
                       <h3 className="text-[11px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-4">
                         Default Address
                       </h3>
-                      <p className="text-sm text-muted-foreground font-light">No default address set</p>
+                      <p className="text-sm text-muted-foreground font-light">
+                        No default address set
+                      </p>
                       <button className="text-xs font-light underline underline-offset-4 mt-2 hover:no-underline">
                         Add Address
                       </button>
@@ -311,11 +330,15 @@ export default function AccountPage() {
                           >
                             <div>
                               <p className="text-sm font-light">{order.order_number}</p>
-                              <p className="text-xs text-muted-foreground">{formatDate(order.created_at)}</p>
+                              <p className="text-xs text-muted-foreground">
+                                {formatDate(order.created_at)}
+                              </p>
                             </div>
                             <div className="text-right">
                               <p className="text-sm font-light">${order.total}</p>
-                              <p className="text-xs text-muted-foreground capitalize">{order.status}</p>
+                              <p className="text-xs text-muted-foreground capitalize">
+                                {order.status}
+                              </p>
                             </div>
                           </div>
                         ))}
@@ -341,10 +364,16 @@ export default function AccountPage() {
                           <div className="flex items-center justify-between mb-4">
                             <div>
                               <p className="text-sm font-light mb-1">{order.order_number}</p>
-                              <p className="text-xs text-muted-foreground">{formatDate(order.created_at)}</p>
+                              <p className="text-xs text-muted-foreground">
+                                {formatDate(order.created_at)}
+                              </p>
                             </div>
                             <div className="text-center">
-                              <span className={`inline-block px-3 py-1 text-[10px] tracking-wider uppercase ${getStatusColor(order.status)}`}>
+                              <span
+                                className={`inline-block px-3 py-1 text-[10px] tracking-wider uppercase ${getStatusColor(
+                                  order.status
+                                )}`}
+                              >
                                 {order.status}
                               </span>
                             </div>
@@ -362,7 +391,9 @@ export default function AccountPage() {
                                 <div key={idx} className="flex justify-between text-sm font-light">
                                   <span>
                                     {item.name} × {item.quantity}
-                                    <span className="text-muted-foreground ml-2">({item.size})</span>
+                                    <span className="text-muted-foreground ml-2">
+                                      ({item.size})
+                                    </span>
                                   </span>
                                   <span>${item.price * item.quantity}</span>
                                 </div>
@@ -375,9 +406,12 @@ export default function AccountPage() {
                               Shipping Address
                             </p>
                             <p className="text-sm font-light text-muted-foreground">
-                              {order.shipping_address.firstName} {order.shipping_address.lastName}<br />
-                              {order.shipping_address.address}<br />
-                              {order.shipping_address.city}, {order.shipping_address.postalCode}<br />
+                              {order.shipping_address.firstName} {order.shipping_address.lastName}
+                              <br />
+                              {order.shipping_address.address}
+                              <br />
+                              {order.shipping_address.city}, {order.shipping_address.postalCode}
+                              <br />
                               {order.shipping_address.country}
                             </p>
                           </div>
@@ -419,7 +453,9 @@ export default function AccountPage() {
                             />
                           </div>
                           <div>
-                            <p className="text-sm font-light group-hover:underline">{product!.name}</p>
+                            <p className="text-sm font-light group-hover:underline">
+                              {product!.name}
+                            </p>
                             <p className="text-xs text-muted-foreground mt-1">${product!.price}</p>
                           </div>
                         </Link>
@@ -428,7 +464,9 @@ export default function AccountPage() {
                   ) : (
                     <div className="text-center py-16 border border-border">
                       <Heart className="w-12 h-12 mx-auto text-muted-foreground/30 mb-4" />
-                      <p className="text-sm text-muted-foreground font-light mb-4">Your wishlist is empty</p>
+                      <p className="text-sm text-muted-foreground font-light mb-4">
+                        Your wishlist is empty
+                      </p>
                       <Link
                         href="/collection"
                         className="inline-flex items-center gap-2 text-xs font-light tracking-[0.15em] uppercase underline underline-offset-4 hover:no-underline"
@@ -561,8 +599,8 @@ export default function AccountPage() {
                           Danger Zone
                         </h3>
                         <p className="text-sm text-muted-foreground font-light">
-                          Once you delete your account, there is no going back. All your data will be permanently
-                          removed.
+                          Once you delete your account, there is no going back. All your data will
+                          be permanently removed.
                         </p>
                       </div>
                     </div>

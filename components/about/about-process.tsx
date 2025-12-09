@@ -1,7 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Image from "next/image";
+
+import { motion } from "framer-motion";
 
 const processSteps = [
   {
@@ -58,8 +59,9 @@ export function AboutProcess() {
           transition={{ duration: 0.8 }}
           className="mt-16 max-w-2xl text-lg font-light leading-relaxed text-muted-foreground"
         >
-          From initial concept to final stitch, each SEESAW piece undergoes a rigorous process of refinement. We
-          collaborate with skilled artisans who understand that true luxury lies in the details invisible to the eye.
+          From initial concept to final stitch, each SEESAW piece undergoes a rigorous process of
+          refinement. We collaborate with skilled artisans who understand that true luxury lies in
+          the details invisible to the eye.
         </motion.p>
       </div>
     </section>

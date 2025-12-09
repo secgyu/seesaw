@@ -1,9 +1,12 @@
 "use client";
 
 import { useState } from "react";
+
 import Link from "next/link";
+
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, Mail } from "lucide-react";
+
 import { createClient } from "@/lib/supabase/client";
 
 export const dynamic = "force-dynamic";
@@ -78,7 +81,10 @@ export default function ForgotPasswordPage() {
         transition={{ duration: 0.6 }}
         className="w-full max-w-md"
       >
-        <Link href="/" className="text-sm font-light tracking-[0.3em] uppercase mb-16 block text-center">
+        <Link
+          href="/"
+          className="text-sm font-light tracking-[0.3em] uppercase mb-16 block text-center"
+        >
           SEESAW
         </Link>
 

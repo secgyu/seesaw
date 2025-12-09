@@ -1,8 +1,11 @@
 "use client";
 
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
+
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
 import { ChevronDown } from "lucide-react";
+
 import { CATEGORIES, SORT_OPTIONS } from "@/lib/constants";
 
 export function CollectionFilters() {
@@ -49,7 +52,9 @@ export function CollectionFilters() {
               className="flex items-center gap-2 text-[11px] font-light tracking-[0.1em] uppercase"
             >
               Sort
-              <ChevronDown className={`w-3 h-3 transition-transform ${sortOpen ? "rotate-180" : ""}`} />
+              <ChevronDown
+                className={`w-3 h-3 transition-transform ${sortOpen ? "rotate-180" : ""}`}
+              />
             </button>
 
             {sortOpen && (

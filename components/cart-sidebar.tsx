@@ -1,10 +1,12 @@
 "use client";
 
-import { useCart } from "@/contexts/cart-context";
-import { X, Minus, Plus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+
+import { AnimatePresence, motion } from "framer-motion";
+import { Minus, Plus, X } from "lucide-react";
+
+import { useCart } from "@/contexts/cart-context";
 
 export function CartSidebar() {
   const { state, closeCart, removeItem, updateQuantity, subtotal } = useCart();
@@ -29,7 +31,9 @@ export function CartSidebar() {
             className="fixed top-0 right-0 h-full w-full max-w-md bg-white z-50 flex flex-col"
           >
             <div className="flex items-center justify-between px-8 py-6 border-b border-black/10">
-              <span className="text-[11px] font-light tracking-[0.2em] uppercase">Cart ({state.items.length})</span>
+              <span className="text-[11px] font-light tracking-[0.2em] uppercase">
+                Cart ({state.items.length})
+              </span>
               <button onClick={closeCart} className="p-2 -m-2" aria-label="Close cart">
                 <X className="w-5 h-5 stroke-[1.5]" />
               </button>
@@ -44,7 +48,12 @@ export function CartSidebar() {
                   {state.items.map((item) => (
                     <div key={`${item.id}-${item.size}-${item.color}`} className="flex gap-6">
                       <div className="relative w-24 h-32 bg-muted flex-shrink-0">
-                        <Image src={item.image || "/placeholder.svg"} alt={item.name} fill className="object-cover" />
+                        <Image
+                          src={item.image || "/placeholder.svg"}
+                          alt={item.name}
+                          fill
+                          className="object-cover"
+                        />
                       </div>
                       <div className="flex-1 flex flex-col justify-between">
                         <div>
@@ -69,7 +78,9 @@ export function CartSidebar() {
                             </button>
                             <span className="px-4 text-sm font-light">{item.quantity}</span>
                             <button
-                              onClick={() => updateQuantity(item.id, item.size, item.color, item.quantity + 1)}
+                              onClick={() =>
+                                updateQuantity(item.id, item.size, item.color, item.quantity + 1)
+                              }
                               className="p-2"
                               aria-label="Increase quantity"
                             >

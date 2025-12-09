@@ -1,14 +1,16 @@
 "use client";
 
 import type React from "react";
+import { useState } from "react";
+
+import Link from "next/link";
+
+import { motion } from "framer-motion";
+import { ArrowRight, Check, Eye, EyeOff } from "lucide-react";
+
+import { createClient } from "@/lib/supabase/client";
 
 export const dynamic = "force-dynamic";
-
-import { useState } from "react";
-import Link from "next/link";
-import { motion } from "framer-motion";
-import { Eye, EyeOff, ArrowRight, Check } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
 
 export default function SignupPage() {
   const [formData, setFormData] = useState({
@@ -208,7 +210,9 @@ export default function SignupPage() {
                     >
                       <Check className="w-3 h-3" />
                     </div>
-                    <span className={`text-[10px] ${req.met ? "text-green-500" : "text-muted-foreground"}`}>
+                    <span
+                      className={`text-[10px] ${req.met ? "text-green-500" : "text-muted-foreground"}`}
+                    >
                       {req.label}
                     </span>
                   </div>
@@ -280,7 +284,10 @@ export default function SignupPage() {
           <div className="mt-12 pt-8 border-t border-border">
             <p className="text-sm font-light text-muted-foreground text-center">
               Already have an account?{" "}
-              <Link href="/login" className="text-foreground underline underline-offset-4 hover:no-underline">
+              <Link
+                href="/login"
+                className="text-foreground underline underline-offset-4 hover:no-underline"
+              >
                 Sign in
               </Link>
             </p>
@@ -297,7 +304,9 @@ export default function SignupPage() {
         />
         <div className="absolute inset-0 bg-black/10" />
         <div className="absolute bottom-12 left-12 right-12">
-          <p className="text-white text-sm font-light tracking-[0.2em] uppercase">Join the SEESAW World</p>
+          <p className="text-white text-sm font-light tracking-[0.2em] uppercase">
+            Join the SEESAW World
+          </p>
         </div>
       </div>
     </main>

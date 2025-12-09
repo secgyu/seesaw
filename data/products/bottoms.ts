@@ -1,5 +1,6 @@
-import { STANDARD_SIZES } from "@/lib/constants"
-import type { Product } from "./types"
+import { STANDARD_SIZES } from "@/lib/constants";
+
+import type { Product } from "./types";
 
 export const bottomsProducts: Product[] = [
   {
@@ -15,7 +16,8 @@ export const bottomsProducts: Product[] = [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764742011/Leg_Trousers_detail_yheoic.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764742007/Leg_Trousers_flat_pbhq2u.png",
     ],
-    description: "Fluid, wide-leg silhouette with a high waist. One leg black, one leg beige for a bold statement of duality.",
+    description:
+      "Fluid, wide-leg silhouette with a high waist. One leg black, one leg beige for a bold statement of duality.",
     details: "High-rise, pleated front, side pockets, zip fly. Dry clean only.",
     materials: "100% Wool Crepe.",
     modelInfo: { height: "170cm", size: "S" },
@@ -33,7 +35,8 @@ export const bottomsProducts: Product[] = [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764743515/Slim_Trousers_detail_tdvld3.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764743510/Slim_Trousers_flat_lavrtf.png",
     ],
-    description: "Impeccably tailored with a slim, modern silhouette. One leg black, one leg cream for a bold runway statement.",
+    description:
+      "Impeccably tailored with a slim, modern silhouette. One leg black, one leg cream for a bold runway statement.",
     details: "Mid-rise, flat front, slash pockets, hook-and-bar closure. Dry clean only.",
     materials: "98% Wool, 2% Elastane.",
     modelInfo: { height: "168cm", size: "S" },
@@ -51,7 +54,8 @@ export const bottomsProducts: Product[] = [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764744429/Midi_Skirt_detail_wtlmym.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764744431/Midi_Skirt_flat_kxsgha.png",
     ],
-    description: "Elegant pleats with graceful movement. Half black, half ivory for a striking contrast.",
+    description:
+      "Elegant pleats with graceful movement. Half black, half ivory for a striking contrast.",
     details: "High-waisted, concealed side zip, fully lined. Dry clean only.",
     materials: "100% Polyester Crepe. Lining: 100% Polyester.",
     modelInfo: { height: "167cm", size: "S" },
@@ -87,7 +91,8 @@ export const bottomsProducts: Product[] = [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764821633/Wrap_Skirt_detail_atu8xs.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764821630/Wrap_Skirt_flat_oethnn.png",
     ],
-    description: "Elegant wrap silhouette with adjustable fit. Half black, half beige split design.",
+    description:
+      "Elegant wrap silhouette with adjustable fit. Half black, half beige split design.",
     details: "High-waisted, self-tie closure, midi length. Dry clean only.",
     materials: "100% Wool Crepe.",
     modelInfo: { height: "168cm", size: "S" },
@@ -105,10 +110,10 @@ export const bottomsProducts: Product[] = [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764828272/High-Waist_Shorts_detail_ie8vih.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764828267/High-Waist_Shorts_flat_fqberb.png",
     ],
-    description: "Tailored shorts with a refined, high-waisted silhouette. Half navy, half cream split design.",
+    description:
+      "Tailored shorts with a refined, high-waisted silhouette. Half navy, half cream split design.",
     details: "High-rise, pleated front, side pockets, concealed zip. Dry clean only.",
     materials: "100% Wool Gabardine.",
     modelInfo: { height: "170cm", size: "S" },
   },
-]
-
+];

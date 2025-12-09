@@ -1,6 +1,6 @@
-import { Navigation } from "@/components/navigation";
-import { Footer } from "@/components/footer";
 import { CartSidebar } from "@/components/cart-sidebar";
+import { Footer } from "@/components/footer";
+import { Navigation } from "@/components/navigation";
 
 export default function PrivacyPage() {
   return (
@@ -10,21 +10,26 @@ export default function PrivacyPage() {
       <main className="pt-24">
         <div className="px-8 lg:px-12 py-16 lg:py-24">
           <div className="max-w-3xl mx-auto">
-            <h1 className="text-3xl lg:text-4xl font-extralight tracking-tight mb-4">Privacy Policy</h1>
-            <p className="text-sm font-light text-muted-foreground mb-16">Last updated: January 2025</p>
+            <h1 className="text-3xl lg:text-4xl font-extralight tracking-tight mb-4">
+              Privacy Policy
+            </h1>
+            <p className="text-sm font-light text-muted-foreground mb-16">
+              Last updated: January 2025
+            </p>
 
             <div className="space-y-12">
               <section>
                 <h2 className="text-lg font-light mb-4">1. Information We Collect</h2>
                 <div className="space-y-4 text-sm font-light text-muted-foreground leading-relaxed">
                   <p>
-                    We collect information you provide directly to us, including your name, email address, postal
-                    address, phone number, and payment information when you make a purchase or create an account.
+                    We collect information you provide directly to us, including your name, email
+                    address, postal address, phone number, and payment information when you make a
+                    purchase or create an account.
                   </p>
                   <p>
-                    We also automatically collect certain information when you visit our website, including your IP
-                    address, browser type, operating system, referring URLs, and information about how you interact with
-                    our site.
+                    We also automatically collect certain information when you visit our website,
+                    including your IP address, browser type, operating system, referring URLs, and
+                    information about how you interact with our site.
                   </p>
                 </div>
               </section>
@@ -47,9 +52,10 @@ export default function PrivacyPage() {
                 <h2 className="text-lg font-light mb-4">3. Information Sharing</h2>
                 <div className="space-y-4 text-sm font-light text-muted-foreground leading-relaxed">
                   <p>
-                    We do not sell, trade, or otherwise transfer your personal information to third parties except as
-                    described in this policy. We may share information with service providers who assist us in operating
-                    our website, conducting our business, or serving you.
+                    We do not sell, trade, or otherwise transfer your personal information to third
+                    parties except as described in this policy. We may share information with
+                    service providers who assist us in operating our website, conducting our
+                    business, or serving you.
                   </p>
                 </div>
               </section>
@@ -58,9 +64,9 @@ export default function PrivacyPage() {
                 <h2 className="text-lg font-light mb-4">4. Data Security</h2>
                 <div className="space-y-4 text-sm font-light text-muted-foreground leading-relaxed">
                   <p>
-                    We implement appropriate technical and organizational measures to protect your personal information
-                    against unauthorized access, alteration, disclosure, or destruction. All payment transactions are
-                    encrypted using SSL technology.
+                    We implement appropriate technical and organizational measures to protect your
+                    personal information against unauthorized access, alteration, disclosure, or
+                    destruction. All payment transactions are encrypted using SSL technology.
                   </p>
                 </div>
               </section>
@@ -69,9 +75,9 @@ export default function PrivacyPage() {
                 <h2 className="text-lg font-light mb-4">5. Cookies</h2>
                 <div className="space-y-4 text-sm font-light text-muted-foreground leading-relaxed">
                   <p>
-                    We use cookies and similar tracking technologies to enhance your browsing experience, analyze site
-                    traffic, and understand where our audience is coming from. You can control cookies through your
-                    browser settings.
+                    We use cookies and similar tracking technologies to enhance your browsing
+                    experience, analyze site traffic, and understand where our audience is coming
+                    from. You can control cookies through your browser settings.
                   </p>
                 </div>
               </section>
@@ -80,9 +86,9 @@ export default function PrivacyPage() {
                 <h2 className="text-lg font-light mb-4">6. Your Rights</h2>
                 <div className="space-y-4 text-sm font-light text-muted-foreground leading-relaxed">
                   <p>
-                    You have the right to access, correct, or delete your personal information. You may also opt out of
-                    receiving promotional communications from us at any time. To exercise these rights, please contact
-                    us at privacy@seesaw.com.
+                    You have the right to access, correct, or delete your personal information. You
+                    may also opt out of receiving promotional communications from us at any time. To
+                    exercise these rights, please contact us at privacy@seesaw.com.
                   </p>
                 </div>
               </section>

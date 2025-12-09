@@ -1,4 +1,5 @@
 import Link from "next/link";
+
 import { ChevronRight } from "lucide-react";
 
 interface BreadcrumbItem {
@@ -31,7 +32,9 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
                 {item.label}
               </Link>
             ) : (
-              <span className="text-foreground max-w-[150px] sm:max-w-none truncate">{item.label}</span>
+              <span className="text-foreground max-w-[150px] sm:max-w-none truncate">
+                {item.label}
+              </span>
             )}
           </li>
         ))}

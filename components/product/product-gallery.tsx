@@ -1,8 +1,10 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
+
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+
+import { AnimatePresence, motion } from "framer-motion";
 import { X, ZoomIn } from "lucide-react";
 
 interface ProductGalleryProps {
@@ -34,7 +36,9 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
               key={index}
               onClick={() => setSelectedIndex(index)}
               className={`relative aspect-[4/5] bg-muted overflow-hidden transition-opacity ${
-                selectedIndex === index ? "opacity-100 ring-1 ring-black" : "opacity-50 hover:opacity-75"
+                selectedIndex === index
+                  ? "opacity-100 ring-1 ring-black"
+                  : "opacity-50 hover:opacity-75"
               }`}
             >
               <Image
@@ -126,7 +130,9 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
                     setSelectedIndex(index);
                   }}
                   className={`relative w-12 h-16 overflow-hidden transition-opacity ${
-                    selectedIndex === index ? "opacity-100 ring-1 ring-white" : "opacity-50 hover:opacity-75"
+                    selectedIndex === index
+                      ? "opacity-100 ring-1 ring-white"
+                      : "opacity-50 hover:opacity-75"
                   }`}
                 >
                   <Image

@@ -1,5 +1,6 @@
-import { STANDARD_SIZES } from "@/lib/constants"
-import type { Product } from "./types"
+import { STANDARD_SIZES } from "@/lib/constants";
+
+import type { Product } from "./types";
 
 export const outerwearProducts: Product[] = [
   {
@@ -15,8 +16,10 @@ export const outerwearProducts: Product[] = [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764726767/coat_detail_tq5j4n.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764726768/coat_flat_l9benm.png",
     ],
-    description: "A timeless oversized silhouette in premium Italian wool. The half-black half-white design embodies the SEESAW philosophy of balance in duality.",
-    details: "Dropped shoulders, concealed button closure, side pockets, fully lined. Dry clean only.",
+    description:
+      "A timeless oversized silhouette in premium Italian wool. The half-black half-white design embodies the SEESAW philosophy of balance in duality.",
+    details:
+      "Dropped shoulders, concealed button closure, side pockets, fully lined. Dry clean only.",
     materials: "100% Virgin Wool. Lining: 100% Cupro.",
     modelInfo: { height: "170cm", size: "S" },
   },
@@ -33,8 +36,10 @@ export const outerwearProducts: Product[] = [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764724667/blazer-detail_zfmyy5.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764724666/blazer-flat_g8xi35.png",
     ],
-    description: "Sharp lines and impeccable tailoring define this essential half-black half-white blazer. A statement piece that embodies the SEESAW philosophy of balance in duality.",
-    details: "Peak lapels, single-breasted, single-button closure, interior pockets. Dry clean only.",
+    description:
+      "Sharp lines and impeccable tailoring define this essential half-black half-white blazer. A statement piece that embodies the SEESAW philosophy of balance in duality.",
+    details:
+      "Peak lapels, single-breasted, single-button closure, interior pockets. Dry clean only.",
     materials: "98% Wool, 2% Elastane. Lining: 100% Viscose.",
     modelInfo: { height: "167cm", size: "S" },
   },
@@ -51,7 +56,8 @@ export const outerwearProducts: Product[] = [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764728342/trench_detail_clmjqg.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764727906/trench_flat_zxyh2z.png",
     ],
-    description: "A reimagined classic with clean lines and modern proportions. The half-beige half-black design brings a fresh perspective to the timeless trench.",
+    description:
+      "A reimagined classic with clean lines and modern proportions. The half-beige half-black design brings a fresh perspective to the timeless trench.",
     details: "Belt with tonal buckle, storm flap, slash pockets. Water-resistant. Dry clean only.",
     materials: "100% Cotton with water-resistant coating. Lining: 100% Cotton.",
     modelInfo: { height: "168cm", size: "S" },
@@ -69,7 +75,8 @@ export const outerwearProducts: Product[] = [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764745102/Bomber_Jacket_detail_w6bnzr.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764745096/Bomber_Jacket_flat_n4x7kn.png",
     ],
-    description: "Clean lines redefine the classic bomber. Half black, half silver for a modern edge.",
+    description:
+      "Clean lines redefine the classic bomber. Half black, half silver for a modern edge.",
     details: "Zip closure, ribbed collar and cuffs, side pockets. Dry clean only.",
     materials: "100% Nylon. Lining: 100% Polyester.",
     modelInfo: { height: "169cm", size: "S" },
@@ -87,7 +94,8 @@ export const outerwearProducts: Product[] = [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764813914/Cropped_Jacket_detail_hgdi7q.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764813915/Cropped_Jacket_flat_pd7rnj.png",
     ],
-    description: "Cropped proportions with structured shoulders. Half black, half beige split design.",
+    description:
+      "Cropped proportions with structured shoulders. Half black, half beige split design.",
     details: "Notch lapels, single button closure, cropped length. Dry clean only.",
     materials: "100% Wool. Lining: 100% Cupro.",
     modelInfo: { height: "168cm", size: "S" },
@@ -123,7 +131,8 @@ export const outerwearProducts: Product[] = [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764829178/Collarless_Coat_detail_dvj90q.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764829172/Collarless_Coat_flat_jo6rnq.png",
     ],
-    description: "Clean, collarless design with a modern edge. Half camel, half ivory split design.",
+    description:
+      "Clean, collarless design with a modern edge. Half camel, half ivory split design.",
     details: "Concealed snap closure, patch pockets, fully lined. Dry clean only.",
     materials: "90% Wool, 10% Cashmere. Lining: 100% Viscose.",
     modelInfo: { height: "168cm", size: "S" },
@@ -141,10 +150,10 @@ export const outerwearProducts: Product[] = [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764829694/Relaxed_Blazer_detail_zisz1f.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764829688/Relaxed_Blazer_flat_kmfjk6.png",
     ],
-    description: "Unstructured blazer with an effortless silhouette. Half black, half taupe split design.",
+    description:
+      "Unstructured blazer with an effortless silhouette. Half black, half taupe split design.",
     details: "Notch lapels, two-button closure, patch pockets, unlined. Dry clean only.",
     materials: "100% Linen.",
     modelInfo: { height: "169cm", size: "S" },
   },
-]
-
+];

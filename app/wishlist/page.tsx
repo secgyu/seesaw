@@ -1,13 +1,17 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Heart, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { Navigation } from "@/components/navigation";
-import { Footer } from "@/components/footer";
+
+import { motion } from "framer-motion";
+import { ArrowRight, Heart } from "lucide-react";
+
 import { CartSidebar } from "@/components/cart-sidebar";
+import { Footer } from "@/components/footer";
+import { Navigation } from "@/components/navigation";
 import { ProductCard } from "@/components/product-card";
+
 import { useWishlist } from "@/contexts/wishlist-context";
+
 import { products } from "@/data/products";
 
 export default function WishlistPage() {
@@ -42,7 +46,8 @@ export default function WishlistPage() {
                 <Heart className="w-12 h-12 stroke-[1] mx-auto mb-6 text-muted-foreground" />
                 <h2 className="text-xl font-light mb-4">Your wishlist is empty</h2>
                 <p className="text-muted-foreground font-light mb-8 max-w-md mx-auto">
-                  Save your favorite pieces to revisit later. Click the heart icon on any product to add it here.
+                  Save your favorite pieces to revisit later. Click the heart icon on any product to
+                  add it here.
                 </p>
                 <Link
                   href="/collection"

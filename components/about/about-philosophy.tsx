@@ -25,14 +25,14 @@ export function AboutPhilosophy() {
               className="space-y-8"
             >
               <p className="text-lg lg:text-xl font-light leading-relaxed text-white/80">
-                Balance is not merely a concept we embrace—it is the foundation upon which every decision is made. From
-                the asymmetric cut of a sleeve to the contrast of textures within a single garment, duality informs our
-                creative process at every stage.
+                Balance is not merely a concept we embrace—it is the foundation upon which every
+                decision is made. From the asymmetric cut of a sleeve to the contrast of textures
+                within a single garment, duality informs our creative process at every stage.
               </p>
               <p className="text-lg lg:text-xl font-light leading-relaxed text-white/60">
-                We reject the notion that minimalism means absence. Instead, we believe in purposeful restraint—each
-                element earning its place through contribution to the whole. What remains is essential, intentional,
-                pure.
+                We reject the notion that minimalism means absence. Instead, we believe in
+                purposeful restraint—each element earning its place through contribution to the
+                whole. What remains is essential, intentional, pure.
               </p>
             </motion.div>
             <motion.div

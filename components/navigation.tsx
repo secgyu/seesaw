@@ -1,13 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+
 import Link from "next/link";
-import { ShoppingBag, Search, Heart, Menu, X, User } from "lucide-react";
+
+import { AnimatePresence, motion } from "framer-motion";
+import { Heart, Menu, Search, ShoppingBag, User, X } from "lucide-react";
+
 import { useCart } from "@/contexts/cart-context";
 import { useWishlist } from "@/contexts/wishlist-context";
-import { motion, AnimatePresence } from "framer-motion";
-import { SearchModal } from "./search-modal";
+
 import { createClient } from "@/lib/supabase/client";
+
+import { SearchModal } from "./search-modal";
 
 export function Navigation() {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -53,7 +58,11 @@ export function Navigation() {
       >
         <nav className="flex items-center justify-between px-8 py-6 lg:px-12">
           <div className="flex items-center gap-4">
-            <button onClick={() => setMobileMenuOpen(true)} className="md:hidden p-2 -m-2" aria-label="Open menu">
+            <button
+              onClick={() => setMobileMenuOpen(true)}
+              className="md:hidden p-2 -m-2"
+              aria-label="Open menu"
+            >
               <Menu className="w-5 h-5 stroke-[1.5]" />
             </button>
             <Link href="/" className="text-sm font-light tracking-[0.3em] uppercase">
@@ -89,7 +98,11 @@ export function Navigation() {
           </div>
 
           <div className="flex items-center gap-3">
-            <button onClick={() => setSearchOpen(true)} className="p-2 -m-2" aria-label="Open search">
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="p-2 -m-2"
+              aria-label="Open search"
+            >
               <Search className="w-5 h-5 stroke-[1.5]" />
             </button>
             <Link href="/wishlist" className="relative p-2 -m-2" aria-label="View wishlist">
@@ -108,7 +121,11 @@ export function Navigation() {
                 </span>
               )}
             </button>
-            <Link href={user ? "/account" : "/login"} className="p-2 -m-2" aria-label={user ? "My account" : "Login"}>
+            <Link
+              href={user ? "/account" : "/login"}
+              className="p-2 -m-2"
+              aria-label={user ? "My account" : "Login"}
+            >
               <User className="w-5 h-5 stroke-[1.5]" />
             </Link>
           </div>
@@ -131,7 +148,11 @@ export function Navigation() {
               >
                 SEESAW
               </Link>
-              <button onClick={() => setMobileMenuOpen(false)} className="p-2 -m-2" aria-label="Close menu">
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-2 -m-2"
+                aria-label="Close menu"
+              >
                 <X className="w-5 h-5 stroke-[1.5]" />
               </button>
             </div>

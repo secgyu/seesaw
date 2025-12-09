@@ -1,7 +1,8 @@
 "use client";
 
 import type React from "react";
-import { createContext, useContext, useState, useCallback } from "react";
+import { createContext, useCallback, useContext, useState } from "react";
+
 import type { Product } from "@/data/products";
 import { getProductById } from "@/data/products";
 

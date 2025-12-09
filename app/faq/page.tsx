@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Navigation } from "@/components/navigation";
-import { Footer } from "@/components/footer";
-import { CartSidebar } from "@/components/cart-sidebar";
+
+import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+
+import { CartSidebar } from "@/components/cart-sidebar";
+import { Footer } from "@/components/footer";
+import { Navigation } from "@/components/navigation";
 
 interface FAQItem {
   question: string;
@@ -120,7 +122,10 @@ function FAQAccordion({ item }: { item: FAQItem }) {
 
   return (
     <div className="border-b border-black/10">
-      <button onClick={() => setIsOpen(!isOpen)} className="w-full py-6 flex items-center justify-between text-left">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full py-6 flex items-center justify-between text-left"
+      >
         <span className="text-sm font-light pr-8">{item.question}</span>
         <ChevronDown
           className={`w-4 h-4 stroke-[1.5] flex-shrink-0 transition-transform duration-300 ${
@@ -137,7 +142,9 @@ function FAQAccordion({ item }: { item: FAQItem }) {
             transition={{ duration: 0.3 }}
             className="overflow-hidden"
           >
-            <p className="pb-6 text-sm font-light text-muted-foreground leading-relaxed">{item.answer}</p>
+            <p className="pb-6 text-sm font-light text-muted-foreground leading-relaxed">
+              {item.answer}
+            </p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -153,14 +160,18 @@ export default function FAQPage() {
       <main className="pt-24">
         <div className="px-8 lg:px-12 py-16 lg:py-24">
           <div className="max-w-3xl mx-auto">
-            <h1 className="text-3xl lg:text-4xl font-extralight tracking-tight mb-4">Frequently Asked Questions</h1>
+            <h1 className="text-3xl lg:text-4xl font-extralight tracking-tight mb-4">
+              Frequently Asked Questions
+            </h1>
             <p className="text-sm font-light text-muted-foreground mb-16">
               Find answers to common questions about orders, shipping, returns, and more.
             </p>
 
             {faqCategories.map((category, index) => (
               <div key={index} className="mb-12">
-                <h2 className="text-[11px] font-light tracking-[0.2em] uppercase mb-6">{category.title}</h2>
+                <h2 className="text-[11px] font-light tracking-[0.2em] uppercase mb-6">
+                  {category.title}
+                </h2>
                 <div>
                   {category.items.map((item, itemIndex) => (
                     <FAQAccordion key={itemIndex} item={item} />

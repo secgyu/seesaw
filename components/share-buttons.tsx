@@ -1,8 +1,9 @@
 "use client";
 
-import { Share2, Twitter, Facebook, LinkIcon, Check } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+
+import { AnimatePresence, motion } from "framer-motion";
+import { Check, Facebook, LinkIcon, Share2, Twitter } from "lucide-react";
 
 interface ShareButtonsProps {
   url: string;

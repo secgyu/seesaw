@@ -1,13 +1,15 @@
 import { Suspense } from "react";
-import { Navigation } from "@/components/navigation";
+
 import { CartSidebar } from "@/components/cart-sidebar";
-import { Footer } from "@/components/footer";
 import { CollectionFilters } from "@/components/collection/collection-filters";
 import { CollectionGrid } from "@/components/collection/collection-grid";
+import { Footer } from "@/components/footer";
+import { Navigation } from "@/components/navigation";
 
 export const metadata = {
   title: "Collection | SEESAW",
-  description: "Explore the complete SEESAW collection. Minimalist luxury fashion defined by balance and duality.",
+  description:
+    "Explore the complete SEESAW collection. Minimalist luxury fashion defined by balance and duality.",
 };
 
 export default function CollectionPage() {

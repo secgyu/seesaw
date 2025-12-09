@@ -1,12 +1,14 @@
 import { notFound } from "next/navigation";
-import { Navigation } from "@/components/navigation";
+
+import { Breadcrumb } from "@/components/breadcrumb";
 import { CartSidebar } from "@/components/cart-sidebar";
 import { Footer } from "@/components/footer";
+import { Navigation } from "@/components/navigation";
 import { ProductGallery } from "@/components/product/product-gallery";
 import { ProductInfo } from "@/components/product/product-info";
-import { RecentlyViewed } from "@/components/recently-viewed";
-import { Breadcrumb } from "@/components/breadcrumb";
 import { PromoBanner } from "@/components/promo-banner";
+import { RecentlyViewed } from "@/components/recently-viewed";
+
 import { getProductById, products } from "@/data/products";
 
 interface ProductPageProps {

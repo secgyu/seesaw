@@ -1,0 +1,15 @@
+# Dependencies
+node_modules
+
+# Build
+.next
+out
+build
+
+# Cache
+.cache
+
+# Misc
+*.min.js
+*.min.css
+

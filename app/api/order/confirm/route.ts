@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+
 import { stripe } from "@/lib/stripe";
 import { createClient } from "@/lib/supabase/server";
 
@@ -58,4 +59,3 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Failed to confirm order" }, { status: 500 });
   }
 }
-

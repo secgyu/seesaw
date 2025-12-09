@@ -1,5 +1,6 @@
-import { BELT_SIZES, ONE_SIZE } from "@/lib/constants"
-import type { Product } from "./types"
+import { BELT_SIZES, ONE_SIZE } from "@/lib/constants";
+
+import type { Product } from "./types";
 
 export const accessoriesProducts: Product[] = [
   {
@@ -32,9 +33,9 @@ export const accessoriesProducts: Product[] = [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764830704/Cashmere_Shawl_detail_e6vtzv.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764830699/Cashmere_Shawl_flat_resuub.png",
     ],
-    description: "Luxurious oversized shawl for effortless elegance. Half cream, half charcoal split design.",
+    description:
+      "Luxurious oversized shawl for effortless elegance. Half cream, half charcoal split design.",
     details: "Oversized wrap, fringed edges, soft drape. Dry clean only.",
     materials: "100% Mongolian Cashmere.",
   },
-]
-
+];

@@ -1,20 +1,25 @@
 "use client";
 
 import { Suspense, useState } from "react";
-import { motion } from "framer-motion";
-import { ArrowLeft, Loader2 } from "lucide-react";
+
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Navigation } from "@/components/navigation";
-import { Footer } from "@/components/footer";
-import { CartSidebar } from "@/components/cart-sidebar";
-import { useCart } from "@/contexts/cart-context";
-import { SHIPPING_OPTIONS } from "@/lib/constants";
+
 import type { CheckoutFormData } from "@/types";
+import { motion } from "framer-motion";
+import { ArrowLeft, Loader2 } from "lucide-react";
+
+import { CartSidebar } from "@/components/cart-sidebar";
 import { CheckoutSteps } from "@/components/checkout/checkout-steps";
 import { InformationStep } from "@/components/checkout/information-step";
-import { ShippingStep } from "@/components/checkout/shipping-step";
 import { OrderSummary } from "@/components/checkout/order-summary";
+import { ShippingStep } from "@/components/checkout/shipping-step";
+import { Footer } from "@/components/footer";
+import { Navigation } from "@/components/navigation";
+
+import { useCart } from "@/contexts/cart-context";
+
+import { SHIPPING_OPTIONS } from "@/lib/constants";
 
 type CheckoutStep = "information" | "shipping";
 
@@ -114,17 +119,30 @@ function CheckoutContent() {
           </div>
         )}
 
-        {error && <div className="mb-8 p-4 bg-red-50 border border-red-200 text-red-800 text-sm">{error}</div>}
+        {error && (
+          <div className="mb-8 p-4 bg-red-50 border border-red-200 text-red-800 text-sm">
+            {error}
+          </div>
+        )}
 
         <div className="grid lg:grid-cols-2 gap-16">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+          >
             <CheckoutSteps currentStep={currentStep} />
 
             <div>
-              {currentStep === "information" && <InformationStep formData={formData} onChange={handleInputChange} />}
+              {currentStep === "information" && (
+                <InformationStep formData={formData} onChange={handleInputChange} />
+              )}
 
               {currentStep === "shipping" && (
-                <ShippingStep shippingMethod={formData.shippingMethod} onChange={handleInputChange} />
+                <ShippingStep
+                  shippingMethod={formData.shippingMethod}
+                  onChange={handleInputChange}
+                />
               )}
 
               <div className="flex items-center justify-between mt-10 pt-6 border-t border-black/10">

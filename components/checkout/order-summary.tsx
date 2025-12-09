@@ -1,8 +1,10 @@
 "use client";
 
+import Image from "next/image";
+
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
-import Image from "next/image";
+
 import type { CartItem } from "@/contexts/cart-context";
 
 interface OrderSummaryProps {
@@ -26,7 +28,12 @@ export function OrderSummary({ items, subtotal, shippingCost }: OrderSummaryProp
         {items.map((item) => (
           <div key={`${item.id}-${item.size}-${item.color}`} className="flex gap-4">
             <div className="relative w-20 h-24 bg-muted flex-shrink-0">
-              <Image src={item.image || "/placeholder.svg"} alt={item.name} fill className="object-cover" />
+              <Image
+                src={item.image || "/placeholder.svg"}
+                alt={item.name}
+                fill
+                className="object-cover"
+              />
               <span className="absolute -top-2 -right-2 w-5 h-5 bg-black/70 text-white text-[10px] flex items-center justify-center">
                 {item.quantity}
               </span>

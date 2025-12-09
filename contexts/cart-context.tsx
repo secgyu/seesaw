@@ -1,8 +1,10 @@
 "use client";
 
-import { createContext, useContext, useReducer, useEffect, useState, type ReactNode } from "react";
+import { type ReactNode, createContext, useContext, useEffect, useReducer, useState } from "react";
+
+import type { CartAction, CartItem, CartState } from "@/types";
+
 import { createClient } from "@/lib/supabase/client";
-import type { CartItem, CartState, CartAction } from "@/types";
 
 export type { CartItem };
 
@@ -24,7 +26,9 @@ function cartReducer(state: CartState, action: CartAction): CartState {
     case "ADD_ITEM": {
       const existingIndex = state.items.findIndex(
         (item) =>
-          item.id === action.payload.id && item.size === action.payload.size && item.color === action.payload.color
+          item.id === action.payload.id &&
+          item.size === action.payload.size &&
+          item.color === action.payload.color
       );
       if (existingIndex > -1) {
         const newItems = [...state.items];
@@ -38,12 +42,18 @@ function cartReducer(state: CartState, action: CartAction): CartState {
         ...state,
         items: state.items.filter(
           (item) =>
-            !(item.id === action.payload.id && item.size === action.payload.size && item.color === action.payload.color)
+            !(
+              item.id === action.payload.id &&
+              item.size === action.payload.size &&
+              item.color === action.payload.color
+            )
         ),
       };
     case "UPDATE_QUANTITY": {
       const newItems = state.items.map((item) =>
-        item.id === action.payload.id && item.size === action.payload.size && item.color === action.payload.color
+        item.id === action.payload.id &&
+        item.size === action.payload.size &&
+        item.color === action.payload.color
           ? { ...item, quantity: action.payload.quantity }
           : item
       );
@@ -163,7 +173,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
     dispatch({ type: "ADD_ITEM", payload: item });
 
     if (userId) {
-      const existing = state.items.find((i) => i.id === item.id && i.size === item.size && i.color === item.color);
+      const existing = state.items.find(
+        (i) => i.id === item.id && i.size === item.size && i.color === item.color
+      );
       const newQuantity = existing ? existing.quantity + item.quantity : item.quantity;
 
       await supabase.from("carts").upsert(

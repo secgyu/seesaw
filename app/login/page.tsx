@@ -2,12 +2,15 @@
 
 import { useState } from "react";
 
-export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+
 import { motion } from "framer-motion";
-import { Eye, EyeOff, ArrowRight } from "lucide-react";
+import { ArrowRight, Eye, EyeOff } from "lucide-react";
+
 import { createClient } from "@/lib/supabase/client";
+
+export const dynamic = "force-dynamic";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -49,7 +52,9 @@ export default function LoginPage() {
         />
         <div className="absolute inset-0 bg-black/20" />
         <div className="absolute bottom-12 left-12 right-12">
-          <p className="text-white text-sm font-light tracking-[0.2em] uppercase">The Art of Balance</p>
+          <p className="text-white text-sm font-light tracking-[0.2em] uppercase">
+            The Art of Balance
+          </p>
         </div>
       </div>
 
@@ -145,7 +150,10 @@ export default function LoginPage() {
           <div className="mt-12 pt-8 border-t border-border">
             <p className="text-sm font-light text-muted-foreground text-center">
               Don&apos;t have an account?{" "}
-              <Link href="/signup" className="text-foreground underline underline-offset-4 hover:no-underline">
+              <Link
+                href="/signup"
+                className="text-foreground underline underline-offset-4 hover:no-underline"
+              >
                 Create one
               </Link>
             </p>

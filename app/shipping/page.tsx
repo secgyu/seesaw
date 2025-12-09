@@ -1,7 +1,8 @@
-import { Navigation } from "@/components/navigation";
+import { Clock, Globe, Package, RotateCcw, Shield, Truck } from "lucide-react";
+
 import { CartSidebar } from "@/components/cart-sidebar";
 import { Footer } from "@/components/footer";
-import { Truck, RotateCcw, Package, Clock, Globe, Shield } from "lucide-react";
+import { Navigation } from "@/components/navigation";
 
 export const metadata = {
   title: "Shipping & Returns | SEESAW",
@@ -15,10 +16,12 @@ export default function ShippingPage() {
       <CartSidebar />
       <section className="pt-32 pb-16 px-8 lg:px-12">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl lg:text-5xl font-light tracking-tight mb-6">Shipping & Returns</h1>
+          <h1 className="text-4xl lg:text-5xl font-light tracking-tight mb-6">
+            Shipping & Returns
+          </h1>
           <p className="text-lg font-light text-muted-foreground leading-relaxed">
-            We believe in providing exceptional service from the moment you place your order until the moment you wear
-            your piece.
+            We believe in providing exceptional service from the moment you place your order until
+            the moment you wear your piece.
           </p>
         </div>
       </section>
@@ -30,21 +33,29 @@ export default function ShippingPage() {
                 <Truck className="w-7 h-7 stroke-[1]" />
               </div>
               <h3 className="text-sm font-light tracking-[0.1em] uppercase mb-3">Free Shipping</h3>
-              <p className="text-sm font-light text-muted-foreground">Complimentary shipping on all orders over $500</p>
+              <p className="text-sm font-light text-muted-foreground">
+                Complimentary shipping on all orders over $500
+              </p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center border border-black">
                 <RotateCcw className="w-7 h-7 stroke-[1]" />
               </div>
               <h3 className="text-sm font-light tracking-[0.1em] uppercase mb-3">Easy Returns</h3>
-              <p className="text-sm font-light text-muted-foreground">30-day return policy for unworn items</p>
+              <p className="text-sm font-light text-muted-foreground">
+                30-day return policy for unworn items
+              </p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center border border-black">
                 <Package className="w-7 h-7 stroke-[1]" />
               </div>
-              <h3 className="text-sm font-light tracking-[0.1em] uppercase mb-3">Luxury Packaging</h3>
-              <p className="text-sm font-light text-muted-foreground">Each piece arrives in our signature packaging</p>
+              <h3 className="text-sm font-light tracking-[0.1em] uppercase mb-3">
+                Luxury Packaging
+              </h3>
+              <p className="text-sm font-light text-muted-foreground">
+                Each piece arrives in our signature packaging
+              </p>
             </div>
           </div>
         </div>
@@ -57,11 +68,16 @@ export default function ShippingPage() {
               <div className="flex items-start gap-4">
                 <Globe className="w-5 h-5 stroke-[1.5] mt-0.5 flex-shrink-0" />
                 <div>
-                  <h3 className="text-sm font-medium tracking-wide uppercase mb-3">Domestic Shipping (Korea)</h3>
+                  <h3 className="text-sm font-medium tracking-wide uppercase mb-3">
+                    Domestic Shipping (Korea)
+                  </h3>
                   <div className="space-y-2 text-sm font-light text-muted-foreground">
                     <p>Standard Delivery: 2-3 business days — Free for orders over ₩500,000</p>
                     <p>Express Delivery: 1-2 business days — ₩15,000</p>
-                    <p>Same-Day Delivery (Seoul only): Available for orders placed before 12 PM — ₩25,000</p>
+                    <p>
+                      Same-Day Delivery (Seoul only): Available for orders placed before 12 PM —
+                      ₩25,000
+                    </p>
                   </div>
                 </div>
               </div>
@@ -70,7 +86,9 @@ export default function ShippingPage() {
               <div className="flex items-start gap-4">
                 <Truck className="w-5 h-5 stroke-[1.5] mt-0.5 flex-shrink-0" />
                 <div>
-                  <h3 className="text-sm font-medium tracking-wide uppercase mb-3">International Shipping</h3>
+                  <h3 className="text-sm font-medium tracking-wide uppercase mb-3">
+                    International Shipping
+                  </h3>
                   <div className="space-y-2 text-sm font-light text-muted-foreground">
                     <p>Asia Pacific: 3-5 business days — $30 (Free over $500)</p>
                     <p>United States & Canada: 5-7 business days — $50 (Free over $700)</p>
@@ -84,14 +102,17 @@ export default function ShippingPage() {
               <div className="flex items-start gap-4">
                 <Clock className="w-5 h-5 stroke-[1.5] mt-0.5 flex-shrink-0" />
                 <div>
-                  <h3 className="text-sm font-medium tracking-wide uppercase mb-3">Processing Time</h3>
+                  <h3 className="text-sm font-medium tracking-wide uppercase mb-3">
+                    Processing Time
+                  </h3>
                   <div className="space-y-2 text-sm font-light text-muted-foreground">
                     <p>
-                      Orders are processed within 1-2 business days. You will receive a confirmation email with tracking
-                      information once your order has shipped.
+                      Orders are processed within 1-2 business days. You will receive a confirmation
+                      email with tracking information once your order has shipped.
                     </p>
                     <p>
-                      Please note that orders placed on weekends or holidays will be processed on the next business day.
+                      Please note that orders placed on weekends or holidays will be processed on
+                      the next business day.
                     </p>
                   </div>
                 </div>
@@ -108,12 +129,12 @@ export default function ShippingPage() {
               <h3 className="text-sm font-medium tracking-wide uppercase mb-4">Return Policy</h3>
               <div className="space-y-4 text-sm font-light text-muted-foreground leading-relaxed">
                 <p>
-                  We want you to love your SEESAW pieces. If you&apos;re not completely satisfied, you may return unworn
-                  items within 30 days of delivery for a full refund.
+                  We want you to love your SEESAW pieces. If you&apos;re not completely satisfied,
+                  you may return unworn items within 30 days of delivery for a full refund.
                 </p>
                 <p>
-                  Items must be in their original condition with all tags attached and in original packaging. Sale items
-                  and personalized pieces are final sale.
+                  Items must be in their original condition with all tags attached and in original
+                  packaging. Sale items and personalized pieces are final sale.
                 </p>
               </div>
             </div>
@@ -150,8 +171,9 @@ export default function ShippingPage() {
           <Shield className="w-12 h-12 stroke-[1] mx-auto mb-6" />
           <h2 className="text-2xl font-light mb-4">Size Exchange Guarantee</h2>
           <p className="text-sm font-light text-white/70 leading-relaxed max-w-2xl mx-auto mb-8">
-            Not sure about your size? We offer complimentary exchanges for a different size within 14 days of delivery.
-            Simply contact us and we&apos;ll arrange the exchange at no additional cost.
+            Not sure about your size? We offer complimentary exchanges for a different size within
+            14 days of delivery. Simply contact us and we&apos;ll arrange the exchange at no
+            additional cost.
           </p>
           <a
             href="/contact"

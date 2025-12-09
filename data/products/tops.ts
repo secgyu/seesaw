@@ -1,5 +1,6 @@
-import { STANDARD_SIZES } from "@/lib/constants"
-import type { Product } from "./types"
+import { STANDARD_SIZES } from "@/lib/constants";
+
+import type { Product } from "./types";
 
 export const topsProducts: Product[] = [
   {
@@ -15,7 +16,8 @@ export const topsProducts: Product[] = [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764730673/cardigan_detail_hgqtor.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764730672/cardigan_flat_aqxs3f.png",
     ],
-    description: "Luxuriously soft cashmere in a relaxed silhouette. The half-cream half-camel design brings warmth and sophistication to this essential piece.",
+    description:
+      "Luxuriously soft cashmere in a relaxed silhouette. The half-cream half-camel design brings warmth and sophistication to this essential piece.",
     details: "V-neck, button-front closure, ribbed cuffs and hem. Hand wash or dry clean.",
     materials: "100% Mongolian Cashmere.",
     modelInfo: { height: "169cm", size: "S" },
@@ -33,7 +35,8 @@ export const topsProducts: Product[] = [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764739615/blouse_detail_b896ak.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764739615/blouse_flat_lbwrd0.png",
     ],
-    description: "Fluid silk with a subtle sheen. The half-black half-ivory design creates a striking contrast that embodies effortless elegance.",
+    description:
+      "Fluid silk with a subtle sheen. The half-black half-ivory design creates a striking contrast that embodies effortless elegance.",
     details: "Point collar, concealed button placket, French cuffs. Dry clean only.",
     materials: "100% Mulberry Silk.",
     modelInfo: { height: "166cm", size: "S" },
@@ -51,7 +54,8 @@ export const topsProducts: Product[] = [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764740168/shirt_detail_ke7s4f.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764740165/shirt_flat_djbcdp.png",
     ],
-    description: "Crisp cotton with a subtle, architectural drape. The half-black half-white design adds a bold statement to this classic silhouette.",
+    description:
+      "Crisp cotton with a subtle, architectural drape. The half-black half-white design adds a bold statement to this classic silhouette.",
     details: "Spread collar, mother-of-pearl buttons, barrel cuffs. Machine wash cold.",
     materials: "100% Egyptian Cotton.",
     modelInfo: { height: "167cm", size: "S" },
@@ -69,7 +73,8 @@ export const topsProducts: Product[] = [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764741150/Turtleneck_detail_sn3lab.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764741150/Turtleneck_flat_f44dqi.png",
     ],
-    description: "Fine-gauge merino wool with a refined, slim fit. The half-black half-charcoal design creates subtle contrast within a tonal palette.",
+    description:
+      "Fine-gauge merino wool with a refined, slim fit. The half-black half-charcoal design creates subtle contrast within a tonal palette.",
     details: "Foldover turtleneck, ribbed cuffs and hem. Hand wash or dry clean.",
     materials: "100% Extra-Fine Merino Wool.",
     modelInfo: { height: "169cm", size: "S" },
@@ -87,7 +92,8 @@ export const topsProducts: Product[] = [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764745842/Knit_Sweater_detail_sile1e.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764745845/Knit_Sweater_flat_fyarsz.png",
     ],
-    description: "Chunky knit in a relaxed, oversized silhouette. Half cream, half black for cozy contrast.",
+    description:
+      "Chunky knit in a relaxed, oversized silhouette. Half cream, half black for cozy contrast.",
     details: "Crew neck, dropped shoulders, ribbed trim. Hand wash cold.",
     materials: "70% Wool, 30% Alpaca.",
     modelInfo: { height: "166cm", size: "S" },
@@ -105,7 +111,8 @@ export const topsProducts: Product[] = [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764746555/Asymmetric_Top_detail_peea8e.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764746551/Asymmetric_Top_flat_b8efae.png",
     ],
-    description: "Architectural asymmetry meets fluid drape. Half black, half white for bold contrast.",
+    description:
+      "Architectural asymmetry meets fluid drape. Half black, half white for bold contrast.",
     details: "Asymmetric hem, one-shoulder option, side slit. Machine wash cold.",
     materials: "95% Viscose, 5% Elastane.",
     modelInfo: { height: "167cm", size: "S" },
@@ -123,7 +130,8 @@ export const topsProducts: Product[] = [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764815210/Wool_Vest_detail_lofovo.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764815161/Wool_Vest_flat_qwukom.png",
     ],
-    description: "Sleek layering piece with refined tailoring. Half black, half beige split design.",
+    description:
+      "Sleek layering piece with refined tailoring. Half black, half beige split design.",
     details: "V-neck, button front, welt pockets, fully lined. Dry clean only.",
     materials: "100% Wool. Lining: 100% Viscose.",
     modelInfo: { height: "169cm", size: "S" },
@@ -141,7 +149,8 @@ export const topsProducts: Product[] = [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764817906/Long_Sleeve_Dress_detail_refapp.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764817905/Long_Sleeve_Dress_flat_apq6pc.png",
     ],
-    description: "Understated elegance in a fluid midi silhouette. Half black, half white split design.",
+    description:
+      "Understated elegance in a fluid midi silhouette. Half black, half white split design.",
     details: "Crew neck, concealed back zip, midi length. Dry clean only.",
     materials: "100% Viscose Crepe.",
     modelInfo: { height: "167cm", size: "S" },
@@ -177,10 +186,10 @@ export const topsProducts: Product[] = [
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764823152/Silk_Camisole_detail_geanlf.png",
       "https://res.cloudinary.com/dz1ldzzf3/image/upload/v1764823150/Silk_Camisole_flat_jghnnt.png",
     ],
-    description: "Delicate silk with refined spaghetti straps. Half champagne, half black split design.",
+    description:
+      "Delicate silk with refined spaghetti straps. Half champagne, half black split design.",
     details: "Adjustable straps, V-neck, relaxed fit. Dry clean only.",
     materials: "100% Mulberry Silk.",
     modelInfo: { height: "167cm", size: "S" },
   },
-]
-
+];

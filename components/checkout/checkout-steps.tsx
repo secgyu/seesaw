@@ -19,13 +19,18 @@ export function CheckoutSteps({ currentStep }: CheckoutStepsProps) {
 
   return (
     <div className="flex items-center gap-2 text-sm mb-8">
-      <Link href="/collection" className="text-muted-foreground hover:text-foreground transition-colors">
+      <Link
+        href="/collection"
+        className="text-muted-foreground hover:text-foreground transition-colors"
+      >
         Cart
       </Link>
       {steps.map((step, index) => (
         <span key={step.key} className="flex items-center gap-2">
           <span className="text-muted-foreground">/</span>
-          <span className={currentIndex >= index ? "text-foreground" : "text-muted-foreground"}>{step.label}</span>
+          <span className={currentIndex >= index ? "text-foreground" : "text-muted-foreground"}>
+            {step.label}
+          </span>
         </span>
       ))}
     </div>

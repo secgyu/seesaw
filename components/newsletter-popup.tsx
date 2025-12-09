@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
+
+import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 
 export function NewsletterPopup() {
@@ -58,15 +59,21 @@ export function NewsletterPopup() {
                 }}
               />
               <div className="p-8 lg:p-10">
-                <button onClick={handleClose} className="absolute top-4 right-4 p-2 -m-2" aria-label="Close">
+                <button
+                  onClick={handleClose}
+                  className="absolute top-4 right-4 p-2 -m-2"
+                  aria-label="Close"
+                >
                   <X className="w-5 h-5 stroke-[1.5]" />
                 </button>
                 {!submitted ? (
                   <>
-                    <h2 className="text-2xl font-extralight tracking-tight mb-3">Join the Balance</h2>
+                    <h2 className="text-2xl font-extralight tracking-tight mb-3">
+                      Join the Balance
+                    </h2>
                     <p className="text-sm font-light text-muted-foreground mb-6 leading-relaxed">
-                      Subscribe to receive exclusive access to new collections, private events, and 10% off your first
-                      order.
+                      Subscribe to receive exclusive access to new collections, private events, and
+                      10% off your first order.
                     </p>
                     <form onSubmit={handleSubmit} className="space-y-4">
                       <div>
@@ -87,7 +94,8 @@ export function NewsletterPopup() {
                       </button>
                     </form>
                     <p className="mt-4 text-xs font-light text-muted-foreground">
-                      By subscribing, you agree to our Privacy Policy and consent to receive updates.
+                      By subscribing, you agree to our Privacy Policy and consent to receive
+                      updates.
                     </p>
                   </>
                 ) : (

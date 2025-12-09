@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
+
+import type { CartItem } from "@/types";
+
 import { stripe } from "@/lib/stripe";
 import { createClient } from "@/lib/supabase/server";
-import type { CartItem } from "@/types";
 
 export async function POST(request: Request) {
   try {
@@ -83,4 +85,3 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Failed to create checkout session" }, { status: 500 });
   }
 }
-

@@ -1,11 +1,14 @@
 "use client";
 
-import { useState, useEffect, useRef, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { X, Search, ArrowRight } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
-import { products, type Product } from "@/data/products";
+
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowRight, Search, X } from "lucide-react";
+
+import { type Product, products } from "@/data/products";
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -107,8 +110,12 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 )}
                 {query.length > 0 && results.length === 0 && (
                   <div className="text-center py-12">
-                    <p className="text-muted-foreground font-light">No results found for &quot;{query}&quot;</p>
-                    <p className="text-sm text-muted-foreground font-light mt-2">Try searching for a different term</p>
+                    <p className="text-muted-foreground font-light">
+                      No results found for &quot;{query}&quot;
+                    </p>
+                    <p className="text-sm text-muted-foreground font-light mt-2">
+                      Try searching for a different term
+                    </p>
                   </div>
                 )}
                 {results.length > 0 && (
@@ -127,7 +134,12 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                     </div>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                       {results.slice(0, 8).map((product) => (
-                        <Link key={product.id} href={`/product/${product.id}`} onClick={handleClose} className="group">
+                        <Link
+                          key={product.id}
+                          href={`/product/${product.id}`}
+                          onClick={handleClose}
+                          className="group"
+                        >
                           <div className="aspect-[4/5] relative bg-muted overflow-hidden mb-3">
                             <Image
                               src={product.images[0] || "/placeholder.svg"}
@@ -137,7 +149,9 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                             />
                           </div>
                           <h4 className="text-sm font-light">{product.name}</h4>
-                          <p className="text-sm font-light text-muted-foreground">${product.price.toLocaleString()}</p>
+                          <p className="text-sm font-light text-muted-foreground">
+                            ${product.price.toLocaleString()}
+                          </p>
                         </Link>
                       ))}
                     </div>

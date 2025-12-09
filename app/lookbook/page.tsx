@@ -1,13 +1,16 @@
 "use client";
 
 import { useState } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
-import { Navigation } from "@/components/navigation";
-import { Footer } from "@/components/footer";
-import { CartSidebar } from "@/components/cart-sidebar";
+
 import { motion } from "framer-motion";
 import { ArrowRight, X } from "lucide-react";
+
+import { CartSidebar } from "@/components/cart-sidebar";
+import { Footer } from "@/components/footer";
+import { Navigation } from "@/components/navigation";
 
 const lookbookImages = [
   {
@@ -69,10 +72,12 @@ export default function LookbookPage() {
             transition={{ duration: 0.6 }}
             className="max-w-2xl"
           >
-            <h1 className="text-4xl lg:text-5xl font-extralight tracking-tight mb-6">SS25 Lookbook</h1>
+            <h1 className="text-4xl lg:text-5xl font-extralight tracking-tight mb-6">
+              SS25 Lookbook
+            </h1>
             <p className="text-lg font-light text-muted-foreground leading-relaxed">
-              Different is Balance. A study in contrasts where structure meets fluidity, light meets shadow, and
-              minimalism becomes maximalist in its restraint.
+              Different is Balance. A study in contrasts where structure meets fluidity, light meets
+              shadow, and minimalism becomes maximalist in its restraint.
             </p>
           </motion.div>
         </div>
@@ -109,7 +114,9 @@ export default function LookbookPage() {
         </div>
         <div className="bg-black text-white">
           <div className="px-8 lg:px-12 py-16 lg:py-24 text-center">
-            <h2 className="text-2xl lg:text-3xl font-extralight tracking-tight mb-6">Shop the Collection</h2>
+            <h2 className="text-2xl lg:text-3xl font-extralight tracking-tight mb-6">
+              Shop the Collection
+            </h2>
             <Link
               href="/collection"
               className="inline-flex items-center gap-2 text-[11px] font-light tracking-[0.2em] uppercase border-b border-white pb-1 hover:opacity-70 transition-opacity"

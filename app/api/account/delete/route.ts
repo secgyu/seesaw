@@ -1,6 +1,8 @@
-import { createClient } from "@/lib/supabase/server";
-import { createClient as createAdminClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
+
+import { createClient as createAdminClient } from "@supabase/supabase-js";
+
+import { createClient } from "@/lib/supabase/server";
 
 export async function DELETE() {
   const supabase = await createClient();
@@ -34,4 +36,3 @@ export async function DELETE() {
 
   return NextResponse.json({ success: true });
 }
-

@@ -1,8 +1,10 @@
 "use client";
 
-import { createContext, useContext, useReducer, useEffect, useState, type ReactNode } from "react";
+import { type ReactNode, createContext, useContext, useEffect, useReducer, useState } from "react";
+
+import type { WishlistAction, WishlistState } from "@/types";
+
 import { createClient } from "@/lib/supabase/client";
-import type { WishlistState, WishlistAction } from "@/types";
 
 const WishlistContext = createContext<{
   state: WishlistState;
@@ -57,7 +59,10 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
       setIsLoading(true);
 
       if (userId) {
-        const { data } = await supabase.from("wishlists").select("product_id").eq("user_id", userId);
+        const { data } = await supabase
+          .from("wishlists")
+          .select("product_id")
+          .eq("user_id", userId);
 
         if (data && data.length > 0) {
           const items = data.map((item) => item.product_id);
@@ -70,11 +75,17 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
           for (const productId of localItems) {
             await supabase
               .from("wishlists")
-              .upsert({ user_id: userId, product_id: productId }, { onConflict: "user_id,product_id" });
+              .upsert(
+                { user_id: userId, product_id: productId },
+                { onConflict: "user_id,product_id" }
+              );
           }
           localStorage.removeItem("seesaw-wishlist");
 
-          const { data: merged } = await supabase.from("wishlists").select("product_id").eq("user_id", userId);
+          const { data: merged } = await supabase
+            .from("wishlists")
+            .select("product_id")
+            .eq("user_id", userId);
           if (merged) {
             const items = merged.map((item) => item.product_id);
             dispatch({ type: "LOAD_WISHLIST", payload: items });
@@ -128,7 +139,9 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
   const totalItems = state.items.length;
 
   return (
-    <WishlistContext.Provider value={{ state, addItem, removeItem, toggleItem, isInWishlist, totalItems, isLoading }}>
+    <WishlistContext.Provider
+      value={{ state, addItem, removeItem, toggleItem, isInWishlist, totalItems, isLoading }}
+    >
       {children}
     </WishlistContext.Provider>
   );

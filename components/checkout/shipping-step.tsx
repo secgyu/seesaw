@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+
 import { SHIPPING_OPTIONS } from "@/lib/constants";
 
 interface ShippingStepProps {
@@ -10,7 +11,12 @@ interface ShippingStepProps {
 
 export function ShippingStep({ shippingMethod, onChange }: ShippingStepProps) {
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }} className="space-y-4">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+      className="space-y-4"
+    >
       <h2 className="text-xl font-light mb-6">Shipping Method</h2>
       {SHIPPING_OPTIONS.map((option) => (
         <label
@@ -31,7 +37,9 @@ export function ShippingStep({ shippingMethod, onChange }: ShippingStepProps) {
               <p className="text-sm text-muted-foreground font-light">{option.description}</p>
             </div>
           </div>
-          <span className="font-light">{option.price === 0 ? "Free" : `$${option.price.toFixed(2)}`}</span>
+          <span className="font-light">
+            {option.price === 0 ? "Free" : `$${option.price.toFixed(2)}`}
+          </span>
         </label>
       ))}
     </motion.div>

@@ -1,10 +1,13 @@
 "use client";
 
 import { useState } from "react";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+
 import { motion } from "framer-motion";
-import { Eye, EyeOff, ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, Eye, EyeOff } from "lucide-react";
+
 import { createClient } from "@/lib/supabase/client";
 
 export const dynamic = "force-dynamic";
@@ -103,12 +106,17 @@ export default function ResetPasswordPage() {
         transition={{ duration: 0.6 }}
         className="w-full max-w-md"
       >
-        <Link href="/" className="text-sm font-light tracking-[0.3em] uppercase mb-16 block text-center">
+        <Link
+          href="/"
+          className="text-sm font-light tracking-[0.3em] uppercase mb-16 block text-center"
+        >
           SEESAW
         </Link>
 
         <h1 className="text-3xl font-extralight tracking-wide mb-3">Set New Password</h1>
-        <p className="text-sm text-muted-foreground font-light mb-12">Please enter your new password below.</p>
+        <p className="text-sm text-muted-foreground font-light mb-12">
+          Please enter your new password below.
+        </p>
 
         {error && (
           <div className="mb-6 p-4 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm">
@@ -147,7 +155,9 @@ export default function ResetPasswordPage() {
                   >
                     <Check className="w-3 h-3" />
                   </div>
-                  <span className={`text-[10px] ${req.met ? "text-green-500" : "text-muted-foreground"}`}>
+                  <span
+                    className={`text-[10px] ${req.met ? "text-green-500" : "text-muted-foreground"}`}
+                  >
                     {req.label}
                   </span>
                 </div>
