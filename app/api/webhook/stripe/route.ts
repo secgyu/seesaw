@@ -65,6 +65,23 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
 
     if (existingOrder) {
       console.log("Order already exists:", metadata.orderNumber);
+      // 이미 존재하는 주문이면 이메일만 발송
+      const items = JSON.parse(metadata.items || "[]");
+      const shippingAddress = JSON.parse(metadata.shippingAddress || "{}");
+      const total = Math.round((session.amount_total || 0) / 100);
+
+      if (session.customer_email) {
+        const emailResult = await sendOrderConfirmationEmail({
+          orderNumber: metadata.orderNumber,
+          email: session.customer_email,
+          items,
+          subtotal: total,
+          shippingCost: 0,
+          total,
+          shippingAddress,
+        });
+        console.log("Email sent for existing order:", emailResult);
+      }
       return;
     }
 
@@ -93,7 +110,7 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
     const total = Math.round((session.amount_total || 0) / 100);
 
     if (session.customer_email) {
-      await sendOrderConfirmationEmail({
+      const emailResult = await sendOrderConfirmationEmail({
         orderNumber: metadata.orderNumber,
         email: session.customer_email,
         items,
@@ -102,6 +119,7 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
         total,
         shippingAddress,
       });
+      console.log("Email sent for new order:", emailResult);
     }
 
     if (metadata.userId !== "guest") {
