@@ -14,6 +14,7 @@ import { AccountOrders } from "@/components/account/account-orders";
 import { AccountOverview } from "@/components/account/account-overview";
 import { AccountSettings } from "@/components/account/account-settings";
 import { AccountWishlist } from "@/components/account/account-wishlist";
+import { Logo } from "@/components/ui/logo";
 import { Spinner } from "@/components/ui/spinner";
 
 import { useToast } from "@/contexts/toast-context";
@@ -117,9 +118,7 @@ export default function AccountPage() {
             <ArrowLeft className="w-4 h-4" />
             <span className="hidden sm:inline">Back to Shop</span>
           </Link>
-          <Link href="/" className="text-sm font-light tracking-[0.3em] uppercase">
-            SEESAW
-          </Link>
+          <Logo width={80} height={14} />
           <div className="w-20" />
         </nav>
       </header>

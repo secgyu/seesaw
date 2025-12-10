@@ -4,6 +4,8 @@ import { ArrowRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
+import { Spinner } from "./spinner";
+
 interface AuthButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading?: boolean;
   children: React.ReactNode;
@@ -20,7 +22,7 @@ export function AuthButton({ isLoading, children, className, ...props }: AuthBut
       {...props}
     >
       {isLoading ? (
-        <div className="w-4 h-4 border border-background/30 border-t-background rounded-full animate-spin" />
+        <Spinner className="border-background/30 border-t-background" />
       ) : (
         <>
           {children}

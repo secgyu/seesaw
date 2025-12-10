@@ -13,6 +13,7 @@ import { useWishlist } from "@/contexts/wishlist-context";
 import { createClient } from "@/lib/supabase/client";
 
 import { SearchModal } from "./search-modal";
+import { Logo } from "./ui/logo";
 
 export function Navigation() {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -65,9 +66,7 @@ export function Navigation() {
             >
               <Menu className="w-5 h-5 stroke-[1.5]" />
             </button>
-            <Link href="/" className="text-sm font-light tracking-[0.3em] uppercase">
-              SEESAW
-            </Link>
+            <Logo width={80} height={14} />
           </div>
 
           <div className="hidden md:flex items-center gap-12">
@@ -141,13 +140,9 @@ export function Navigation() {
             className="fixed inset-0 z-[60] bg-background md:hidden"
           >
             <div className="flex items-center justify-between px-8 py-6">
-              <Link
-                href="/"
-                className="text-sm font-light tracking-[0.3em] uppercase"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                SEESAW
-              </Link>
+              <div onClick={() => setMobileMenuOpen(false)}>
+                <Logo width={80} height={14} />
+              </div>
               <button
                 onClick={() => setMobileMenuOpen(false)}
                 className="p-2 -m-2"
