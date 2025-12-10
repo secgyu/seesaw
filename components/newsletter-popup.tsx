@@ -3,12 +3,16 @@
 import { useEffect, useState } from "react";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { X } from "lucide-react";
+import { Loader2, X } from "lucide-react";
+
+import { subscribeNewsletter } from "@/lib/actions/newsletter";
 
 export function NewsletterPopup() {
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const hasSeenPopup = localStorage.getItem("seesaw-newsletter-popup");
@@ -25,12 +29,23 @@ export function NewsletterPopup() {
     localStorage.setItem("seesaw-newsletter-popup", "true");
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => {
-      handleClose();
-    }, 2000);
+    setError("");
+    setIsLoading(true);
+
+    const result = await subscribeNewsletter(email);
+
+    setIsLoading(false);
+
+    if (result.success) {
+      setSubmitted(true);
+      setTimeout(() => {
+        handleClose();
+      }, 2000);
+    } else {
+      setError(result.message);
+    }
   };
 
   return (
@@ -55,7 +70,7 @@ export function NewsletterPopup() {
               <div
                 className="hidden md:block h-full min-h-[400px] bg-cover bg-center"
                 style={{
-                  backgroundImage: "url('/minimalist-fashion-black-white-editorial.jpg')",
+                  backgroundImage: "url('/images/account/news.jpg')",
                 }}
               />
               <div className="p-8 lg:p-10">
@@ -84,13 +99,23 @@ export function NewsletterPopup() {
                           placeholder="Email address"
                           className="w-full px-0 py-3 text-sm font-light bg-transparent border-b border-black/20 outline-none focus:border-black transition-colors placeholder:text-muted-foreground"
                           required
+                          disabled={isLoading}
                         />
                       </div>
+                      {error && <p className="text-xs text-red-600">{error}</p>}
                       <button
                         type="submit"
-                        className="w-full py-4 bg-black text-white text-[11px] font-light tracking-[0.2em] uppercase hover:bg-black/90 transition-colors"
+                        disabled={isLoading}
+                        className="w-full py-4 bg-black text-white text-[11px] font-light tracking-[0.2em] uppercase hover:bg-black/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                       >
-                        Subscribe
+                        {isLoading ? (
+                          <>
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                            Subscribing...
+                          </>
+                        ) : (
+                          "Subscribe"
+                        )}
                       </button>
                     </form>
                     <p className="mt-4 text-xs font-light text-muted-foreground">

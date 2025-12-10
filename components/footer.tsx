@@ -4,8 +4,9 @@ import { useState } from "react";
 
 import Link from "next/link";
 
-import { ArrowRight, Instagram, Twitter } from "lucide-react";
+import { ArrowRight, Check, Instagram, Loader2, Twitter } from "lucide-react";
 
+import { subscribeNewsletter } from "@/lib/actions/newsletter";
 import { BRAND, FOOTER_LINKS } from "@/lib/constants";
 
 const linkStyle =
@@ -13,10 +14,27 @@ const linkStyle =
 
 export function Footer() {
   const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [message, setMessage] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setEmail("");
+    setIsLoading(true);
+    setStatus("idle");
+
+    const result = await subscribeNewsletter(email);
+
+    setIsLoading(false);
+    setMessage(result.message);
+
+    if (result.success) {
+      setStatus("success");
+      setEmail("");
+      setTimeout(() => setStatus("idle"), 3000);
+    } else {
+      setStatus("error");
+    }
   };
 
   return (
@@ -100,11 +118,30 @@ export function Footer() {
                 placeholder="Email address"
                 className="flex-1 py-3 text-sm font-light bg-transparent outline-none placeholder:text-muted-foreground"
                 required
+                disabled={isLoading}
               />
-              <button type="submit" className="p-3" aria-label="Subscribe">
-                <ArrowRight className="w-4 h-4" />
+              <button
+                type="submit"
+                className="p-3 disabled:opacity-50"
+                aria-label="Subscribe"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : status === "success" ? (
+                  <Check className="w-4 h-4 text-green-600" />
+                ) : (
+                  <ArrowRight className="w-4 h-4" />
+                )}
               </button>
             </form>
+            {status !== "idle" && (
+              <p
+                className={`mt-2 text-xs ${status === "success" ? "text-green-600" : "text-red-600"}`}
+              >
+                {message}
+              </p>
+            )}
           </div>
         </div>
         <div className="mt-16 pt-8 border-t border-black/5">
