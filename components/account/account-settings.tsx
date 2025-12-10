@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import { AlertTriangle } from "lucide-react";
 
 import { ErrorAlert } from "@/components/ui/error-alert";
+import { FormInput } from "@/components/ui/form-input";
+import { PasswordInput } from "@/components/ui/password-input";
 import { Spinner } from "@/components/ui/spinner";
 import { SuccessAlert } from "@/components/ui/success-alert";
 
@@ -137,28 +139,20 @@ export function AccountSettings({ userEmail, initialName }: AccountSettingsProps
         {profileError && <ErrorAlert message={profileError} className="mb-4" />}
 
         <div className="grid md:grid-cols-2 gap-6">
-          <div>
-            <label className="block text-[11px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-2">
-              Name
-            </label>
-            <input
-              type="text"
-              value={profileName}
-              onChange={(e) => setProfileName(e.target.value)}
-              className="w-full px-0 py-3 bg-transparent border-0 border-b border-border focus:border-foreground outline-none text-sm font-light transition-colors"
-            />
-          </div>
-          <div>
-            <label className="block text-[11px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              value={userEmail}
-              disabled
-              className="w-full px-0 py-3 bg-transparent border-0 border-b border-border text-muted-foreground outline-none text-sm font-light"
-            />
-          </div>
+          <FormInput
+            label="Name"
+            type="text"
+            value={profileName}
+            onChange={(e) => setProfileName(e.target.value)}
+            className="py-3"
+          />
+          <FormInput
+            label="Email"
+            type="email"
+            value={userEmail}
+            disabled
+            className="py-3 text-muted-foreground"
+          />
         </div>
         <button
           onClick={handleProfileUpdate}
@@ -180,29 +174,19 @@ export function AccountSettings({ userEmail, initialName }: AccountSettingsProps
         {passwordError && <ErrorAlert message={passwordError} className="mb-4" />}
 
         <div className="space-y-4 max-w-md">
-          <div>
-            <label className="block text-[11px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-2">
-              New Password
-            </label>
-            <input
-              type="password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className="w-full px-0 py-3 bg-transparent border-0 border-b border-border focus:border-foreground outline-none text-sm font-light transition-colors"
-              placeholder="At least 8 characters"
-            />
-          </div>
-          <div>
-            <label className="block text-[11px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-2">
-              Confirm New Password
-            </label>
-            <input
-              type="password"
-              value={confirmNewPassword}
-              onChange={(e) => setConfirmNewPassword(e.target.value)}
-              className="w-full px-0 py-3 bg-transparent border-0 border-b border-border focus:border-foreground outline-none text-sm font-light transition-colors"
-            />
-          </div>
+          <PasswordInput
+            label="New Password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            placeholder="At least 8 characters"
+            className="py-3"
+          />
+          <PasswordInput
+            label="Confirm New Password"
+            value={confirmNewPassword}
+            onChange={(e) => setConfirmNewPassword(e.target.value)}
+            className="py-3"
+          />
         </div>
         <button
           onClick={handlePasswordChange}

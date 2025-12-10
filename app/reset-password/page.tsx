@@ -6,9 +6,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Check, Eye, EyeOff } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 
 import { ErrorAlert } from "@/components/ui/error-alert";
+import { PasswordInput } from "@/components/ui/password-input";
+import { Spinner } from "@/components/ui/spinner";
 import { SuccessMessage } from "@/components/ui/success-message";
 
 import { createClient } from "@/lib/supabase/client";
@@ -18,7 +20,6 @@ export const dynamic = "force-dynamic";
 export default function ResetPasswordPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
@@ -128,25 +129,13 @@ export default function ResetPasswordPage() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-[11px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-3">
-              New Password
-            </label>
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-0 py-3 bg-transparent border-0 border-b border-border focus:border-foreground outline-none text-sm font-light transition-colors pr-10"
-                required
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-0 top-1/2 -translate-y-1/2 p-2 text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              </button>
-            </div>
+            <PasswordInput
+              label="New Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="py-3"
+            />
             <div className="mt-3 space-y-1">
               {passwordRequirements.map((req, i) => (
                 <div key={i} className="flex items-center gap-2">
@@ -167,18 +156,13 @@ export default function ResetPasswordPage() {
             </div>
           </div>
 
-          <div>
-            <label className="block text-[11px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-3">
-              Confirm New Password
-            </label>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full px-0 py-3 bg-transparent border-0 border-b border-border focus:border-foreground outline-none text-sm font-light transition-colors"
-              required
-            />
-          </div>
+          <PasswordInput
+            label="Confirm New Password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+            className="py-3"
+          />
 
           <button
             type="submit"
@@ -186,7 +170,7 @@ export default function ResetPasswordPage() {
             className="w-full bg-foreground text-background py-4 text-[11px] font-light tracking-[0.2em] uppercase hover:bg-foreground/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-8"
           >
             {isLoading ? (
-              <div className="w-4 h-4 border border-background/30 border-t-background rounded-full animate-spin" />
+              <Spinner className="border-background/30 border-t-background" />
             ) : (
               <>
                 Update Password

@@ -8,6 +8,8 @@ import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, Mail } from "lucide-react";
 
 import { ErrorAlert } from "@/components/ui/error-alert";
+import { FormInput } from "@/components/ui/form-input";
+import { Spinner } from "@/components/ui/spinner";
 import { SuccessMessage } from "@/components/ui/success-message";
 
 import { createClient } from "@/lib/supabase/client";
@@ -111,19 +113,15 @@ export default function ForgotPasswordPage() {
         <ErrorAlert message={error} className="mb-6" />
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="block text-[11px] font-light tracking-[0.15em] uppercase text-muted-foreground mb-3">
-              Email Address
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-0 py-3 bg-transparent border-0 border-b border-border focus:border-foreground outline-none text-sm font-light transition-colors"
-              placeholder="your@email.com"
-              required
-            />
-          </div>
+          <FormInput
+            label="Email Address"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="your@email.com"
+            required
+            className="py-3"
+          />
 
           <button
             type="submit"
@@ -131,7 +129,7 @@ export default function ForgotPasswordPage() {
             className="w-full bg-foreground text-background py-4 text-[11px] font-light tracking-[0.2em] uppercase hover:bg-foreground/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-8"
           >
             {isLoading ? (
-              <div className="w-4 h-4 border border-background/30 border-t-background rounded-full animate-spin" />
+              <Spinner className="border-background/30 border-t-background" />
             ) : (
               <>
                 Send Reset Link
