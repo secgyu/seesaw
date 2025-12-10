@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 
 import Stripe from "stripe";
 
+import { sendOrderConfirmationEmail } from "@/lib/email";
 import { stripe } from "@/lib/stripe";
 import { createClient } from "@/lib/supabase/server";
 
@@ -86,6 +87,22 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
     }
 
     console.log("Order saved via webhook:", metadata.orderNumber);
+
+    const items = JSON.parse(metadata.items || "[]");
+    const shippingAddress = JSON.parse(metadata.shippingAddress || "{}");
+    const total = Math.round((session.amount_total || 0) / 100);
+
+    if (session.customer_email) {
+      await sendOrderConfirmationEmail({
+        orderNumber: metadata.orderNumber,
+        email: session.customer_email,
+        items,
+        subtotal: total,
+        shippingCost: 0,
+        total,
+        shippingAddress,
+      });
+    }
 
     if (metadata.userId !== "guest") {
       await supabase.from("carts").delete().eq("user_id", metadata.userId);
