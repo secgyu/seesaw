@@ -47,7 +47,12 @@ export async function POST(request: Request) {
 }
 
 async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
+  console.log("=== handleSuccessfulPayment started ===");
+  console.log("Session ID:", session.id);
+  console.log("Customer email:", session.customer_email);
+
   const metadata = session.metadata;
+  console.log("Metadata:", JSON.stringify(metadata));
 
   if (!metadata?.orderNumber) {
     console.error("No order number in metadata");
@@ -70,7 +75,9 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
       const shippingAddress = JSON.parse(metadata.shippingAddress || "{}");
       const total = Math.round((session.amount_total || 0) / 100);
 
+      console.log("Existing order - About to send email. Customer email:", session.customer_email);
       if (session.customer_email) {
+        console.log("Sending email to:", session.customer_email);
         const emailResult = await sendOrderConfirmationEmail({
           orderNumber: metadata.orderNumber,
           email: session.customer_email,
@@ -80,7 +87,9 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
           total,
           shippingAddress,
         });
-        console.log("Email sent for existing order:", emailResult);
+        console.log("Email result for existing order:", JSON.stringify(emailResult));
+      } else {
+        console.log("No customer email - skipping email send");
       }
       return;
     }
@@ -109,7 +118,9 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
     const shippingAddress = JSON.parse(metadata.shippingAddress || "{}");
     const total = Math.round((session.amount_total || 0) / 100);
 
+    console.log("About to send email. Customer email:", session.customer_email);
     if (session.customer_email) {
+      console.log("Sending email to:", session.customer_email);
       const emailResult = await sendOrderConfirmationEmail({
         orderNumber: metadata.orderNumber,
         email: session.customer_email,
@@ -119,7 +130,9 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
         total,
         shippingAddress,
       });
-      console.log("Email sent for new order:", emailResult);
+      console.log("Email result for new order:", JSON.stringify(emailResult));
+    } else {
+      console.log("No customer email - skipping email send");
     }
 
     if (metadata.userId !== "guest") {
