@@ -24,14 +24,17 @@ function OrderConfirmationContent() {
 
   useEffect(() => {
     if (hasProcessed.current) return;
+    hasProcessed.current = true;
 
-    const processOrder = async () => {
+    const checkOrder = async () => {
       if (!sessionId) {
         setStatus("error");
         return;
       }
 
       try {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
         const response = await fetch("/api/order/confirm", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -42,15 +45,26 @@ function OrderConfirmationContent() {
           clearCart();
           setStatus("success");
         } else {
-          setStatus("error");
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+          const retryResponse = await fetch("/api/order/confirm", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ sessionId }),
+          });
+
+          if (retryResponse.ok) {
+            clearCart();
+            setStatus("success");
+          } else {
+            setStatus("error");
+          }
         }
       } catch {
         setStatus("error");
       }
     };
 
-    hasProcessed.current = true;
-    processOrder();
+    checkOrder();
   }, [sessionId, clearCart]);
 
   if (status === "loading") {
