@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 
 import Stripe from "stripe";
 
-import { sendOrderConfirmationEmail } from "@/lib/email";
 import { stripe } from "@/lib/stripe";
 import { createClient } from "@/lib/supabase/server";
 
@@ -20,8 +19,7 @@ export async function POST(request: Request) {
 
   try {
     event = stripe.webhooks.constructEvent(body, signature, process.env.STRIPE_WEBHOOK_SECRET!);
-  } catch (err) {
-    console.error("Webhook signature verification failed:", err);
+  } catch {
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 
@@ -49,41 +47,10 @@ export async function POST(request: Request) {
 async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
   const metadata = session.metadata;
 
-  if (!metadata?.orderNumber) {
-    console.error("No order number in metadata");
-    return;
-  }
+  if (!metadata?.orderNumber) return;
 
   try {
     const supabase = await createClient();
-
-    const { data: existingOrder } = await supabase
-      .from("orders")
-      .select("id")
-      .eq("order_number", metadata.orderNumber)
-      .single();
-
-    if (existingOrder) {
-      console.log("Order already exists:", metadata.orderNumber);
-      // 이미 존재하는 주문이면 이메일만 발송
-      const items = JSON.parse(metadata.items || "[]");
-      const shippingAddress = JSON.parse(metadata.shippingAddress || "{}");
-      const total = Math.round((session.amount_total || 0) / 100);
-
-      if (session.customer_email) {
-        const emailResult = await sendOrderConfirmationEmail({
-          orderNumber: metadata.orderNumber,
-          email: session.customer_email,
-          items,
-          subtotal: total,
-          shippingCost: 0,
-          total,
-          shippingAddress,
-        });
-        console.log("Email sent for existing order:", emailResult);
-      }
-      return;
-    }
 
     const { error } = await supabase.from("orders").insert({
       order_number: metadata.orderNumber,
@@ -98,34 +65,10 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
       stripe_session_id: session.id,
     });
 
-    if (error) {
-      console.error("Failed to save order:", error);
-      return;
-    }
-
-    console.log("Order saved via webhook:", metadata.orderNumber);
-
-    const items = JSON.parse(metadata.items || "[]");
-    const shippingAddress = JSON.parse(metadata.shippingAddress || "{}");
-    const total = Math.round((session.amount_total || 0) / 100);
-
-    if (session.customer_email) {
-      const emailResult = await sendOrderConfirmationEmail({
-        orderNumber: metadata.orderNumber,
-        email: session.customer_email,
-        items,
-        subtotal: total,
-        shippingCost: 0,
-        total,
-        shippingAddress,
-      });
-      console.log("Email sent for new order:", emailResult);
-    }
+    if (error) return;
 
     if (metadata.userId !== "guest") {
       await supabase.from("carts").delete().eq("user_id", metadata.userId);
     }
-  } catch (err) {
-    console.error("Error processing webhook:", err);
-  }
+  } catch {}
 }
