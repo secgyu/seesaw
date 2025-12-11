@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import type { Order } from "@/types";
-import type { User as SupabaseUser } from "@supabase/supabase-js";
 import { motion } from "framer-motion";
 import { ArrowLeft, Heart, LogOut, Package, Settings, User } from "lucide-react";
 
@@ -17,6 +16,7 @@ import { AccountWishlist } from "@/components/account/account-wishlist";
 import { Logo } from "@/components/ui/logo";
 import { Spinner } from "@/components/ui/spinner";
 
+import { useAuth } from "@/contexts/auth-context";
 import { useToast } from "@/contexts/toast-context";
 import { useWishlist } from "@/contexts/wishlist-context";
 
@@ -29,13 +29,12 @@ export const dynamic = "force-dynamic";
 type Tab = "overview" | "orders" | "wishlist" | "settings";
 
 export default function AccountPage() {
-  const [user, setUser] = useState<SupabaseUser | null>(null);
-  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<Tab>("overview");
   const [orders, setOrders] = useState<Order[]>([]);
   const [ordersLoading, setOrdersLoading] = useState(true);
 
   const router = useRouter();
+  const { user, isLoading: loading } = useAuth();
   const { state } = useWishlist();
   const { showToast } = useToast();
   const supabase = createClient();
@@ -43,32 +42,28 @@ export default function AccountPage() {
   const wishlistProducts = state.items.map((id) => getProductById(id));
 
   useEffect(() => {
-    const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+    if (loading) return;
 
-      if (user) {
-        setUser(user);
+    if (!user) {
+      router.push("/login");
+      return;
+    }
 
-        const { data: ordersData } = await supabase
-          .from("orders")
-          .select("*")
-          .eq("user_id", user.id)
-          .order("created_at", { ascending: false });
+    const loadOrders = async () => {
+      const { data: ordersData } = await supabase
+        .from("orders")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
 
-        if (ordersData) {
-          setOrders(ordersData as Order[]);
-        }
-        setOrdersLoading(false);
-      } else {
-        router.push("/login");
+      if (ordersData) {
+        setOrders(ordersData as Order[]);
       }
-      setLoading(false);
+      setOrdersLoading(false);
     };
 
-    getUser();
-  }, [router, supabase]);
+    loadOrders();
+  }, [user, loading, router, supabase]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();

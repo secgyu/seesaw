@@ -4,6 +4,8 @@ import { type ReactNode, createContext, useContext, useEffect, useReducer, useSt
 
 import type { CartAction, CartItem, CartState } from "@/types";
 
+import { useAuth } from "@/contexts/auth-context";
+
 import { createClient } from "@/lib/supabase/client";
 
 export type { CartItem };
@@ -74,29 +76,13 @@ function cartReducer(state: CartState, action: CartAction): CartState {
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, { items: [], isOpen: false });
-  const [userId, setUserId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { userId, isLoading: authLoading } = useAuth();
   const supabase = createClient();
 
   useEffect(() => {
-    const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setUserId(user?.id || null);
-    };
-    getUser();
+    if (authLoading) return;
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUserId(session?.user?.id || null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, [supabase.auth]);
-
-  useEffect(() => {
     const loadCart = async () => {
       setIsLoading(true);
 
@@ -161,7 +147,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     };
 
     loadCart();
-  }, [userId, supabase]);
+  }, [userId, authLoading, supabase]);
 
   useEffect(() => {
     if (!userId && !isLoading) {

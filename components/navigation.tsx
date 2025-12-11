@@ -1,16 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Link from "next/link";
 
 import { AnimatePresence, motion } from "framer-motion";
 import { Heart, Menu, Search, ShoppingBag, User, X } from "lucide-react";
 
+import { useAuth } from "@/contexts/auth-context";
 import { useCart } from "@/contexts/cart-context";
 import { useWishlist } from "@/contexts/wishlist-context";
-
-import { createClient } from "@/lib/supabase/client";
 
 import { SearchModal } from "./search-modal";
 import { Logo } from "./ui/logo";
@@ -18,36 +17,10 @@ import { Logo } from "./ui/logo";
 export function Navigation() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [user, setUser] = useState<{ email: string } | null>(null);
+
+  const { user } = useAuth();
   const { toggleCart, totalItems } = useCart();
   const { totalItems: wishlistCount } = useWishlist();
-  const supabase = createClient();
-
-  useEffect(() => {
-    const checkUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (user) {
-        setUser({ email: user.email || "" });
-      } else {
-        setUser(null);
-      }
-    };
-    checkUser();
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session?.user) {
-        setUser({ email: session.user.email || "" });
-      } else {
-        setUser(null);
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [supabase.auth]);
 
   return (
     <>

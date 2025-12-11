@@ -9,6 +9,7 @@ import { BackToTop } from "@/components/back-to-top";
 import { CustomCursor } from "@/components/custom-cursor";
 import { NewsletterPopup } from "@/components/newsletter-popup";
 
+import { AuthProvider } from "@/contexts/auth-context";
 import { CartProvider } from "@/contexts/cart-context";
 import { RecentlyViewedProvider } from "@/contexts/recently-viewed-context";
 import { ToastProvider } from "@/contexts/toast-context";
@@ -45,18 +46,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} font-sans antialiased`}>
-        <CartProvider>
-          <WishlistProvider>
-            <ToastProvider>
-              <RecentlyViewedProvider>
-                <CustomCursor />
-                {children}
-                <BackToTop />
-                <NewsletterPopup />
-              </RecentlyViewedProvider>
-            </ToastProvider>
-          </WishlistProvider>
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            <WishlistProvider>
+              <ToastProvider>
+                <RecentlyViewedProvider>
+                  <CustomCursor />
+                  {children}
+                  <BackToTop />
+                  <NewsletterPopup />
+                </RecentlyViewedProvider>
+              </ToastProvider>
+            </WishlistProvider>
+          </CartProvider>
+        </AuthProvider>
         <Analytics />
       </body>
     </html>

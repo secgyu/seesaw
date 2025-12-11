@@ -4,6 +4,8 @@ import { type ReactNode, createContext, useContext, useEffect, useReducer, useSt
 
 import type { WishlistAction, WishlistState } from "@/types";
 
+import { useAuth } from "@/contexts/auth-context";
+
 import { createClient } from "@/lib/supabase/client";
 
 const WishlistContext = createContext<{
@@ -32,29 +34,13 @@ function wishlistReducer(state: WishlistState, action: WishlistAction): Wishlist
 
 export function WishlistProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(wishlistReducer, { items: [] });
-  const [userId, setUserId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { userId, isLoading: authLoading } = useAuth();
   const supabase = createClient();
 
   useEffect(() => {
-    const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setUserId(user?.id || null);
-    };
-    getUser();
+    if (authLoading) return;
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUserId(session?.user?.id || null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, [supabase.auth]);
-
-  useEffect(() => {
     const loadWishlist = async () => {
       setIsLoading(true);
 
@@ -101,7 +87,7 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
     };
 
     loadWishlist();
-  }, [userId, supabase]);
+  }, [userId, authLoading, supabase]);
 
   useEffect(() => {
     if (!userId && !isLoading) {
