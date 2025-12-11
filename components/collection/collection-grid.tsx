@@ -1,20 +1,33 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useSearchParams } from "next/navigation";
 
 import { ProductCard } from "@/components/product-card";
 import { QuickViewModal } from "@/components/quick-view-modal";
+import { ProductCardSkeleton } from "@/components/ui/skeleton";
 
-import { type Product, products } from "@/data/products";
+import { type Product, getProducts } from "@/lib/products";
 
 export function CollectionGrid() {
   const searchParams = useSearchParams();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
 
   const category = searchParams.get("category") || "all";
   const sort = searchParams.get("sort") || "newest";
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      const data = await getProducts();
+      setProducts(data);
+      setLoading(false);
+    };
+    fetchProducts();
+  }, []);
 
   const filteredProducts = useMemo(() => {
     let result = [...products];
@@ -34,16 +47,28 @@ export function CollectionGrid() {
         result.sort((a, b) => a.name.localeCompare(b.name));
         break;
       default:
-        result.reverse();
+        break;
     }
 
     return result;
-  }, [category, sort]);
+  }, [products, category, sort]);
 
   const getCardSize = (index: number): "normal" | "large" => {
     const pattern = index % 8;
     return pattern === 0 || pattern === 3 || pattern === 7 ? "large" : "normal";
   };
+
+  if (loading) {
+    return (
+      <div className="mt-12">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <ProductCardSkeleton key={i} />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="mt-12">

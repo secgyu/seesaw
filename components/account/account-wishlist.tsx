@@ -5,14 +5,14 @@ import Link from "next/link";
 
 import { ChevronRight, Heart } from "lucide-react";
 
-import type { Product } from "@/data/products";
+import type { Product } from "@/lib/products";
 
 interface AccountWishlistProps {
-  products: (Product | undefined)[];
+  products: Product[];
 }
 
 export function AccountWishlist({ products }: AccountWishlistProps) {
-  const validProducts = products.filter(Boolean) as Product[];
+  const validProducts = products;
 
   return (
     <div>

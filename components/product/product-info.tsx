@@ -14,8 +14,7 @@ import { useRecentlyViewed } from "@/contexts/recently-viewed-context";
 import { useToast } from "@/contexts/toast-context";
 
 import { SIZE_GUIDE } from "@/lib/constants";
-
-import type { Product } from "@/data/products";
+import type { Product } from "@/lib/products";
 
 interface ProductInfoProps {
   product: Product;

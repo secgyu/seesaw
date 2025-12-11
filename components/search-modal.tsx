@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -8,7 +8,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Search, X } from "lucide-react";
 
-import { type Product, products } from "@/data/products";
+import { type Product, searchProducts } from "@/lib/products";
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -17,25 +17,45 @@ interface SearchModalProps {
 
 export function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const [query, setQuery] = useState("");
+  const [results, setResults] = useState<Product[]>([]);
+  const [searching, setSearching] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const results: Product[] = useMemo(() => {
-    if (query.length > 1) {
-      return products.filter(
-        (product) =>
-          product.name.toLowerCase().includes(query.toLowerCase()) ||
-          product.category.toLowerCase().includes(query.toLowerCase()) ||
-          product.colors.some((color) => color.toLowerCase().includes(query.toLowerCase()))
-      );
+  const handleSearch = useCallback(async (searchQuery: string) => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+
+    if (searchQuery.length <= 1) {
+      setResults([]);
+      setSearching(false);
+      return;
     }
-    return [];
-  }, [query]);
+
+    setSearching(true);
+    timerRef.current = setTimeout(async () => {
+      const data = await searchProducts(searchQuery);
+      setResults(data);
+      setSearching(false);
+    }, 300);
+  }, []);
+
+  const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newQuery = e.target.value;
+    setQuery(newQuery);
+    handleSearch(newQuery);
+  };
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
       inputRef.current.focus();
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -82,7 +102,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                   ref={inputRef}
                   type="text"
                   value={query}
-                  onChange={(e) => setQuery(e.target.value)}
+                  onChange={handleQueryChange}
                   placeholder="Search products..."
                   className="w-full pl-8 pr-4 py-3 text-lg font-light bg-transparent border-b border-black focus:border-black focus:outline-none placeholder:text-muted-foreground"
                 />
@@ -108,7 +128,12 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                     </div>
                   </div>
                 )}
-                {query.length > 0 && results.length === 0 && (
+                {query.length > 0 && searching && (
+                  <div className="text-center py-12">
+                    <p className="text-muted-foreground font-light">Searching...</p>
+                  </div>
+                )}
+                {query.length > 0 && !searching && results.length === 0 && (
                   <div className="text-center py-12">
                     <p className="text-muted-foreground font-light">
                       No results found for &quot;{query}&quot;

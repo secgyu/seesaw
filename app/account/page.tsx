@@ -20,9 +20,8 @@ import { useAuth } from "@/contexts/auth-context";
 import { useToast } from "@/contexts/toast-context";
 import { useWishlist } from "@/contexts/wishlist-context";
 
+import { type Product, getProductById } from "@/lib/products";
 import { createClient } from "@/lib/supabase/client";
-
-import { getProductById } from "@/data/products";
 
 export const dynamic = "force-dynamic";
 
@@ -32,6 +31,7 @@ export default function AccountPage() {
   const [activeTab, setActiveTab] = useState<Tab>("overview");
   const [orders, setOrders] = useState<Order[]>([]);
   const [ordersLoading, setOrdersLoading] = useState(true);
+  const [wishlistProducts, setWishlistProducts] = useState<Product[]>([]);
 
   const router = useRouter();
   const { user, isLoading: loading } = useAuth();
@@ -39,7 +39,17 @@ export default function AccountPage() {
   const { showToast } = useToast();
   const supabase = createClient();
 
-  const wishlistProducts = state.items.map((id) => getProductById(id));
+  useEffect(() => {
+    const fetchWishlistProducts = async () => {
+      const products: Product[] = [];
+      for (const id of state.items) {
+        const product = await getProductById(id);
+        if (product) products.push(product);
+      }
+      setWishlistProducts(products);
+    };
+    fetchWishlistProducts();
+  }, [state.items]);
 
   useEffect(() => {
     if (loading) return;

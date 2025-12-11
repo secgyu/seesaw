@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import Link from "next/link";
 
 import { motion } from "framer-motion";
@@ -9,14 +11,32 @@ import { CartSidebar } from "@/components/cart-sidebar";
 import { Footer } from "@/components/footer";
 import { Navigation } from "@/components/navigation";
 import { ProductCard } from "@/components/product-card";
+import { ProductCardSkeleton } from "@/components/ui/skeleton";
 
 import { useWishlist } from "@/contexts/wishlist-context";
 
-import { products } from "@/data/products";
+import { type Product, getProductById } from "@/lib/products";
 
 export default function WishlistPage() {
-  const { state } = useWishlist();
-  const wishlistProducts = products.filter((p) => state.items.includes(p.id));
+  const { state, isLoading: wishlistLoading } = useWishlist();
+  const [wishlistProducts, setWishlistProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      if (wishlistLoading) return;
+
+      setLoading(true);
+      const products: Product[] = [];
+      for (const id of state.items) {
+        const product = await getProductById(id);
+        if (product) products.push(product);
+      }
+      setWishlistProducts(products);
+      setLoading(false);
+    };
+    fetchProducts();
+  }, [state.items, wishlistLoading]);
 
   return (
     <>
@@ -36,7 +56,13 @@ export default function WishlistPage() {
             </p>
           </motion.div>
           <div className="max-w-7xl mx-auto">
-            {wishlistProducts.length === 0 ? (
+            {loading || wishlistLoading ? (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <ProductCardSkeleton key={i} />
+                ))}
+              </div>
+            ) : wishlistProducts.length === 0 ? (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

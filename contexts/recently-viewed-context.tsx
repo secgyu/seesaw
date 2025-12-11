@@ -1,10 +1,9 @@
 "use client";
 
 import type React from "react";
-import { createContext, useCallback, useContext, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 
-import type { Product } from "@/data/products";
-import { getProductById } from "@/data/products";
+import { type Product, getProductById } from "@/lib/products";
 
 interface RecentlyViewedContextType {
   recentlyViewed: Product[];
@@ -15,25 +14,31 @@ const RecentlyViewedContext = createContext<RecentlyViewedContextType | undefine
 
 const MAX_RECENTLY_VIEWED = 8;
 
-function getInitialRecentlyViewed(): Product[] {
-  if (typeof window === "undefined") return [];
-  const stored = localStorage.getItem("seesaw-recently-viewed");
-  if (stored) {
-    const ids = JSON.parse(stored) as string[];
-    return ids.map((id) => getProductById(id)).filter((p): p is Product => p !== undefined);
-  }
-  return [];
-}
-
 export function RecentlyViewedProvider({ children }: { children: React.ReactNode }) {
-  const [recentlyViewed, setRecentlyViewed] = useState<Product[]>(getInitialRecentlyViewed);
+  const [recentlyViewed, setRecentlyViewed] = useState<Product[]>([]);
 
-  const addToRecentlyViewed = useCallback((productId: string) => {
+  useEffect(() => {
+    const loadRecentlyViewed = async () => {
+      const stored = localStorage.getItem("seesaw-recently-viewed");
+      if (stored) {
+        const ids = JSON.parse(stored) as string[];
+        const products: Product[] = [];
+        for (const id of ids) {
+          const product = await getProductById(id);
+          if (product) products.push(product);
+        }
+        setRecentlyViewed(products);
+      }
+    };
+    loadRecentlyViewed();
+  }, []);
+
+  const addToRecentlyViewed = useCallback(async (productId: string) => {
+    const product = await getProductById(productId);
+    if (!product) return;
+
     setRecentlyViewed((prev) => {
       const filtered = prev.filter((p) => p.id !== productId);
-      const product = getProductById(productId);
-      if (!product) return prev;
-
       const updated = [product, ...filtered].slice(0, MAX_RECENTLY_VIEWED);
       const ids = updated.map((p) => p.id);
       localStorage.setItem("seesaw-recently-viewed", JSON.stringify(ids));

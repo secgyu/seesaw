@@ -11,7 +11,7 @@ import { Eye, Heart } from "lucide-react";
 import { useToast } from "@/contexts/toast-context";
 import { useWishlist } from "@/contexts/wishlist-context";
 
-import type { Product } from "@/data/products";
+import type { Product } from "@/lib/products";
 
 interface ProductCardProps {
   product: Product;
