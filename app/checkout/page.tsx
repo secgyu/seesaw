@@ -39,6 +39,20 @@ const initialFormData: CheckoutFormData = {
   cardName: "",
 };
 
+interface FormErrors {
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  address?: string;
+  city?: string;
+  postalCode?: string;
+  country?: string;
+}
+
+function validateEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
 function CheckoutContent() {
   const searchParams = useSearchParams();
   const canceled = searchParams.get("canceled");
@@ -47,16 +61,63 @@ function CheckoutContent() {
   const [formData, setFormData] = useState<CheckoutFormData>(initialFormData);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [formErrors, setFormErrors] = useState<FormErrors>({});
 
   const shippingOption = SHIPPING_OPTIONS.find((opt) => opt.value === formData.shippingMethod);
   const shippingCost = shippingOption?.price ?? 0;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+
+    if (formErrors[name as keyof FormErrors]) {
+      setFormErrors({ ...formErrors, [name]: undefined });
+    }
+  };
+
+  const validateForm = (): boolean => {
+    const errors: FormErrors = {};
+
+    if (!formData.email.trim()) {
+      errors.email = "Email is required";
+    } else if (!validateEmail(formData.email)) {
+      errors.email = "Please enter a valid email";
+    }
+
+    if (!formData.firstName.trim()) {
+      errors.firstName = "First name is required";
+    }
+
+    if (!formData.lastName.trim()) {
+      errors.lastName = "Last name is required";
+    }
+
+    if (!formData.address.trim()) {
+      errors.address = "Address is required";
+    }
+
+    if (!formData.city.trim()) {
+      errors.city = "City is required";
+    }
+
+    if (!formData.postalCode.trim()) {
+      errors.postalCode = "Postal code is required";
+    }
+
+    if (!formData.country) {
+      errors.country = "Please select a country";
+    }
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
   };
 
   const handleContinue = () => {
-    if (currentStep === "information") setCurrentStep("shipping");
+    if (currentStep === "information") {
+      if (validateForm()) {
+        setCurrentStep("shipping");
+      }
+    }
   };
 
   const handleBack = () => {
@@ -135,7 +196,11 @@ function CheckoutContent() {
 
             <div>
               {currentStep === "information" && (
-                <InformationStep formData={formData} onChange={handleInputChange} />
+                <InformationStep
+                  formData={formData}
+                  onChange={handleInputChange}
+                  errors={formErrors}
+                />
               )}
 
               {currentStep === "shipping" && (

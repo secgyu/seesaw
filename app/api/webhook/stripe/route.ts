@@ -70,5 +70,7 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
     if (metadata.userId !== "guest") {
       await supabase.from("carts").delete().eq("user_id", metadata.userId);
     }
-  } catch {}
+  } catch (error) {
+    console.error("Failed to process payment:", error);
+  }
 }

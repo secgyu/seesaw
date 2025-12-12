@@ -47,8 +47,7 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({ success: true, message: "Order status updated" });
-  } catch (error) {
-    console.error("Error updating order status:", error);
+  } catch {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

@@ -8,12 +8,28 @@ import { Select } from "@/components/ui/select";
 
 import { COUNTRIES } from "@/lib/constants";
 
+interface FormErrors {
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  address?: string;
+  city?: string;
+  postalCode?: string;
+  country?: string;
+}
+
 interface InformationStepProps {
   formData: CheckoutFormData;
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  errors?: FormErrors;
 }
 
-export function InformationStep({ formData, onChange }: InformationStepProps) {
+function FieldError({ message }: { message?: string }) {
+  if (!message) return null;
+  return <p className="text-xs text-red-500 mt-1">{message}</p>;
+}
+
+export function InformationStep({ formData, onChange, errors = {} }: InformationStepProps) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -22,68 +38,94 @@ export function InformationStep({ formData, onChange }: InformationStepProps) {
       className="space-y-6"
     >
       <h2 className="text-xl font-light mb-6">Contact Information</h2>
-      <Input
-        type="email"
-        name="email"
-        value={formData.email}
-        onChange={onChange}
-        placeholder="Email"
-        required
-      />
+      <div>
+        <Input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={onChange}
+          placeholder="Email"
+          className={errors.email ? "border-red-500" : ""}
+        />
+        <FieldError message={errors.email} />
+      </div>
 
       <h2 className="text-xl font-light pt-6 mb-6">Shipping Address</h2>
       <div className="grid grid-cols-2 gap-4">
-        <Input
-          type="text"
-          name="firstName"
-          value={formData.firstName}
-          onChange={onChange}
-          placeholder="First Name"
-          required
-        />
-        <Input
-          type="text"
-          name="lastName"
-          value={formData.lastName}
-          onChange={onChange}
-          placeholder="Last Name"
-          required
-        />
+        <div>
+          <Input
+            type="text"
+            name="firstName"
+            value={formData.firstName}
+            onChange={onChange}
+            placeholder="First Name"
+            className={errors.firstName ? "border-red-500" : ""}
+          />
+          <FieldError message={errors.firstName} />
+        </div>
+        <div>
+          <Input
+            type="text"
+            name="lastName"
+            value={formData.lastName}
+            onChange={onChange}
+            placeholder="Last Name"
+            className={errors.lastName ? "border-red-500" : ""}
+          />
+          <FieldError message={errors.lastName} />
+        </div>
       </div>
-      <Input
-        type="text"
-        name="address"
-        value={formData.address}
-        onChange={onChange}
-        placeholder="Address"
-        required
-      />
+      <div>
+        <Input
+          type="text"
+          name="address"
+          value={formData.address}
+          onChange={onChange}
+          placeholder="Address"
+          className={errors.address ? "border-red-500" : ""}
+        />
+        <FieldError message={errors.address} />
+      </div>
       <div className="grid grid-cols-2 gap-4">
-        <Input
-          type="text"
-          name="city"
-          value={formData.city}
-          onChange={onChange}
-          placeholder="City"
-          required
-        />
-        <Input
-          type="text"
-          name="postalCode"
-          value={formData.postalCode}
-          onChange={onChange}
-          placeholder="Postal Code"
-          required
-        />
+        <div>
+          <Input
+            type="text"
+            name="city"
+            value={formData.city}
+            onChange={onChange}
+            placeholder="City"
+            className={errors.city ? "border-red-500" : ""}
+          />
+          <FieldError message={errors.city} />
+        </div>
+        <div>
+          <Input
+            type="text"
+            name="postalCode"
+            value={formData.postalCode}
+            onChange={onChange}
+            placeholder="Postal Code"
+            className={errors.postalCode ? "border-red-500" : ""}
+          />
+          <FieldError message={errors.postalCode} />
+        </div>
       </div>
-      <Select name="country" value={formData.country} onChange={onChange} required>
-        <option value="">Select Country</option>
-        {COUNTRIES.map((country) => (
-          <option key={country.value} value={country.value}>
-            {country.label}
-          </option>
-        ))}
-      </Select>
+      <div>
+        <Select
+          name="country"
+          value={formData.country}
+          onChange={onChange}
+          className={errors.country ? "border-red-500" : ""}
+        >
+          <option value="">Select Country</option>
+          {COUNTRIES.map((country) => (
+            <option key={country.value} value={country.value}>
+              {country.label}
+            </option>
+          ))}
+        </Select>
+        <FieldError message={errors.country} />
+      </div>
       <Input
         type="tel"
         name="phone"
