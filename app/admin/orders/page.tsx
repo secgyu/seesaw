@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChevronDown, Eye, Search, X } from "lucide-react";
 
+import { formatCurrency, formatDate } from "@/lib/format";
 import { createClient } from "@/lib/supabase/client";
 
 interface Order {
@@ -41,44 +43,56 @@ const ORDER_STATUSES = [
   { value: "cancelled", label: "Cancelled", color: "bg-red-100 text-red-700" },
 ];
 
-function formatCurrency(amount: number) {
-  return new Intl.NumberFormat("ko-KR", {
-    style: "currency",
-    currency: "KRW",
-    maximumFractionDigits: 0,
-  }).format(amount);
-}
-
-function formatDate(dateString: string) {
-  return new Date(dateString).toLocaleDateString("ko-KR", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
-
 function getStatusColor(status: string) {
   return ORDER_STATUSES.find((s) => s.value === status)?.color || "bg-neutral-100 text-neutral-700";
 }
 
+async function fetchOrders(): Promise<Order[]> {
+  const supabase = createClient();
+  const { data } = await supabase
+    .from("orders")
+    .select("*")
+    .order("created_at", { ascending: false });
+  return data || [];
+}
+
+async function updateOrderStatusApi({ orderId, status }: { orderId: string; status: string }) {
+  const response = await fetch("/api/order/update-status", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ orderId, status }),
+  });
+  if (!response.ok) throw new Error("Failed to update status");
+  return { orderId, status };
+}
+
 export default function OrdersPage() {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-  const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
 
-  const supabase = createClient();
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    fetchOrders();
-  }, []);
+  const { data: orders = [], isLoading } = useQuery({
+    queryKey: ["admin", "orders"],
+    queryFn: fetchOrders,
+  });
 
-  useEffect(() => {
+  const updateStatusMutation = useMutation({
+    mutationFn: updateOrderStatusApi,
+    onSuccess: ({ orderId, status }) => {
+      queryClient.setQueryData<Order[]>(["admin", "orders"], (old) =>
+        old?.map((order) => (order.id === orderId ? { ...order, status } : order))
+      );
+      if (selectedOrder?.id === orderId) {
+        setSelectedOrder((prev) => (prev ? { ...prev, status } : null));
+      }
+
+      queryClient.invalidateQueries({ queryKey: ["admin", "dashboard"] });
+    },
+  });
+
+  const filteredOrders = useMemo(() => {
     let result = orders;
 
     if (searchQuery) {
@@ -94,43 +108,11 @@ export default function OrdersPage() {
       result = result.filter((order) => order.status === statusFilter);
     }
 
-    setFilteredOrders(result);
+    return result;
   }, [orders, searchQuery, statusFilter]);
 
-  const fetchOrders = async () => {
-    const { data } = await supabase
-      .from("orders")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    setOrders(data || []);
-    setIsLoading(false);
-  };
-
-  const updateOrderStatus = async (orderId: string, newStatus: string) => {
-    setUpdatingStatus(orderId);
-
-    try {
-      const response = await fetch("/api/order/update-status", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ orderId, status: newStatus }),
-      });
-
-      if (response.ok) {
-        setOrders((prev) =>
-          prev.map((order) => (order.id === orderId ? { ...order, status: newStatus } : order))
-        );
-
-        if (selectedOrder?.id === orderId) {
-          setSelectedOrder({ ...selectedOrder, status: newStatus });
-        }
-      }
-    } catch (error) {
-      console.error("Failed to update status:", error);
-    } finally {
-      setUpdatingStatus(null);
-    }
+  const updateOrderStatus = (orderId: string, newStatus: string) => {
+    updateStatusMutation.mutate({ orderId, status: newStatus });
   };
 
   if (isLoading) {
@@ -206,8 +188,8 @@ export default function OrdersPage() {
                         <select
                           value={order.status}
                           onChange={(e) => updateOrderStatus(order.id, e.target.value)}
-                          disabled={updatingStatus === order.id}
-                          className={`appearance-none px-3 py-1.5 pr-8 text-xs rounded-full cursor-pointer focus:outline-none ${getStatusColor(order.status)} ${updatingStatus === order.id ? "opacity-50" : ""}`}
+                          disabled={updateStatusMutation.isPending}
+                          className={`appearance-none px-3 py-1.5 pr-8 text-xs rounded-full cursor-pointer focus:outline-none ${getStatusColor(order.status)} ${updateStatusMutation.isPending ? "opacity-50" : ""}`}
                         >
                           {ORDER_STATUSES.map((status) => (
                             <option key={status.value} value={status.value}>
@@ -219,7 +201,7 @@ export default function OrdersPage() {
                       </div>
                     </td>
                     <td className="px-6 py-4 text-sm text-neutral-500">
-                      {formatDate(order.created_at)}
+                      {formatDate(order.created_at, { includeTime: true })}
                     </td>
                     <td className="px-6 py-4">
                       <button
@@ -350,7 +332,7 @@ export default function OrdersPage() {
                       key={status.value}
                       onClick={() => updateOrderStatus(selectedOrder.id, status.value)}
                       disabled={
-                        selectedOrder.status === status.value || updatingStatus === selectedOrder.id
+                        selectedOrder.status === status.value || updateStatusMutation.isPending
                       }
                       className={`px-4 py-2 text-xs rounded-lg transition-colors ${
                         selectedOrder.status === status.value

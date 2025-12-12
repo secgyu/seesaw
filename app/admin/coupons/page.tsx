@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Edit2, Plus, Search, Trash2, X } from "lucide-react";
 
+import { formatCurrency, formatDate } from "@/lib/format";
 import { createClient } from "@/lib/supabase/client";
 
 interface Coupon {
@@ -45,33 +47,89 @@ const initialFormData: CouponFormData = {
   is_active: true,
 };
 
-function formatCurrency(amount: number) {
-  return new Intl.NumberFormat("ko-KR", {
-    style: "currency",
-    currency: "KRW",
-    maximumFractionDigits: 0,
-  }).format(amount);
-}
-
-function formatDate(dateString: string) {
-  return new Date(dateString).toLocaleDateString("ko-KR", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
+async function fetchCoupons(): Promise<Coupon[]> {
+  const supabase = createClient();
+  const { data } = await supabase
+    .from("coupons")
+    .select("*")
+    .order("created_at", { ascending: false });
+  return data || [];
 }
 
 export default function CouponsPage() {
-  const [coupons, setCoupons] = useState<Coupon[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCoupon, setEditingCoupon] = useState<Coupon | null>(null);
   const [formData, setFormData] = useState<CouponFormData>(initialFormData);
-  const [isSaving, setIsSaving] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
-  const supabase = createClient();
+  const queryClient = useQueryClient();
+
+  const { data: coupons = [], isLoading } = useQuery({
+    queryKey: ["admin", "coupons"],
+    queryFn: fetchCoupons,
+  });
+
+  const saveMutation = useMutation({
+    mutationFn: async (data: {
+      couponData: Partial<Coupon>;
+      isEdit: boolean;
+      couponId?: string;
+    }) => {
+      const supabase = createClient();
+      if (data.isEdit && data.couponId) {
+        const { data: result } = await supabase
+          .from("coupons")
+          .update(data.couponData)
+          .eq("id", data.couponId)
+          .select()
+          .single();
+        return result;
+      } else {
+        const { data: result } = await supabase
+          .from("coupons")
+          .insert(data.couponData)
+          .select()
+          .single();
+        return result;
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "coupons"] });
+      closeModal();
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const supabase = createClient();
+      await supabase.from("coupons").delete().eq("id", id);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "coupons"] });
+      setDeleteConfirm(null);
+    },
+  });
+
+  const toggleActiveMutation = useMutation({
+    mutationFn: async ({ id, is_active }: { id: string; is_active: boolean }) => {
+      const supabase = createClient();
+      const { data } = await supabase
+        .from("coupons")
+        .update({ is_active })
+        .eq("id", id)
+        .select()
+        .single();
+      return data;
+    },
+    onSuccess: (data) => {
+      if (data) {
+        queryClient.setQueryData<Coupon[]>(["admin", "coupons"], (old) =>
+          old?.map((c) => (c.id === data.id ? data : c))
+        );
+      }
+    },
+  });
 
   const filteredCoupons = useMemo(() => {
     if (!searchQuery) return coupons;
@@ -80,28 +138,6 @@ export default function CouponsPage() {
       (c) => c.code.toLowerCase().includes(query) || c.description?.toLowerCase().includes(query)
     );
   }, [coupons, searchQuery]);
-
-  useEffect(() => {
-    let isMounted = true;
-
-    const fetchCoupons = async () => {
-      const { data } = await supabase
-        .from("coupons")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (isMounted) {
-        setCoupons(data || []);
-        setIsLoading(false);
-      }
-    };
-
-    fetchCoupons();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [supabase]);
 
   const openCreateModal = () => {
     setEditingCoupon(null);
@@ -133,7 +169,6 @@ export default function CouponsPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSaving(true);
 
     const couponData = {
       code: formData.code.toUpperCase(),
@@ -147,46 +182,11 @@ export default function CouponsPage() {
       is_active: formData.is_active,
     };
 
-    if (editingCoupon) {
-      const { data } = await supabase
-        .from("coupons")
-        .update(couponData)
-        .eq("id", editingCoupon.id)
-        .select()
-        .single();
-
-      if (data) {
-        setCoupons((prev) => prev.map((c) => (c.id === editingCoupon.id ? data : c)));
-      }
-    } else {
-      const { data } = await supabase.from("coupons").insert(couponData).select().single();
-
-      if (data) {
-        setCoupons((prev) => [data, ...prev]);
-      }
-    }
-
-    closeModal();
-    setIsSaving(false);
-  };
-
-  const handleDelete = async (id: string) => {
-    await supabase.from("coupons").delete().eq("id", id);
-    setCoupons((prev) => prev.filter((c) => c.id !== id));
-    setDeleteConfirm(null);
-  };
-
-  const toggleActive = async (coupon: Coupon) => {
-    const { data } = await supabase
-      .from("coupons")
-      .update({ is_active: !coupon.is_active })
-      .eq("id", coupon.id)
-      .select()
-      .single();
-
-    if (data) {
-      setCoupons((prev) => prev.map((c) => (c.id === coupon.id ? data : c)));
-    }
+    saveMutation.mutate({
+      couponData,
+      isEdit: !!editingCoupon,
+      couponId: editingCoupon?.id,
+    });
   };
 
   const isExpired = (coupon: Coupon) => {
@@ -297,15 +297,21 @@ export default function CouponsPage() {
                         </span>
                       ) : coupon.is_active ? (
                         <button
-                          onClick={() => toggleActive(coupon)}
-                          className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700 hover:bg-green-200 transition-colors"
+                          onClick={() =>
+                            toggleActiveMutation.mutate({ id: coupon.id, is_active: false })
+                          }
+                          disabled={toggleActiveMutation.isPending}
+                          className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700 hover:bg-green-200 transition-colors disabled:opacity-50"
                         >
                           Active
                         </button>
                       ) : (
                         <button
-                          onClick={() => toggleActive(coupon)}
-                          className="px-2 py-1 text-xs rounded-full bg-neutral-100 text-neutral-600 hover:bg-neutral-200 transition-colors"
+                          onClick={() =>
+                            toggleActiveMutation.mutate({ id: coupon.id, is_active: true })
+                          }
+                          disabled={toggleActiveMutation.isPending}
+                          className="px-2 py-1 text-xs rounded-full bg-neutral-100 text-neutral-600 hover:bg-neutral-200 transition-colors disabled:opacity-50"
                         >
                           Inactive
                         </button>
@@ -485,10 +491,10 @@ export default function CouponsPage() {
                 </button>
                 <button
                   type="submit"
-                  disabled={isSaving}
+                  disabled={saveMutation.isPending}
                   className="flex-1 px-4 py-2.5 bg-neutral-900 text-white rounded-lg text-sm hover:bg-neutral-800 transition-colors disabled:opacity-50"
                 >
-                  {isSaving ? "Saving..." : editingCoupon ? "Update" : "Create"}
+                  {saveMutation.isPending ? "Saving..." : editingCoupon ? "Update" : "Create"}
                 </button>
               </div>
             </form>
@@ -517,10 +523,11 @@ export default function CouponsPage() {
                 Cancel
               </button>
               <button
-                onClick={() => handleDelete(deleteConfirm)}
-                className="flex-1 px-4 py-2.5 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700 transition-colors"
+                onClick={() => deleteMutation.mutate(deleteConfirm)}
+                disabled={deleteMutation.isPending}
+                className="flex-1 px-4 py-2.5 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700 transition-colors disabled:opacity-50"
               >
-                Delete
+                {deleteMutation.isPending ? "Deleting..." : "Delete"}
               </button>
             </div>
           </div>

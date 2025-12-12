@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import Image from "next/image";
 
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Minus, Plus, Save, Search } from "lucide-react";
 
+import { formatCurrency } from "@/lib/format";
 import type { DBProduct } from "@/lib/products";
 import { createClient } from "@/lib/supabase/client";
 
@@ -20,69 +22,72 @@ interface ProductWithInventory extends DBProduct {
   inventory: InventoryItem[];
 }
 
-function formatCurrency(amount: number) {
-  return new Intl.NumberFormat("ko-KR", {
-    style: "currency",
-    currency: "KRW",
-    maximumFractionDigits: 0,
-  }).format(amount);
+async function fetchProductsWithInventory(): Promise<ProductWithInventory[]> {
+  const supabase = createClient();
+
+  const { data: productsData } = await supabase
+    .from("products")
+    .select("*")
+    .eq("is_active", true)
+    .order("name", { ascending: true });
+
+  if (!productsData) return [];
+
+  const productIds = productsData.map((p) => p.id);
+  const { data: inventoryData } = await supabase
+    .from("inventory")
+    .select("*")
+    .in("product_id", productIds);
+
+  return productsData.map((product) => ({
+    ...product,
+    inventory: inventoryData?.filter((inv) => inv.product_id === product.id) || [],
+  }));
 }
 
 export default function InventoryPage() {
-  const [products, setProducts] = useState<ProductWithInventory[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [updatedStocks, setUpdatedStocks] = useState<Record<string, number>>({});
   const [savingIds, setSavingIds] = useState<Set<string>>(new Set());
 
-  const supabase = createClient();
+  const queryClient = useQueryClient();
+
+  const { data: products = [], isLoading } = useQuery({
+    queryKey: ["admin", "inventory"],
+    queryFn: fetchProductsWithInventory,
+  });
+
+  const updateStockMutation = useMutation({
+    mutationFn: async ({ inventoryId, stock }: { inventoryId: string; stock: number }) => {
+      const supabase = createClient();
+      await supabase.from("inventory").update({ stock }).eq("id", inventoryId);
+      return { inventoryId, stock };
+    },
+    onMutate: ({ inventoryId }) => {
+      setSavingIds((prev) => new Set(prev).add(inventoryId));
+    },
+    onSuccess: ({ inventoryId, stock }) => {
+      queryClient.setQueryData<ProductWithInventory[]>(["admin", "inventory"], (old) =>
+        old?.map((p) => ({
+          ...p,
+          inventory: p.inventory.map((inv) => (inv.id === inventoryId ? { ...inv, stock } : inv)),
+        }))
+      );
+    },
+    onSettled: (_, __, { inventoryId }) => {
+      setSavingIds((prev) => {
+        const updated = new Set(prev);
+        updated.delete(inventoryId);
+        return updated;
+      });
+    },
+  });
 
   const filteredProducts = useMemo(() => {
     if (!searchQuery) return products;
     const query = searchQuery.toLowerCase();
     return products.filter((p) => p.name.toLowerCase().includes(query));
   }, [products, searchQuery]);
-
-  useEffect(() => {
-    let isMounted = true;
-
-    const fetchData = async () => {
-      const { data: productsData } = await supabase
-        .from("products")
-        .select("*")
-        .eq("is_active", true)
-        .order("name", { ascending: true });
-
-      if (!isMounted) return;
-
-      if (!productsData) {
-        setIsLoading(false);
-        return;
-      }
-
-      const productIds = productsData.map((p) => p.id);
-      const { data: inventoryData } = await supabase
-        .from("inventory")
-        .select("*")
-        .in("product_id", productIds);
-
-      if (!isMounted) return;
-
-      const productsWithInventory = productsData.map((product) => ({
-        ...product,
-        inventory: inventoryData?.filter((inv) => inv.product_id === product.id) || [],
-      }));
-
-      setProducts(productsWithInventory);
-      setIsLoading(false);
-    };
-
-    fetchData();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [supabase]);
 
   const getStockKey = (productId: string, size: string) => `${productId}-${size}`;
 
@@ -108,38 +113,17 @@ export default function InventoryPage() {
     return updatedStocks[key] !== undefined && updatedStocks[key] !== originalStock;
   };
 
-  const saveStock = async (inventoryId: string, productId: string, size: string) => {
+  const saveStock = (inventoryId: string, productId: string, size: string) => {
     const key = getStockKey(productId, size);
     const newStock = updatedStocks[key];
 
     if (newStock === undefined) return;
 
-    setSavingIds((prev) => new Set(prev).add(inventoryId));
-
-    await supabase.from("inventory").update({ stock: newStock }).eq("id", inventoryId);
-
-    setProducts((prev) =>
-      prev.map((p) =>
-        p.id === productId
-          ? {
-              ...p,
-              inventory: p.inventory.map((inv) =>
-                inv.id === inventoryId ? { ...inv, stock: newStock } : inv
-              ),
-            }
-          : p
-      )
-    );
+    updateStockMutation.mutate({ inventoryId, stock: newStock });
 
     setUpdatedStocks((prev) => {
       const updated = { ...prev };
       delete updated[key];
-      return updated;
-    });
-
-    setSavingIds((prev) => {
-      const updated = new Set(prev);
-      updated.delete(inventoryId);
       return updated;
     });
   };

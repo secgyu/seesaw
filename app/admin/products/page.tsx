@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 
 import Image from "next/image";
 
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Edit2, Plus, Search, Trash2, X } from "lucide-react";
 
+import { formatCurrency } from "@/lib/format";
 import type { DBProduct } from "@/lib/products";
 import { createClient } from "@/lib/supabase/client";
 
@@ -51,33 +53,63 @@ const initialFormData: ProductFormData = {
   is_active: true,
 };
 
-function formatCurrency(amount: number) {
-  return new Intl.NumberFormat("ko-KR", {
-    style: "currency",
-    currency: "KRW",
-    maximumFractionDigits: 0,
-  }).format(amount);
+async function fetchProducts(): Promise<DBProduct[]> {
+  const supabase = createClient();
+  const { data } = await supabase
+    .from("products")
+    .select("*")
+    .order("created_at", { ascending: false });
+  return data || [];
 }
 
 export default function ProductsPage() {
-  const [products, setProducts] = useState<DBProduct[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<DBProduct[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<DBProduct | null>(null);
   const [formData, setFormData] = useState<ProductFormData>(initialFormData);
-  const [isSaving, setIsSaving] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
-  const supabase = createClient();
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  const { data: products = [], isLoading } = useQuery({
+    queryKey: ["admin", "products"],
+    queryFn: fetchProducts,
+  });
 
-  useEffect(() => {
+  const saveMutation = useMutation({
+    mutationFn: async (data: {
+      productData: Partial<DBProduct>;
+      isEdit: boolean;
+      productId?: string;
+    }) => {
+      const supabase = createClient();
+      if (data.isEdit && data.productId) {
+        await supabase.from("products").update(data.productData).eq("id", data.productId);
+      } else {
+        await supabase.from("products").insert(data.productData);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "products"] });
+      queryClient.invalidateQueries({ queryKey: ["admin", "dashboard"] });
+      closeModal();
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const supabase = createClient();
+      await supabase.from("products").delete().eq("id", id);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "products"] });
+      queryClient.invalidateQueries({ queryKey: ["admin", "dashboard"] });
+      setDeleteConfirm(null);
+    },
+  });
+
+  const filteredProducts = useMemo(() => {
     let result = products;
 
     if (searchQuery) {
@@ -89,18 +121,8 @@ export default function ProductsPage() {
       result = result.filter((p) => p.category === categoryFilter);
     }
 
-    setFilteredProducts(result);
+    return result;
   }, [products, searchQuery, categoryFilter]);
-
-  const fetchProducts = async () => {
-    const { data } = await supabase
-      .from("products")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    setProducts(data || []);
-    setIsLoading(false);
-  };
 
   const openCreateModal = () => {
     setEditingProduct(null);
@@ -136,13 +158,12 @@ export default function ProductsPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSaving(true);
 
     const productData = {
       name: formData.name,
       slug: formData.slug || formData.name.toLowerCase().replace(/\s+/g, "-"),
       price: formData.price,
-      category: formData.category,
+      category: formData.category as "outerwear" | "tops" | "bottoms" | "accessories" | "fragrance",
       colors: formData.colors
         .split(",")
         .map((c) => c.trim())
@@ -160,21 +181,11 @@ export default function ProductsPage() {
       is_active: formData.is_active,
     };
 
-    if (editingProduct) {
-      await supabase.from("products").update(productData).eq("id", editingProduct.id);
-    } else {
-      await supabase.from("products").insert(productData);
-    }
-
-    await fetchProducts();
-    closeModal();
-    setIsSaving(false);
-  };
-
-  const handleDelete = async (id: string) => {
-    await supabase.from("products").delete().eq("id", id);
-    setDeleteConfirm(null);
-    await fetchProducts();
+    saveMutation.mutate({
+      productData,
+      isEdit: !!editingProduct,
+      productId: editingProduct?.id,
+    });
   };
 
   const toggleSize = (size: string) => {
@@ -477,10 +488,10 @@ export default function ProductsPage() {
                 </button>
                 <button
                   type="submit"
-                  disabled={isSaving}
+                  disabled={saveMutation.isPending}
                   className="flex-1 px-4 py-2.5 bg-neutral-900 text-white rounded-lg text-sm hover:bg-neutral-800 transition-colors disabled:opacity-50"
                 >
-                  {isSaving ? "Saving..." : editingProduct ? "Update" : "Create"}
+                  {saveMutation.isPending ? "Saving..." : editingProduct ? "Update" : "Create"}
                 </button>
               </div>
             </form>
@@ -509,10 +520,11 @@ export default function ProductsPage() {
                 Cancel
               </button>
               <button
-                onClick={() => handleDelete(deleteConfirm)}
-                className="flex-1 px-4 py-2.5 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700 transition-colors"
+                onClick={() => deleteMutation.mutate(deleteConfirm)}
+                disabled={deleteMutation.isPending}
+                className="flex-1 px-4 py-2.5 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700 transition-colors disabled:opacity-50"
               >
-                Delete
+                {deleteMutation.isPending ? "Deleting..." : "Delete"}
               </button>
             </div>
           </div>

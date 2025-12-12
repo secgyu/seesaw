@@ -1,23 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
+import { useQuery } from "@tanstack/react-query";
 import { ArrowDown, ArrowUp, DollarSign, Package, ShoppingBag, Users } from "lucide-react";
 
+import { formatCurrency, formatDate } from "@/lib/format";
 import { createClient } from "@/lib/supabase/client";
 
-interface DashboardStats {
-  totalOrders: number;
-  totalRevenue: number;
-  totalProducts: number;
-  pendingOrders: number;
-  recentOrders: Array<{
-    order_number: string;
-    email: string;
-    total: number;
-    status: string;
-    created_at: string;
-  }>;
+interface Order {
+  order_number: string;
+  email: string;
+  total: number;
+  status: string;
+  created_at: string;
 }
 
 function StatCard({
@@ -58,23 +52,6 @@ function StatCard({
   );
 }
 
-function formatCurrency(amount: number) {
-  return new Intl.NumberFormat("ko-KR", {
-    style: "currency",
-    currency: "KRW",
-    maximumFractionDigits: 0,
-  }).format(amount);
-}
-
-function formatDate(dateString: string) {
-  return new Date(dateString).toLocaleDateString("ko-KR", {
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
-
 function getStatusColor(status: string) {
   switch (status) {
     case "paid":
@@ -92,50 +69,40 @@ function getStatusColor(status: string) {
   }
 }
 
+async function fetchDashboardStats() {
+  const supabase = createClient();
+
+  const [{ data: orders }, { count: productCount }] = await Promise.all([
+    supabase.from("orders").select("*"),
+    supabase.from("products").select("*", { count: "exact", head: true }),
+  ]);
+
+  const totalOrders = orders?.length || 0;
+  const totalRevenue = orders?.reduce((sum, order) => sum + (order.total || 0), 0) || 0;
+  const pendingOrders =
+    orders?.filter((o) => o.status === "paid" || o.status === "processing").length || 0;
+
+  const recentOrders =
+    orders
+      ?.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+      .slice(0, 5) || [];
+
+  return {
+    totalOrders,
+    totalRevenue,
+    totalProducts: productCount || 0,
+    pendingOrders,
+    recentOrders: recentOrders as Order[],
+  };
+}
+
 export default function AdminDashboard() {
-  const [stats, setStats] = useState<DashboardStats>({
-    totalOrders: 0,
-    totalRevenue: 0,
-    totalProducts: 0,
-    pendingOrders: 0,
-    recentOrders: [],
+  const { data: stats, isLoading } = useQuery({
+    queryKey: ["admin", "dashboard"],
+    queryFn: fetchDashboardStats,
   });
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchStats = async () => {
-      const supabase = createClient();
-
-      const { data: orders } = await supabase.from("orders").select("*");
-
-      const { count: productCount } = await supabase
-        .from("products")
-        .select("*", { count: "exact", head: true });
-
-      const totalOrders = orders?.length || 0;
-      const totalRevenue = orders?.reduce((sum, order) => sum + (order.total || 0), 0) || 0;
-      const pendingOrders =
-        orders?.filter((o) => o.status === "paid" || o.status === "processing").length || 0;
-
-      const recentOrders =
-        orders
-          ?.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-          .slice(0, 5) || [];
-
-      setStats({
-        totalOrders,
-        totalRevenue,
-        totalProducts: productCount || 0,
-        pendingOrders,
-        recentOrders,
-      });
-      setIsLoading(false);
-    };
-
-    fetchStats();
-  }, []);
-
-  if (isLoading) {
+  if (isLoading || !stats) {
     return (
       <div className="p-6 lg:p-8">
         <div className="animate-pulse space-y-6">
@@ -197,7 +164,7 @@ export default function AdminDashboard() {
                       </span>
                     </td>
                     <td className="px-6 py-4 text-sm text-neutral-500">
-                      {formatDate(order.created_at)}
+                      {formatDate(order.created_at, { includeTime: true })}
                     </td>
                   </tr>
                 ))}

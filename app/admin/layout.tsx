@@ -19,6 +19,7 @@ import {
   X,
 } from "lucide-react";
 
+import { QueryProvider } from "@/components/providers/query-provider";
 import { Spinner } from "@/components/ui/spinner";
 
 import { createClient } from "@/lib/supabase/client";
@@ -167,7 +168,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
       </aside>
 
-      <main className="lg:ml-64 min-h-screen pt-14 lg:pt-0">{children}</main>
+      <main className="lg:ml-64 min-h-screen pt-14 lg:pt-0">
+        <QueryProvider>{children}</QueryProvider>
+      </main>
     </div>
   );
 }
