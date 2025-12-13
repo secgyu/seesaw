@@ -12,7 +12,7 @@ import { ArrowLeft, Loader2 } from "lucide-react";
 import { CartSidebar } from "@/components/cart-sidebar";
 import { CheckoutSteps } from "@/components/checkout/checkout-steps";
 import { InformationStep } from "@/components/checkout/information-step";
-import { OrderSummary } from "@/components/checkout/order-summary";
+import { type AppliedCoupon, OrderSummary } from "@/components/checkout/order-summary";
 import { ShippingStep } from "@/components/checkout/shipping-step";
 import { Footer } from "@/components/footer";
 import { Navigation } from "@/components/navigation";
@@ -62,6 +62,7 @@ function CheckoutContent() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [formErrors, setFormErrors] = useState<FormErrors>({});
+  const [appliedCoupon, setAppliedCoupon] = useState<AppliedCoupon | null>(null);
 
   const shippingOption = SHIPPING_OPTIONS.find((opt) => opt.value === formData.shippingMethod);
   const shippingCost = shippingOption?.price ?? 0;
@@ -136,6 +137,13 @@ function CheckoutContent() {
           items: state.items,
           shippingCost,
           formData,
+          coupon: appliedCoupon
+            ? {
+                id: appliedCoupon.id,
+                code: appliedCoupon.code,
+                discountAmount: appliedCoupon.discountAmount,
+              }
+            : null,
         }),
       });
 
@@ -259,7 +267,14 @@ function CheckoutContent() {
             </div>
           </motion.div>
 
-          <OrderSummary items={state.items} subtotal={subtotal} shippingCost={shippingCost} />
+          <OrderSummary
+            items={state.items}
+            subtotal={subtotal}
+            shippingCost={shippingCost}
+            appliedCoupon={appliedCoupon}
+            onApplyCoupon={setAppliedCoupon}
+            onRemoveCoupon={() => setAppliedCoupon(null)}
+          />
         </div>
       </div>
     </main>

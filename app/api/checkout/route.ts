@@ -5,9 +5,15 @@ import type { CartItem } from "@/types";
 import { stripe } from "@/lib/stripe";
 import { createClient } from "@/lib/supabase/server";
 
+interface CouponData {
+  id: string;
+  code: string;
+  discountAmount: number;
+}
+
 export async function POST(request: Request) {
   try {
-    const { items, shippingCost, formData } = await request.json();
+    const { items, shippingCost, formData, coupon } = await request.json();
 
     if (!items || items.length === 0) {
       return NextResponse.json({ error: "No items in cart" }, { status: 400 });
@@ -48,16 +54,33 @@ export async function POST(request: Request) {
 
     const orderNumber = `SEESAW-${Date.now()}-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
 
+    const typedCoupon = coupon as CouponData | null;
+    const discounts: { coupon: string }[] = [];
+
+    if (typedCoupon && typedCoupon.discountAmount > 0) {
+      const stripeCoupon = await stripe.coupons.create({
+        amount_off: typedCoupon.discountAmount * 100,
+        currency: "usd",
+        name: `Discount: ${typedCoupon.code}`,
+        max_redemptions: 1,
+      });
+      discounts.push({ coupon: stripeCoupon.id });
+    }
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: lineItems,
       mode: "payment",
+      discounts: discounts.length > 0 ? discounts : undefined,
       success_url: `${request.headers.get("origin")}/order-confirmation?session_id={CHECKOUT_SESSION_ID}&order=${orderNumber}`,
       cancel_url: `${request.headers.get("origin")}/checkout?canceled=true`,
       customer_email: formData?.email || undefined,
       metadata: {
         orderNumber,
         userId: user?.id || "guest",
+        couponId: typedCoupon?.id || "",
+        couponCode: typedCoupon?.code || "",
+        couponDiscount: typedCoupon?.discountAmount?.toString() || "0",
         items: JSON.stringify(
           items.map((item: CartItem) => ({
             id: item.id,

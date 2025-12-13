@@ -70,6 +70,21 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
     if (metadata.userId !== "guest") {
       await supabase.from("carts").delete().eq("user_id", metadata.userId);
     }
+
+    if (metadata.couponId) {
+      const { data: coupon } = await supabase
+        .from("coupons")
+        .select("used_count")
+        .eq("id", metadata.couponId)
+        .single();
+
+      if (coupon) {
+        await supabase
+          .from("coupons")
+          .update({ used_count: (coupon.used_count || 0) + 1 })
+          .eq("id", metadata.couponId);
+      }
+    }
   } catch (error) {
     console.error("Failed to process payment:", error);
   }
