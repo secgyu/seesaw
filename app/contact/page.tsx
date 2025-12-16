@@ -4,9 +4,12 @@ import { Footer } from "@/components/footer";
 import { Navigation } from "@/components/navigation";
 
 export const metadata = {
-  title: "Contact | SEESAW",
-  description:
-    "Get in touch with SEESAW. We welcome inquiries about our collection, stockists, and press.",
+  title: "Contact",
+  description: "SEESAW에 문의하세요. 컬렉션, 입점 문의, 언론 관련 문의를 환영합니다.",
+  openGraph: {
+    title: "Contact | SEESAW",
+    description: "SEESAW 고객센터",
+  },
 };
 
 export default function ContactPage() {

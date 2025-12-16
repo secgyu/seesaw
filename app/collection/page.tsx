@@ -8,9 +8,12 @@ import { Navigation } from "@/components/navigation";
 import { ProductCardSkeleton } from "@/components/ui/skeleton";
 
 export const metadata = {
-  title: "Collection | SEESAW",
-  description:
-    "Explore the complete SEESAW collection. Minimalist luxury fashion defined by balance and duality.",
+  title: "Collection",
+  description: "SEESAW 전체 컬렉션을 만나보세요. 균형과 이중성으로 정의되는 미니멀 럭셔리 패션.",
+  openGraph: {
+    title: "Collection | SEESAW",
+    description: "SEESAW 전체 컬렉션",
+  },
 };
 
 export default function CollectionPage() {

@@ -22,12 +22,26 @@ export async function generateMetadata({ params }: ProductPageProps) {
   const product = await getProductBySlugServer(slug);
 
   if (!product) {
-    return { title: "Product Not Found | SEESAW" };
+    return { title: "제품을 찾을 수 없습니다" };
   }
 
   return {
-    title: `${product.name} | SEESAW`,
+    title: product.name,
     description: product.description,
+    openGraph: {
+      title: `${product.name} | SEESAW`,
+      description: product.description,
+      images: product.images?.[0]
+        ? [
+            {
+              url: product.images[0],
+              width: 800,
+              height: 800,
+              alt: product.name,
+            },
+          ]
+        : undefined,
+    },
   };
 }
 

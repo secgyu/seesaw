@@ -1,6 +1,17 @@
+import type { Metadata } from "next";
+
 import { CartSidebar } from "@/components/cart-sidebar";
 import { Footer } from "@/components/footer";
 import { Navigation } from "@/components/navigation";
+
+export const metadata: Metadata = {
+  title: "이용약관",
+  description: "SEESAW 서비스 이용약관. 주문, 결제, 배송 및 반품에 관한 정책을 확인하세요.",
+  openGraph: {
+    title: "이용약관 | SEESAW",
+    description: "SEESAW 서비스 이용약관",
+  },
+};
 
 export default function TermsPage() {
   return (

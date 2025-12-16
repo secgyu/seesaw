@@ -1,6 +1,18 @@
+import type { Metadata } from "next";
+
 import { CartSidebar } from "@/components/cart-sidebar";
 import { Footer } from "@/components/footer";
 import { Navigation } from "@/components/navigation";
+
+export const metadata: Metadata = {
+  title: "개인정보처리방침",
+  description:
+    "SEESAW 개인정보처리방침. 고객님의 개인정보를 어떻게 수집, 사용, 보호하는지 안내합니다.",
+  openGraph: {
+    title: "개인정보처리방침 | SEESAW",
+    description: "SEESAW 개인정보처리방침",
+  },
+};
 
 export default function PrivacyPage() {
   return (

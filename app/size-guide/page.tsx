@@ -1,8 +1,19 @@
+import type { Metadata } from "next";
+
 import { CartSidebar } from "@/components/cart-sidebar";
 import { Footer } from "@/components/footer";
 import { Navigation } from "@/components/navigation";
 
 import { SIZE_CHART_WOMEN } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: "사이즈 가이드",
+  description: "SEESAW 사이즈 가이드. 정확한 측정 방법과 사이즈 차트로 완벽한 핏을 찾아보세요.",
+  openGraph: {
+    title: "사이즈 가이드 | SEESAW",
+    description: "SEESAW 사이즈 가이드",
+  },
+};
 
 export default function SizeGuidePage() {
   return (

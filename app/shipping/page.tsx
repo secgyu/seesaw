@@ -5,8 +5,12 @@ import { Footer } from "@/components/footer";
 import { Navigation } from "@/components/navigation";
 
 export const metadata = {
-  title: "Shipping & Returns | SEESAW",
-  description: "Learn about our shipping methods, delivery times, and return policy.",
+  title: "배송 및 반품",
+  description: "SEESAW 배송 방법, 배송 기간, 반품 정책에 대해 알아보세요.",
+  openGraph: {
+    title: "배송 및 반품 | SEESAW",
+    description: "SEESAW 배송 및 반품 정책",
+  },
 };
 
 export default function ShippingPage() {
